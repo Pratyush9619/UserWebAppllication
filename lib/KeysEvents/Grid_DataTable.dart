@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:assingment/Authentication/login_register.dart';
 import 'package:assingment/model/employee.dart';
 import 'package:assingment/KeysEvents/openpdf.dart';
 import 'package:assingment/KeysEvents/upload.dart';
@@ -7,7 +10,7 @@ import 'package:assingment/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../datasource/employee_datasouce.dart';
 
@@ -73,14 +76,34 @@ class _MyHomePageState extends State<MyHomePage> {
             '${widget.cityName}/ ${widget.depoName}/ ${widget.keyEvents2}'),
         backgroundColor: blue,
         actions: [
-          TextButton(
-              onPressed: () {
-                StoreData();
-              },
-              child: Text(
-                'Sync Data',
-                style: TextStyle(color: white),
-              )),
+          Padding(
+            padding: const EdgeInsets.only(right: 25, top: 15, bottom: 15),
+            child: Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.blue),
+              child: TextButton(
+                  onPressed: () {
+                    StoreData();
+                  },
+                  child: Text(
+                    'Sync Data',
+                    style: TextStyle(color: white, fontSize: 20),
+                  )),
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(right: 80),
+              child: IconButton(
+                icon: Icon(
+                  Icons.logout,
+                  size: 25,
+                  color: white,
+                ),
+                onPressed: () {
+                  onWillPop(context);
+                },
+              ))
         ],
         leading: InkWell(
             onTap: () {
@@ -114,220 +137,270 @@ class _MyHomePageState extends State<MyHomePage> {
                     _dataGridController = DataGridController();
                   });
 
-                  return SfDataGrid(
-                    source: employeeDataSource,
-                    key: key,
-                    allowEditing: true,
-                    frozenColumnsCount: 2,
-                    gridLinesVisibility: GridLinesVisibility.both,
-                    headerGridLinesVisibility: GridLinesVisibility.both,
-                    selectionMode: SelectionMode.single,
-                    navigationMode: GridNavigationMode.cell,
-                    columnWidthMode: ColumnWidthMode.auto,
-                    editingGestureType: EditingGestureType.tap,
-                    controller: _dataGridController,
-                    // onQueryRowHeight: (details) {
-                    //   return details.rowIndex == 0 ? 60.0 : 49.0;
-                    // },
-                    columns: [
-                      GridColumn(
-                        columnName: 'srNo',
-                        autoFitPadding:
-                            const EdgeInsets.symmetric(horizontal: 16),
-                        allowEditing: false,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Sr No',
-                            overflow: TextOverflow.values.first,
-                            //    textAlign: TextAlign.center,
+                  return SfDataGridTheme(
+                    data: SfDataGridThemeData(headerColor: Colors.blue),
+                    child: SfDataGrid(
+                      source: employeeDataSource,
+                      key: key,
+                      allowEditing: true,
+                      frozenColumnsCount: 2,
+                      gridLinesVisibility: GridLinesVisibility.both,
+                      headerGridLinesVisibility: GridLinesVisibility.both,
+                      selectionMode: SelectionMode.single,
+                      navigationMode: GridNavigationMode.cell,
+                      columnWidthMode: ColumnWidthMode.auto,
+                      editingGestureType: EditingGestureType.tap,
+                      controller: _dataGridController,
+                      columnWidthCalculationRange:
+                          ColumnWidthCalculationRange.allRows,
+                      // onQueryRowHeight: (details) {
+                      //   return details.rowIndex == 0 ? 60.0 : 49.0;
+                      // },
+                      columns: [
+                        GridColumn(
+                          columnName: 'srNo',
+                          autoFitPadding:
+                              const EdgeInsets.symmetric(horizontal: 16),
+                          allowEditing: false,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Sr No',
+                                overflow: TextOverflow.values.first,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)
+                                //    textAlign: TextAlign.center,
+                                ),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        width: 200,
-                        columnName: 'Activity',
-                        allowEditing: false,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Activity',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          width: 200,
+                          columnName: 'Activity',
+                          allowEditing: false,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Activity',
+                                overflow: TextOverflow.values.first,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'button',
-                        width: 130,
-                        allowEditing: false,
-                        label: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          alignment: Alignment.center,
-                          child: const Text('Upload Checklist '),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'OriginalDuration',
-                        allowEditing: false,
-                        label: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Original Duration',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'button',
+                          width: 130,
+                          allowEditing: false,
+                          label: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            alignment: Alignment.center,
+                            child: Text('Upload Checklist ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'StartDate',
-                        allowEditing: false,
-                        label: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Start Date',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'OriginalDuration',
+                          allowEditing: false,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Original Duration',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'EndDate',
-                        allowEditing: false,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'End Date',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'StartDate',
+                          allowEditing: false,
+                          width: 120,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Start Date',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'ActualStart',
-                        allowEditing: false,
-                        width: 180,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Actual Start',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'EndDate',
+                          allowEditing: false,
+                          width: 120,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('End Date',
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.values.first,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'ActualEnd',
-                        allowEditing: false,
-                        width: 180,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Actual End',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'ActualStart',
+                          allowEditing: false,
+                          width: 180,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Actual Start',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'ActualDuration',
-                        allowEditing: false,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Actual Duration',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'ActualEnd',
+                          allowEditing: false,
+                          width: 180,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Actual End',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'Delay',
-                        allowEditing: false,
-                        label: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Delay',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'ActualDuration',
+                          allowEditing: false,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Actual Duration',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'Unit',
-                        allowEditing: true,
-                        label: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Unit',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'Delay',
+                          allowEditing: false,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Delay',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'QtyScope',
-                        allowEditing: true,
-                        label: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Oty as per scope',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'Unit',
+                          allowEditing: true,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Unit',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'QtyExecuted',
-                        allowEditing: true,
-                        label: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Qty executed',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'QtyScope',
+                          allowEditing: true,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Oty as per scope',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'BalancedQty',
-                        allowEditing: false,
-                        label: Container(
-                          width: 150,
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Balanced Qty',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'QtyExecuted',
+                          allowEditing: true,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Qty executed',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'Progress',
-                        allowEditing: false,
-                        label: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '% of Progress',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'BalancedQty',
+                          allowEditing: false,
+                          label: Container(
+                            width: 150,
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Balanced Qty',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                      GridColumn(
-                        columnName: 'Weightage',
-                        allowEditing: false,
-                        label: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Weightage',
-                            overflow: TextOverflow.values.first,
+                        GridColumn(
+                          columnName: 'Progress',
+                          allowEditing: false,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('% of Progress',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
                           ),
                         ),
-                      ),
-                    ],
+                        GridColumn(
+                          columnName: 'Weightage',
+                          allowEditing: false,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Weightage',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
               }),
@@ -661,4 +734,81 @@ NodataAvailable() {
       //   style: TextStyle(color: black),
       // ),
       );
+}
+
+Future<bool> onWillPop(BuildContext context) async {
+  bool a = false;
+  await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            backgroundColor: white,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
+            content: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Close TATA POWER?",
+                    style: subtitle1White,
+                  ),
+                  const SizedBox(
+                    height: 36,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                          child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            //color: blue,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          //color: blue,
+                          child: Center(
+                              child: Text(
+                            "No",
+                            style: button.copyWith(color: blue),
+                          )),
+                        ),
+                      )),
+                      Expanded(
+                          child: InkWell(
+                        onTap: () {
+                          a = true;
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginRegister(),
+                              ));
+                          // exit(0);
+                        },
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: blue,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          //color: blue,
+                          child: Center(
+                              child: Text(
+                            "Yes",
+                            style: button,
+                          )),
+                        ),
+                      ))
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+  return a;
 }

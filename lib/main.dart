@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:assingment/Authentication/login_register.dart';
 import 'package:assingment/Splash/splash_screen.dart';
 import 'package:assingment/screen/cities_page.dart';

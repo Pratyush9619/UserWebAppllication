@@ -1,5 +1,6 @@
 import 'package:assingment/model/employee.dart';
 import 'package:assingment/KeysEvents/upload.dart';
+import 'package:assingment/style.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,29 +51,13 @@ class EmployeeDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-          alignment:
-              //  (dataGridCell.columnName == 'srNo' ||
-              //         dataGridCell.columnName == 'Activity' ||
-              //         dataGridCell.columnName == 'OriginalDuration' ||
-              // dataGridCell.columnName == 'StartDate' ||
-              //         dataGridCell.columnName == 'EndDate' ||
-              //         dataGridCell.columnName == 'ActualStart' ||
-              //         dataGridCell.columnName == 'ActualEnd' ||
-              //         dataGridCell.columnName == 'ActualDuration' ||
-              //         dataGridCell.columnName == 'Delay' ||
-              //         dataGridCell.columnName == 'Unit' ||
-              //         dataGridCell.columnName == 'QtyScope' ||
-              //         dataGridCell.columnName == 'QtyExecuted' ||
-              //         dataGridCell.columnName == 'BalancedQty' ||
-              //         dataGridCell.columnName == 'Progress' ||
-              //         dataGridCell.columnName == 'Weightage')
-              Alignment.center,
-          // : Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: dataGridCell.columnName == 'button'
               ? LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                   return ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: blue),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UploadDocument(
@@ -485,6 +470,7 @@ class EmployeeDataSource extends DataGridSource {
                     )
                   : Text(
                       dataGridCell.value.toString(),
+                      textAlign: TextAlign.center,
                     ));
     }).toList());
   }
