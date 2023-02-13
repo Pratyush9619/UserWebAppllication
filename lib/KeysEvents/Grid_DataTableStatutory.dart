@@ -44,17 +44,18 @@ class _MyHomePage2State extends State<MyHomePage2> {
   @override
   void initState() {
     super.initState();
-    _stream = _stream = FirebaseFirestore.instance
+    _stream = FirebaseFirestore.instance
         .collection(widget.depoName!)
         .doc('${widget.depoName}${widget.keyEvents}')
         .snapshots();
-    getFirestoreData().whenComplete(() {
-      setState(() {
-        employeeDataSource = EmployeeStatutoryDataSource(
-            employeeData: employees, mainContext: context);
-        _isloading = false;
-      });
-    });
+    _isloading = false;
+    // getFirestoreData().whenComplete(() {
+    //   setState(() {
+    //     employeeDataSource = EmployeeStatutoryDataSource(
+    //         employeeData: employees, mainContext: context);
+    //     _isloading = false;
+    //   });
+    // });
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
