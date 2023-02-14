@@ -1,6 +1,6 @@
 import 'package:assingment/model/employee.dart';
 import 'package:assingment/KeysEvents/upload.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

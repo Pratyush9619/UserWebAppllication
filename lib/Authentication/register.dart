@@ -3,7 +3,7 @@ import 'package:assingment/Authentication/auth_service.dart';
 import 'package:assingment/Authentication/auth_service.dart';
 import 'package:assingment/Authentication/login_register.dart';
 import 'package:assingment/screen/home_page.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

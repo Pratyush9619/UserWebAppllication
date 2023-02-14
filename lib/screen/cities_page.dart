@@ -1,9 +1,11 @@
 import 'package:assingment/components/loading_page.dart';
 import 'package:assingment/screen/depots_page.dart';
 import 'package:assingment/screen/mumbai_depots.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import '../widget/custom_appbar.dart';
 
 class CitiesPage extends StatefulWidget {
   const CitiesPage({super.key});
@@ -48,10 +50,12 @@ class _CitiesPageState extends State<CitiesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Cities'),
-          backgroundColor: blue,
-        ),
+        appBar: PreferredSize(
+            child: CustomAppBar(
+              text: 'Cities',
+              haveSynced: false,
+            ),
+            preferredSize: Size.fromHeight(50)),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('CityName')

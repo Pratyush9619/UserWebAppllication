@@ -1,5 +1,5 @@
 import 'package:assingment/screen/overview_page.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 
 class MumbaiDepotsPage extends StatefulWidget {

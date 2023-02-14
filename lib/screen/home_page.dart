@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:assingment/screen/cities_page.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:assingment/Splash/splash_screen.dart';
 import 'package:assingment/screen/cities_page.dart';
 import 'package:assingment/screen/home_page.dart';
 import 'package:assingment/screen/overview_page.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

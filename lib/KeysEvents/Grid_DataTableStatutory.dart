@@ -1,7 +1,7 @@
 import 'package:assingment/components/loading_page.dart';
 import 'package:assingment/datasource/employee_statutory.dart';
 import 'package:assingment/overview/project_planning.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +11,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../Authentication/login_register.dart';
 import '../model/employee_statutory.dart';
+import '../widget/custom_appbar.dart';
 
 void main() {
   runApp(MyHomePage2());
@@ -69,58 +70,66 @@ class _MyHomePage2State extends State<MyHomePage2> {
   Widget build(BuildContext context) {
     final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.depoName}/${widget.keyEvents2}'),
-        backgroundColor: blue,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 25, top: 15, bottom: 15),
-            child: Container(
-              height: 15,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.blue),
-              child: TextButton(
-                  onPressed: () {
-                    StoreData();
-                  },
-                  child: Text(
-                    'Sync Data',
-                    style: TextStyle(color: white, fontSize: 20),
-                  )),
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.only(right: 150),
-              child: IconButton(
-                icon: Icon(
-                  Icons.logout,
-                  size: 25,
-                  color: white,
-                ),
-                onPressed: () {
-                  onWillPop(context);
-                },
-              ))
-        ],
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: CustomAppBar(
+              text: '${widget.depoName}/${widget.keyEvents2}',
+              // icon: Icons.logout,
+              haveSynced: true,
+              store: () {
+                StoreData();
+              })
+          // title: Text('${widget.depoName}/${widget.keyEvents2}'),
+          // backgroundColor: blue,
+          // actions: [
+          //   Padding(
+          //     padding: const EdgeInsets.only(right: 25, top: 15, bottom: 15),
+          //     child: Container(
+          //       height: 15,
+          //       decoration: BoxDecoration(
+          //           borderRadius: BorderRadius.circular(10), color: Colors.blue),
+          //       child: TextButton(
+          //           onPressed: () {
+          //             StoreData();
+          //           },
+          //           child: Text(
+          //             'Sync Data',
+          //             style: TextStyle(color: white, fontSize: 20),
+          //           )),
+          //     ),
+          //   ),
+          //   Padding(
+          //       padding: const EdgeInsets.only(right: 150),
+          //       child: IconButton(
+          //         icon: Icon(
+          //           Icons.logout,
+          //           size: 25,
+          //           color: white,
+          //         ),
+          //         onPressed: () {
+          //           onWillPop(context);
+          //         },
+          //       ))
+          // ],
 
-        // actions: [
-        //   IconButton(
-        //       onPressed: () {
-        //         setState(() {
-        //           _isloading = false;
-        //         });
-        //       },
-        //       icon: Icon(Icons.refresh)),
-        // ],
-        leading: InkWell(
-            onTap: () {
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-              ]);
-              Navigator.of(context).pop();
-            },
-            child: const Icon(Icons.arrow_back)),
-      ),
+          // actions: [
+          //   IconButton(
+          //       onPressed: () {
+          //         setState(() {
+          //           _isloading = false;
+          //         });
+          //       },
+          //       icon: Icon(Icons.refresh)),
+          // ],
+          // leading: InkWell(
+          //     onTap: () {
+          //       SystemChrome.setPreferredOrientations([
+          //         DeviceOrientation.portraitUp,
+          //       ]);
+          //       Navigator.of(context).pop();
+          //     },
+          //     child: const Icon(Icons.arrow_back)),
+          ),
       body: _isloading
           ? LoadingPage()
           : StreamBuilder(

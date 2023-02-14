@@ -1,8 +1,10 @@
 import 'package:assingment/Planning_Pages/overview.dart';
 import 'package:assingment/Planning_Pages/jmr.dart';
 import 'package:assingment/overview/project_planning.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
+
+import '../widget/custom_appbar.dart';
 
 class OverviewPage extends StatefulWidget {
   String? cityName;
@@ -99,10 +101,12 @@ class _OverviewPageState extends State<OverviewPage> {
       ),
     ];
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Overview Page / ${widget.cityName} / ${widget.depoName}'),
-        backgroundColor: blue,
-      ),
+      appBar: PreferredSize(
+          child: CustomAppBar(
+            text: 'Overview Page / ${widget.cityName} / ${widget.depoName}',
+            haveSynced: false,
+          ),
+          preferredSize: Size.fromHeight(50)),
       body: GridView.count(
         crossAxisCount: 5,
         mainAxisSpacing: 10,

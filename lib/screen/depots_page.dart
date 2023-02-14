@@ -1,10 +1,11 @@
 import 'package:assingment/screen/mumbai_depots.dart';
 import 'package:assingment/screen/overview_page.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../components/loading_page.dart';
+import '../widget/custom_appbar.dart';
 
 class DepotsPage extends StatefulWidget {
   String cityName;
@@ -43,10 +44,12 @@ class _DepotsPageState extends State<DepotsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Depots / ${widget.cityName}'),
-          backgroundColor: blue,
-        ),
+        appBar: PreferredSize(
+            child: CustomAppBar(
+              text: 'Depots / ${widget.cityName}',
+              haveSynced: false,
+            ),
+            preferredSize: Size.fromHeight(50)),
         body: getDepots()
         // GridView.count(
         //     crossAxisCount: 2,

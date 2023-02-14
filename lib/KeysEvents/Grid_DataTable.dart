@@ -6,7 +6,7 @@ import 'package:assingment/KeysEvents/openpdf.dart';
 import 'package:assingment/KeysEvents/upload.dart';
 import 'package:assingment/components/loading_page.dart';
 import 'package:assingment/overview/project_planning.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 
 class Overview extends StatefulWidget {
   const Overview({super.key});

@@ -1,5 +1,5 @@
 import 'package:assingment/Authentication/check_email.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

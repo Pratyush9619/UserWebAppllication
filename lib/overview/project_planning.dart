@@ -2,9 +2,11 @@ import 'package:assingment/KeysEvents/Grid_DataTable.dart';
 import 'package:assingment/KeysEvents/Grid_DataTableStatutory.dart';
 import 'package:assingment/KeysEvents/openpdf.dart';
 import 'package:assingment/KeysEvents/site_surveys.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+import '../widget/custom_appbar.dart';
 
 class PlanningPage extends StatefulWidget {
   String? cityName;
@@ -176,10 +178,12 @@ class _PlanningPageState extends State<PlanningPage> {
       ),
     ];
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Keys Events / ${widget.cityName} / ${widget.depoName}'),
-          backgroundColor: blue,
-        ),
+        appBar: PreferredSize(
+            child: CustomAppBar(
+              text: 'Keys Events / ${widget.cityName} / ${widget.depoName}',
+              haveSynced: false,
+            ),
+            preferredSize: Size.fromHeight(50)),
         body: GridView.count(
           crossAxisCount: 5,
           children: List.generate(pointname.length, (index) {

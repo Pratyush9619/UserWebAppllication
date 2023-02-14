@@ -1,4 +1,4 @@
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 
 class LoadingPage extends StatefulWidget {

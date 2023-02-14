@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+import '../widget/custom_appbar.dart';
 
 class UploadDocument extends StatefulWidget {
   String? cityName;
@@ -26,10 +28,12 @@ class _UploadDocumentState extends State<UploadDocument> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Upload Checklist'),
-          backgroundColor: blue,
-        ),
+        appBar: PreferredSize(
+            child: CustomAppBar(
+              text: 'Upload Checklist',
+              haveSynced: false,
+            ),
+            preferredSize: Size.fromHeight(50)),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

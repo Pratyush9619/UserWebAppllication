@@ -1,4 +1,4 @@
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

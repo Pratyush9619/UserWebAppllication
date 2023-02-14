@@ -1,6 +1,6 @@
 import 'package:assingment/components/loading_page.dart';
 import 'package:assingment/model/jmr.dart';
-import 'package:assingment/style.dart';
+import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
