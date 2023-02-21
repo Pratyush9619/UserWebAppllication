@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../datasource/employee_datasouce.dart';
+import '../widget/custom_appbar.dart';
 
 void main() {
   runApp(MyHomePage());
@@ -71,49 +72,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-            '${widget.cityName}/ ${widget.depoName}/ ${widget.keyEvents2}'),
-        backgroundColor: blue,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 25, top: 15, bottom: 15),
-            child: Container(
-              height: 15,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.blue),
-              child: TextButton(
-                  onPressed: () {
-                    StoreData();
-                  },
-                  child: Text(
-                    'Sync Data',
-                    style: TextStyle(color: white, fontSize: 20),
-                  )),
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.only(right: 80),
-              child: IconButton(
-                icon: Icon(
-                  Icons.logout,
-                  size: 25,
-                  color: white,
-                ),
-                onPressed: () {
-                  onWillPop(context);
-                },
-              ))
-        ],
-        leading: InkWell(
-            onTap: () {
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-              ]);
-              Navigator.of(context).pop();
-            },
-            child: const Icon(Icons.arrow_back)),
+      appBar: PreferredSize(
+        child: CustomAppBar(
+            text:
+                '${widget.cityName}/ ${widget.depoName}/ ${widget.keyEvents2}',
+            // icon: Icons.logout,
+            haveSynced: true,
+            store: () {
+              StoreData();
+            }),
+        preferredSize: Size.fromHeight(50),
       ),
+
       body: _isloading
           ? LoadingPage()
           : StreamBuilder(

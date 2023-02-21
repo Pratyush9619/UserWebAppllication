@@ -55,9 +55,12 @@ class _UploadDocumentState extends State<UploadDocument> {
                           shrinkWrap: true,
                           itemCount: result?.files.length ?? 0,
                           itemBuilder: (context, index) {
-                            return Text(result?.files[index].name ?? '',
-                                style: const TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold));
+                            return Center(
+                              child: Text(result?.files[index].name ?? '',
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold)),
+                            );
                           })
                     ],
                   ),
