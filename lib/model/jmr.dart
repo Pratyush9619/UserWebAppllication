@@ -30,9 +30,9 @@ class JMRModel {
         Description: json['Description'],
         Activity: json['Activity'],
         RefNo: json['RefNo'],
-        JmrAbstract: json['JmrAbstract'],
+        JmrAbstract: json['Abstract'],
         Uom: json['Uom'],
-        rate: json['rate'],
+        rate: json['Rate'],
         TotalQty: json['TotalQty'],
         TotalAmount: json['TotalAmount']);
   }

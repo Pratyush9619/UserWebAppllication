@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class Jmr extends StatefulWidget {
-  const Jmr({super.key});
+  String? cityName;
+  String? depoName;
+  Jmr({super.key, this.cityName, this.depoName});
 
   @override
   State<Jmr> createState() => _JmrState();
@@ -58,36 +60,36 @@ class _JmrState extends State<Jmr> {
             ),
           ),
           body: TabBarView(children: [
-            // ListView.builder(
-            //   itemCount: title.length,
-            //   itemBuilder: (context, index) {
-            //     return cardlist(title[index], screens[index], index);
-            //   },
-            // ),
-            // cardlist('title'),
             GridView.builder(
                 itemCount: title.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
+                  crossAxisCount: 4,
+                  mainAxisExtent: 150,
+                ),
                 itemBuilder: (BuildContext context, int index) {
-                  return cardlist(title[index], screens[index], index);
+                  return cardlist(title[index], screens[index], index,
+                      title[index], 'Civil');
                 }),
             GridView.builder(
                 itemCount: title.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
+                  crossAxisCount: 4,
+                  mainAxisExtent: 150,
+                ),
                 itemBuilder: (BuildContext context, int index) {
-                  return cardlist(title[index], screens[index], index);
-                })
+                  return cardlist(title[index], screens[index], index,
+                      title[index], 'Electrical');
+                }),
           ]),
         ));
   }
 
-  Widget cardlist(String title, Widget ontap, int index) {
+  Widget cardlist(String title, Widget ontap, int index, String title2,
+      String Designation) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 100,
+        height: 50,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: black)),
@@ -101,8 +103,11 @@ class _JmrState extends State<Jmr> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => JMRPage(
-                        title: 'Civil-$title-JMR1',
+                        title: '$Designation-$title-JM$title2',
+                        title1: title[index],
                         img: imglist[index],
+                        cityName: widget.cityName,
+                        depoName: widget.depoName,
                       ),
                     ));
               },

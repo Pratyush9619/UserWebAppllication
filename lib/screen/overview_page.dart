@@ -82,7 +82,10 @@ class _OverviewPageState extends State<OverviewPage> {
         cityName: widget.cityName,
         depoName: widget.depoName,
       ),
-      const Jmr(),
+      Jmr(
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
       PlanningPage(
         cityName: widget.cityName,
         depoName: widget.depoName,

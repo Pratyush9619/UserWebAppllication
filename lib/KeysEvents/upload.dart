@@ -67,8 +67,11 @@ class _UploadDocumentState extends State<UploadDocument> {
                 ),
               ElevatedButton(
                   onPressed: () async {
-                    result =
-                        await FilePicker.platform.pickFiles(withData: true);
+                    result = await FilePicker.platform.pickFiles(
+                        withData: true,
+                        type: FileType.custom,
+                        allowMultiple: false,
+                        allowedExtensions: ['pdf']);
                     if (result == null) {
                       print("No file selected");
                     } else {
@@ -103,9 +106,11 @@ class _UploadDocumentState extends State<UploadDocument> {
 
                       await FirebaseStorage.instance
                           .ref(
-                              'checklist/${widget.cityName}/${widget.depoName}/' +
-                                  widget.activity!)
-                          .putData(fileBytes!)
+                            'checklist/${widget.cityName}/${widget.depoName}/' +
+                                widget.activity!,
+                          )
+                          .putData(fileBytes!,
+                              SettableMetadata(contentType: 'application/pdf'))
                           .whenComplete(() => setState(() => result == null));
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(

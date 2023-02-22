@@ -9,8 +9,8 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../model/jmr.dart';
 
 class JmrDataSource extends DataGridSource {
-  BuildContext mainContext;
-  JmrDataSource(this._JMRModels, this.mainContext) {
+  // BuildContext mainContext;
+  JmrDataSource(this._JMRModels) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
@@ -429,80 +429,44 @@ class JmrDataSource extends DataGridSource {
     if (newCellValue == null || oldValue == newCellValue) {
       return;
     }
-    // if (column.columnName == 'srNo') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(columnName: 'srNo', value: newCellValue);
-    //   _JMRModels[dataRowIndex].srNo = newCellValue as int;
-    // } else if (column.columnName == 'Descriptive') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<String>(columnName: 'Activity', value: newCellValue);
-    //   _JMRModels[dataRowIndex].activity = newCellValue.toString();
-    // } else if (column.columnName == 'OriginalDuration') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(
-    //           columnName: 'OriginalDuration', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].weightage = newCellValue;
-    // } else if (column.columnName == 'StartDate') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<String>(columnName: 'StartDate', value: newCellValue);
-    //   _JMRModels[dataRowIndex].startDate = newCellValue;
-    // } else if (column.columnName == 'EndDate') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<String>(columnName: 'EndDate', value: newCellValue);
-    //   _JMRModels[dataRowIndex].endDate = newCellValue;
-    // } else if (column.columnName == 'ActualStart') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<String>(columnName: 'ActualStart', value: newCellValue);
-    //   _JMRModels[dataRowIndex].actualstartDate = newCellValue;
-    // } else if (column.columnName == 'ActualEnd') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<String>(columnName: 'ActualEnd', value: newCellValue);
-    //   _JMRModels[dataRowIndex].actualendDate = newCellValue;
-    // } else if (column.columnName == 'ActualDuration') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(
-    //           columnName: 'ActualDuration', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].actualDuration = newCellValue;
-    // } else if (column.columnName == 'Delay') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(columnName: 'Delay', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].delay = newCellValue;
-    // } else if (column.columnName == 'Unit') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(columnName: 'Unit', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].unit = newCellValue;
-    // } else if (column.columnName == 'QtyScope') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(columnName: 'QtyScope', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].scope = newCellValue;
-    // } else if (column.columnName == 'QtyExecuted') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(
-    //           columnName: 'QtyExecuted', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].qtyExecuted = newCellValue;
-    // } else if (column.columnName == 'BalancedQty') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(
-    //           columnName: 'BalancedQty', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].balanceQty = newCellValue;
-    // } else if (column.columnName == 'Progress') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(columnName: 'Progress', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].percProgress = newCellValue;
-    // } else {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(
-    //           columnName: 'Weightage', value: newCellValue as int);
-    //   _JMRModels[dataRowIndex].weightage = newCellValue;
-    // }
-    // Future storeData() async {
-    //   await FirebaseFirestore.instance.collection('A1').add({
-    //     'Weightage':
-    //         dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //             DataGridCell<int>(
-    //                 columnName: 'Weightage', value: newCellValue as int),
-    //   });
-    // }
+    if (column.columnName == 'srNo') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<int>(columnName: 'srNo', value: newCellValue);
+      _JMRModels[dataRowIndex].srNo = newCellValue as int;
+    } else if (column.columnName == 'Description') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<String>(columnName: 'Description', value: newCellValue);
+      _JMRModels[dataRowIndex].Description = newCellValue.toString();
+    } else if (column.columnName == 'Activity') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<String>(columnName: 'Activity', value: newCellValue);
+      _JMRModels[dataRowIndex].Activity = newCellValue.toString();
+    } else if (column.columnName == 'RefNo') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<dynamic>(
+              columnName: 'RefNo', value: newCellValue as int);
+      _JMRModels[dataRowIndex].RefNo = newCellValue as dynamic;
+    } else if (column.columnName == 'Abstract') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<String>(columnName: 'Abstract', value: newCellValue);
+      _JMRModels[dataRowIndex].JmrAbstract = newCellValue;
+    } else if (column.columnName == 'UOM') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<String>(columnName: 'UOM', value: newCellValue);
+      _JMRModels[dataRowIndex].Uom = newCellValue;
+    } else if (column.columnName == 'Rate') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<double>(columnName: 'Rate', value: newCellValue);
+      _JMRModels[dataRowIndex].rate = newCellValue;
+    } else if (column.columnName == 'TotalQty') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<int>(columnName: 'TotalQty', value: newCellValue);
+      _JMRModels[dataRowIndex].TotalQty = newCellValue;
+    } else {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<double>(columnName: 'TotalAmount', value: newCellValue);
+      _JMRModels[dataRowIndex].TotalAmount = newCellValue;
+    }
   }
 
   @override
@@ -529,19 +493,11 @@ class JmrDataSource extends DataGridSource {
     // into the current non-modified [DataGridCell].
     newCellValue = null;
 
-    final bool isNumericType = column.columnName == 'OriginalDuration' ||
-        // column.columnName == 'StartDate' ||
-        // column.columnName == 'EndDate' ||
-        // column.columnName == 'ActualStart' ||
-        // column.columnName == 'ActualEnd' ||
-        column.columnName == 'ActualDuration' ||
-        column.columnName == 'Delay' ||
-        column.columnName == 'Unit' ||
-        column.columnName == 'QtyScope' ||
-        column.columnName == 'QtyExecuted' ||
-        column.columnName == 'BalancedQty' ||
-        column.columnName == 'Progress' ||
-        column.columnName == 'Weightage';
+    final bool isNumericType = column.columnName == 'srNo' ||
+        column.columnName == 'Rate' ||
+        column.columnName == 'TotalQty' ||
+        column.columnName == 'TotalAmount' ||
+        column.columnName == 'RefNo';
 
     final bool isDateTimeType = column.columnName == 'StartDate' ||
         column.columnName == 'EndDate' ||
