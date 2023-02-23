@@ -18,14 +18,14 @@ class Jmr extends StatefulWidget {
 
 class _JmrState extends State<Jmr> {
   List<String> title = ['R1', 'R2', 'R3', 'R4', 'R5'];
-  List imglist = [
-    'assets/jmr/underconstruction.jpeg',
-    'assets/jmr/underconstruction2.jpeg',
-    'assets/jmr/underconstruction3.jpeg',
-    'assets/jmr/underconstruction4.jpeg',
-    'assets/jmr/underconstruction.jpeg',
-    'assets/jmr/underconstruction.jpeg',
-  ];
+  // List imglist = [
+  //   'assets/jmr/underconstruction.jpeg',
+  //   'assets/jmr/underconstruction2.jpeg',
+  //   'assets/jmr/underconstruction3.jpeg',
+  //   'assets/jmr/underconstruction4.jpeg',
+  //   'assets/jmr/underconstruction.jpeg',
+  //   'assets/jmr/underconstruction.jpeg',
+  // ];
   List<Widget> screens = [
     JMRPage(),
     JMRPage(),
@@ -67,8 +67,7 @@ class _JmrState extends State<Jmr> {
                   mainAxisExtent: 150,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return cardlist(title[index], screens[index], index,
-                      title[index], 'Civil');
+                  return cardlist(title[index], index, title[index], 'Civil');
                 }),
             GridView.builder(
                 itemCount: title.length,
@@ -77,15 +76,14 @@ class _JmrState extends State<Jmr> {
                   mainAxisExtent: 150,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return cardlist(title[index], screens[index], index,
-                      title[index], 'Electrical');
+                  return cardlist(
+                      title[index], index, title[index], 'Electrical');
                 }),
           ]),
         ));
   }
 
-  Widget cardlist(String title, Widget ontap, int index, String title2,
-      String Designation) {
+  Widget cardlist(String title, int index, String title2, String Designation) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -104,8 +102,7 @@ class _JmrState extends State<Jmr> {
                     MaterialPageRoute(
                       builder: (context) => JMRPage(
                         title: '$Designation-$title-JM$title2',
-                        title1: title[index],
-                        img: imglist[index],
+                        title1: title,
                         cityName: widget.cityName,
                         depoName: widget.depoName,
                       ),
