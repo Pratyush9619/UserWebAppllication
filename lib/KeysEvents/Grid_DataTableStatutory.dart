@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import '../Authentication/login_register.dart';
 import '../model/employee_statutory.dart';
 import '../widget/custom_appbar.dart';
@@ -286,23 +285,24 @@ class _MyHomePage2State extends State<MyHomePage2> {
                                     color: white)),
                           ),
                         ),
-                        GridColumn(
-                          columnName: 'Weightage',
-                          allowEditing: true,
-                          label: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            alignment: Alignment.center,
-                            child: Text('Weightage',
-                                overflow: TextOverflow.values.first,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: white)),
-                          ),
-                        ),
+                        // GridColumn(
+                        //   columnName: 'Weightage',
+                        //   allowEditing: true,
+                        //   label: Container(
+                        //     padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        //     alignment: Alignment.center,
+                        //     child: Text('Weightage',
+                        //         overflow: TextOverflow.values.first,
+                        //         style: TextStyle(
+                        //             fontWeight: FontWeight.bold,
+                        //             fontSize: 16,
+                        //             color: white)),
+                        //   ),
+                        // ),
                         GridColumn(
                           columnName: 'Applicability',
                           allowEditing: true,
+                          width: 120,
                           label: Container(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             alignment: Alignment.center,
@@ -321,8 +321,9 @@ class _MyHomePage2State extends State<MyHomePage2> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             alignment: Alignment.center,
-                            child: Text('ApprovingAuthority',
+                            child: Text('Approving Authority',
                                 overflow: TextOverflow.values.first,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -351,7 +352,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             alignment: Alignment.center,
-                            child: Text('OverallWeightage',
+                            child: Text('Overall Weightage',
                                 overflow: TextOverflow.values.first,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,

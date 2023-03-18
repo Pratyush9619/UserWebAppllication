@@ -28,7 +28,7 @@ class EmployeeStatutoryDataSource extends DataGridSource {
                   columnName: 'ActualStart', value: e.actualstartDate),
               DataGridCell<String>(
                   columnName: 'ActualEnd', value: e.actualendDate),
-              DataGridCell<double>(columnName: 'Weightage', value: e.weightage),
+              // DataGridCell<double>(columnName: 'Weightage', value: e.weightage),
               DataGridCell<String>(
                   columnName: 'Applicability', value: e.applicability),
               DataGridCell<String>(
@@ -178,10 +178,10 @@ class EmployeeStatutoryDataSource extends DataGridSource {
                                               value: employeeData[dataRowIndex]
                                                   .actualendDate,
                                               columnName: 'ActualEnd'),
-                                          DataGridCell(
-                                              value: employeeData[dataRowIndex]
-                                                  .weightage,
-                                              columnName: 'Weightage'),
+                                          // DataGridCell(
+                                          //     value: employeeData[dataRowIndex]
+                                          //         .weightage,
+                                          //     columnName: 'Weightage'),
                                           DataGridCell(
                                               value: employeeData[dataRowIndex]
                                                   .applicability,
@@ -257,10 +257,10 @@ class EmployeeStatutoryDataSource extends DataGridSource {
                                               value: employeeData[dataRowIndex]
                                                   .actualendDate,
                                               columnName: 'ActualEnd'),
-                                          DataGridCell(
-                                              value: employeeData[dataRowIndex]
-                                                  .weightage,
-                                              columnName: 'Weightage'),
+                                          // DataGridCell(
+                                          //     value: employeeData[dataRowIndex]
+                                          //         .weightage,
+                                          //     columnName: 'Weightage'),
                                           DataGridCell(
                                               value: employeeData[dataRowIndex]
                                                   .applicability,

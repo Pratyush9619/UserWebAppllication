@@ -13,12 +13,13 @@ class Employee {
     required this.actualendDate,
     required this.actualDuration,
     required this.delay,
+    required this.reasonDelay,
     required this.unit,
     required this.scope,
     required this.qtyExecuted,
     required this.balanceQty,
     required this.percProgress,
-    required this.weightage,
+    this.weightage,
   });
 
   int srNo;
@@ -30,6 +31,7 @@ class Employee {
   String? actualendDate;
   int actualDuration;
   int delay;
+  String? reasonDelay;
   int unit;
   int scope;
   int qtyExecuted;
@@ -48,6 +50,7 @@ class Employee {
         actualendDate: json['ActualEnd'],
         actualDuration: json['ActualDuration'],
         delay: json['Delay'],
+        reasonDelay: json['ReasonDelay'],
         unit: json['Unit'],
         scope: json['QtyScope'],
         qtyExecuted: json['QtyExecuted'],
@@ -69,6 +72,7 @@ class Employee {
       DataGridCell<String>(columnName: 'ActualEnd', value: actualendDate),
       DataGridCell<int>(columnName: 'ActualDuration', value: actualDuration),
       DataGridCell<int>(columnName: 'Delay', value: delay),
+      DataGridCell(columnName: 'ReasonDelay', value: reasonDelay),
       DataGridCell<int>(columnName: 'Unit', value: unit),
       DataGridCell<int>(columnName: 'QtyScope', value: scope),
       DataGridCell<int>(columnName: 'QtyExecuted', value: qtyExecuted),

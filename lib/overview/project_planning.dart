@@ -2,6 +2,7 @@ import 'package:assingment/KeysEvents/Grid_DataTable.dart';
 import 'package:assingment/KeysEvents/Grid_DataTableStatutory.dart';
 import 'package:assingment/KeysEvents/openpdf.dart';
 import 'package:assingment/KeysEvents/site_surveys.dart';
+import 'package:assingment/overview/detailed_Eng.dart';
 import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -140,6 +141,7 @@ class _PlanningPageState extends State<PlanningPage> {
         keyEvents: 'A3',
         keyEvents2: 'A4',
       ),
+
       MyHomePage2(
         cityName: widget.cityName,
         depoName: widget.depoName,

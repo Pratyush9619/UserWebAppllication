@@ -7,7 +7,7 @@ class EmployeeStatutory {
     required this.endDate,
     required this.actualstartDate,
     required this.actualendDate,
-    required this.weightage,
+    // required this.weightage,
     required this.applicability,
     required this.approvingAuthority,
     required this.currentStatusPerc,
@@ -21,7 +21,7 @@ class EmployeeStatutory {
   String? endDate;
   String? actualstartDate;
   String? actualendDate;
-  double weightage;
+  // double weightage;
   String? applicability;
   String? approvingAuthority;
   int? currentStatusPerc;
@@ -37,7 +37,7 @@ class EmployeeStatutory {
         endDate: json['EndDate'],
         actualstartDate: json['ActualStart'],
         actualendDate: json['ActualEnd'],
-        weightage: json['Weightage'],
+        // weightage: json['Weightage'],
         applicability: json['Applicability'],
         approvingAuthority: json['ApprovingAuthority'],
         currentStatusPerc: json['CurrentStatusPerc'],

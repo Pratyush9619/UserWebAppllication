@@ -61,8 +61,11 @@ class _DepotsPageState extends State<DepotsPage> {
 
   getDepots() {
     return StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection(widget.cityName).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('DepoName')
+            .doc(widget.cityName)
+            .collection('AllDepots')
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.hasData != null) {
@@ -72,22 +75,9 @@ class _DepotsPageState extends State<DepotsPage> {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 5),
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: (() {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OverviewPage(
-                                cityName: widget.cityName,
-                                depoName: snapshot.data!.docs[index]
-                                    ['DepoName'],
-                              ),
-                            ));
-                      }),
-                      child: cards(
-                        snapshot.data!.docs[index]['DepoUrl'],
-                        snapshot.data!.docs[index]['DepoName'],
-                      ),
+                    return cards(
+                      snapshot.data!.docs[index]['DepoUrl'],
+                      snapshot.data!.docs[index]['DepoName'],
                     );
                   },
                 );
@@ -101,38 +91,57 @@ class _DepotsPageState extends State<DepotsPage> {
           return LoadingPage();
         });
   }
-}
 
-Widget cards(String img, String title) {
-  return Padding(
+  Widget cards(String img, String title) {
+    return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Stack(children: [
-        Container(
-          height: 200,
-          width: 200,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: blue,
-            image: DecorationImage(image: NetworkImage(img), fit: BoxFit.fill),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                height: 150,
+                width: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: blue,
+                  image: DecorationImage(
+                      image: NetworkImage(img), fit: BoxFit.fill),
+                ),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      backgroundColor: blue),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OverviewPage(
+                              cityName: widget.cityName, depoName: title),
+                        ));
+                  },
+                  child: Text(title))
+              // Container(
+              //   padding: const EdgeInsets.only(left: 60),
+              //   alignment: Alignment.center,
+              //   height: 20,
+              //   //   width: 100,
+              //   // color: blue,
+              //   child: Text(
+              //     title,
+              //     style: TextStyle(
+              //         color: white, fontWeight: FontWeight.bold, fontSize: 18),
+              //   ),
+              // )
+            ],
           ),
-        ),
-        Positioned(
-          bottom: 45,
-          child: Container(
-            padding: const EdgeInsets.only(left: 60),
-            alignment: Alignment.center,
-            height: 20,
-            //   width: 100,
-            // color: blue,
-            child: Text(
-              title,
-              style: TextStyle(
-                  color: white, fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-          ),
-        )
-      ]));
-}
+        ],
+      ),
+    );
+  }
 
 // void onToScreen(int index) {
 //   Navigator.push(
@@ -142,57 +151,58 @@ Widget cards(String img, String title) {
 //       ));
 // }
 
-NodataAvailable() {
-  return Center(
-      child: Padding(
-    padding: const EdgeInsets.all(10.0),
-    child: Container(
-      padding: EdgeInsets.all(10),
-      height: 1000,
-      width: 1000,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: blue)),
-      child: Column(children: [
-        Image.asset(
-          'assets/Tata-Power.jpeg',
-        ),
-        SizedBox(height: 50),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/sustainable.jpeg',
-              height: 100,
-              width: 100,
-            ),
-            SizedBox(width: 50),
-            Image.asset(
-              'assets/Green.jpeg',
-              height: 100,
-              width: 100,
-            )
-          ],
-        ),
-        const SizedBox(height: 50),
-        Center(
-          child: Container(
-            padding: EdgeInsets.all(25),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: blue)),
-            child: const Text(
-              '     No Depots available yet \n Please wait for admin process',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
+  NodataAvailable() {
+    return Center(
+        child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        height: 1000,
+        width: 1000,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: blue)),
+        child: Column(children: [
+          Image.asset(
+            'assets/Tata-Power.jpeg',
           ),
-        )
-      ]),
-    ),
-  )
-      // Text(
-      //   "No Depot Available at This Time....",
-      //   style: TextStyle(color: black),
-      // ),
-      );
+          SizedBox(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/sustainable.jpeg',
+                height: 100,
+                width: 100,
+              ),
+              SizedBox(width: 50),
+              Image.asset(
+                'assets/Green.jpeg',
+                height: 100,
+                width: 100,
+              )
+            ],
+          ),
+          const SizedBox(height: 50),
+          Center(
+            child: Container(
+              padding: EdgeInsets.all(25),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: blue)),
+              child: const Text(
+                '     No Depots available yet \n Please wait for admin process',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+            ),
+          )
+        ]),
+      ),
+    )
+        // Text(
+        //   "No Depot Available at This Time....",
+        //   style: TextStyle(color: black),
+        // ),
+        );
+  }
 }

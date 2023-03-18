@@ -48,6 +48,17 @@ class EmployeeDataSource extends DataGridSource {
     DateTime? rangeEndDate1 = DateTime.now();
     DateTime? date1;
     DateTime? endDate1;
+    int? balnceQtyValue;
+    double? percProgress;
+    final int dataIndex = dataGridRows.indexOf(row);
+    if (dataIndex != null) {
+      balnceQtyValue = _employees[dataIndex].balanceQty =
+          _employees[dataIndex].scope - _employees[dataIndex].qtyExecuted;
+      percProgress =
+          ((_employees[dataIndex].balanceQty / _employees[dataIndex].scope) *
+              _employees[dataIndex].weightage);
+    }
+
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
@@ -126,9 +137,6 @@ class EmployeeDataSource extends DataGridSource {
                                         Duration diff =
                                             endDate!.difference(date!);
 
-                                        print('Difference' +
-                                            diff.inDays.toString());
-
                                         final int dataRowIndex =
                                             dataGridRows.indexOf(row);
                                         if (dataRowIndex != null) {
@@ -180,6 +188,10 @@ class EmployeeDataSource extends DataGridSource {
                                                 columnName: 'Delay'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
+                                                    .reasonDelay,
+                                                columnName: 'ReasonDelay'),
+                                            DataGridCell(
+                                                value: _employees[dataRowIndex]
                                                     .unit,
                                                 columnName: 'Unit'),
                                             DataGridCell(
@@ -200,7 +212,7 @@ class EmployeeDataSource extends DataGridSource {
                                                 columnName: 'Progress'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
-                                                    .weightage,
+                                                    .percProgress,
                                                 columnName: 'Weightage'),
                                           ]);
 
@@ -263,8 +275,12 @@ class EmployeeDataSource extends DataGridSource {
                                                 columnName: 'ActualDuration'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
-                                                    .delay,
+                                                    .reasonDelay,
                                                 columnName: 'Delay'),
+                                            DataGridCell(
+                                                value: _employees[dataRowIndex]
+                                                    .delay,
+                                                columnName: 'ReasonDelay'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
                                                     .unit,
@@ -345,6 +361,10 @@ class EmployeeDataSource extends DataGridSource {
                                                 columnName: 'Delay'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
+                                                    .reasonDelay,
+                                                columnName: 'ReasonDelay'),
+                                            DataGridCell(
+                                                value: _employees[dataRowIndex]
                                                     .unit,
                                                 columnName: 'Unit'),
                                             DataGridCell(
@@ -376,13 +396,33 @@ class EmployeeDataSource extends DataGridSource {
                                         }
 
                                         if (dataRowIndex != null) {
-                                          var d = _employees[dataRowIndex]
-                                              .delay = _employees[dataRowIndex]
-                                                  .actualDuration -
-                                              _employees[dataRowIndex]
-                                                  .originalDuration;
+                                          DateTime dd = DateFormat("dd-MM-yyyy")
+                                              .parse(_employees[dataRowIndex]
+                                                  .actualendDate
+                                                  .toString());
+                                          DateTime dd1 =
+                                              DateFormat("dd-MM-yyyy").parse(
+                                                  _employees[dataRowIndex]
+                                                      .endDate
+                                                      .toString());
 
-                                          print('delay' + d.toString());
+                                          //  DateTime.parse(
+                                          //     _employees[dataRowIndex]
+                                          //         .actualendDate
+                                          //         .toString());
+                                          // DateTime.parse(
+                                          //     _employees[dataRowIndex]
+                                          //         .actualendDate
+                                          //         .toString());
+                                          //     _employees[dataRowIndex]
+                                          //             .actualendDate -
+                                          //         _employees[dataRowIndex]
+                                          //             .endDate;
+                                          Duration diff1 = dd.difference(dd1);
+                                          // print('delay' + d.toString());
+                                          _employees[dataRowIndex].delay =
+                                              int.parse(
+                                                  diff1.inDays.toString());
                                           dataGridRows[dataRowIndex] =
                                               DataGridRow(cells: [
                                             DataGridCell(
@@ -426,7 +466,11 @@ class EmployeeDataSource extends DataGridSource {
                                                 columnName: 'Delay'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
-                                                    .unit,
+                                                    .reasonDelay,
+                                                columnName: 'ReasonDelay'),
+                                            DataGridCell(
+                                                value: _employees[dataRowIndex]
+                                                    .reasonDelay,
                                                 columnName: 'Unit'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
@@ -468,10 +512,19 @@ class EmployeeDataSource extends DataGridSource {
                         Text(dataGridCell.value.toString()),
                       ],
                     )
-                  : Text(
-                      dataGridCell.value.toString(),
-                      textAlign: TextAlign.center,
-                    ));
+                  : (dataGridCell.columnName == 'BalancedQty')
+                      ? Text(balnceQtyValue.toString())
+
+                      // updateDataGrid(
+                      //     rowColumnIndex: RowColumnIndex(
+                      //         dataRowIndex, 9));
+                      // notifyListeners();
+                      : (dataGridCell.columnName == 'Progress')
+                          ? Text(percProgress!.toStringAsFixed(2) + '%')
+                          : Text(
+                              dataGridCell.value.toString(),
+                              textAlign: TextAlign.center,
+                            ));
     }).toList());
   }
 
@@ -510,7 +563,7 @@ class EmployeeDataSource extends DataGridSource {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(
               columnName: 'OriginalDuration', value: newCellValue as int);
-      _employees[dataRowIndex].weightage = newCellValue;
+      _employees[dataRowIndex].originalDuration = newCellValue;
     } else if (column.columnName == 'StartDate') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'StartDate', value: newCellValue);
@@ -536,6 +589,10 @@ class EmployeeDataSource extends DataGridSource {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(columnName: 'Delay', value: newCellValue as int);
       _employees[dataRowIndex].delay = newCellValue;
+    } else if (column.columnName == 'ReasonDelay') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<String>(columnName: 'ReasonDelay', value: newCellValue);
+      _employees[dataRowIndex].reasonDelay = newCellValue;
     } else if (column.columnName == 'Unit') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(columnName: 'Unit', value: newCellValue as int);
@@ -554,16 +611,17 @@ class EmployeeDataSource extends DataGridSource {
           DataGridCell<int>(
               columnName: 'BalancedQty', value: newCellValue as int);
       _employees[dataRowIndex].balanceQty = newCellValue;
-    } else if (column.columnName == 'Progress') {
+    } else {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(columnName: 'Progress', value: newCellValue as int);
       _employees[dataRowIndex].percProgress = newCellValue;
-    } else {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<int>(
-              columnName: 'Weightage', value: newCellValue as int);
-      _employees[dataRowIndex].weightage = newCellValue;
     }
+    // else {
+    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+    //       DataGridCell<int>(
+    //           columnName: 'Weightage', value: newCellValue as int);
+    //   _employees[dataRowIndex].weightage = newCellValue;
+    // }
     // Future storeData() async {
     //   await FirebaseFirestore.instance.collection('A1').add({
     //     'Weightage':

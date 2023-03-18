@@ -49,9 +49,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     _stream = FirebaseFirestore.instance
-        .collection(widget.depoName!)
+        .collection('KeyEventsTable')
+        .doc(widget.depoName!)
+        .collection('AllKeyEventsTable')
         .doc('${widget.depoName}${widget.keyEvents}')
         .snapshots();
+    // FirebaseFirestore.instance
+    //     .collection(widget.depoName!)
+    //     .doc('${widget.depoName}${widget.keyEvents}')
+    //     .snapshots();
     super.initState();
 
     // getFirestoreData().whenComplete(() {
@@ -73,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
     return Scaffold(
       appBar: PreferredSize(
+        // ignore: sort_child_properties_last
         child: CustomAppBar(
             text:
                 '${widget.cityName}/ ${widget.depoName}/ ${widget.keyEvents2}',
@@ -285,6 +292,20 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         GridColumn(
+                          columnName: 'ReasonDelay',
+                          allowEditing: true,
+                          label: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Reason',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)),
+                          ),
+                        ),
+                        GridColumn(
                           columnName: 'Unit',
                           allowEditing: true,
                           label: Container(
@@ -358,6 +379,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         GridColumn(
                           columnName: 'Weightage',
                           allowEditing: false,
+                          visible: false,
                           label: Container(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             alignment: Alignment.center,
@@ -392,10 +414,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> getFirestoreData() async {
     FirebaseFirestore instance = FirebaseFirestore.instance;
-    CollectionReference tabledata = instance.collection(widget.depoName!);
+    CollectionReference tabledata = instance.collection('KeyEventsTable');
 
-    DocumentSnapshot snapshot =
-        await tabledata.doc('${widget.depoName}${widget.keyEvents}').get();
+    DocumentSnapshot snapshot = await tabledata
+        .doc(widget.depoName!)
+        .collection('AllKeyEventsTable')
+        .doc('${widget.depoName}${widget.keyEvents}')
+        .get();
+    // .doc()
+    // await tabledata.doc('${widget.depoName}${widget.keyEvents}').get();
     var data = snapshot.data() as Map;
     var alldata = data['data'] as List<dynamic>;
 
@@ -418,11 +445,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     FirebaseFirestore.instance
-        .collection(widget.depoName!)
+        .collection('KeyEventsTable')
+        .doc(widget.depoName!)
+        .collection('AllKeyEventsTable')
         .doc('${widget.depoName}${widget.keyEvents}')
-        .set({
-      'data': tabledata2,
-    }).whenComplete(() {
+        .set(
+      {'data': tabledata2},
+      SetOptions(merge: true),
+    ).whenComplete(() {
       tabledata2.clear();
       // Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
