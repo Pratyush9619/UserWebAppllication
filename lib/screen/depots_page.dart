@@ -46,7 +46,7 @@ class _DepotsPageState extends State<DepotsPage> {
     return Scaffold(
         appBar: PreferredSize(
             child: CustomAppBar(
-              text: 'Depots / ${widget.cityName}',
+              text: ' ${widget.cityName} / Depots ',
               haveSynced: false,
             ),
             preferredSize: Size.fromHeight(50)),

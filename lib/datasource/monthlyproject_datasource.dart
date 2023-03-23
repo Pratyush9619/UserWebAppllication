@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -37,6 +38,25 @@ class MonthlyDataSource extends DataGridSource {
   /// Help to control the editable text in [TextField] widget.
   TextEditingController editingController = TextEditingController();
   final DateRangePickerController _controller = DateRangePickerController();
+  TextStyle textStyle = const TextStyle(
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      fontSize: 14,
+      color: Colors.black87);
+  List<String> statusMenuItems = [
+    'Jan',
+    'Feb',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
 
   @override
   List<DataGridRow> get rows => dataGridRows;
@@ -51,12 +71,82 @@ class MonthlyDataSource extends DataGridSource {
     DateTime? rangeEndDate1 = DateTime.now();
     DateTime? date1;
     DateTime? endDate1;
+    DateTime? _selected;
+    final selected = showMonthYearPicker(
+      context: mainContext,
+      initialDate: _selected ?? DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2022),
+      locale: Locale('ar'),
+    );
+
+    Future<void> _onPressed({
+      required BuildContext context,
+      String? locale,
+    }) async {
+      final localeObj = locale != null ? Locale(locale) : null;
+      final selected = await showMonthYearPicker(
+        context: context,
+        initialDate: _selected ?? DateTime.now(),
+        firstDate: DateTime(2019),
+        lastDate: DateTime(2022),
+        locale: localeObj,
+      );
+
+      if (selected != null) {
+        _selected = selected;
+        notifyListeners();
+      }
+    }
+
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child:
+          child: dataGridCell.columnName == 'Months'
+              ? TextButton(
+                  child: const Icon(Icons.abc),
+                  onPressed: () => _onPressed(context: mainContext),
+                )
+              :
+              // DropdownButton<String>(
+              //     value: dataGridCell.value,
+              //     autofocus: true,
+              //     focusColor: Colors.transparent,
+              //     underline: const SizedBox.shrink(),
+              //     icon: const Icon(Icons.arrow_drop_down_sharp),
+              //     isExpanded: true,
+              //     style: textStyle,
+              //     onChanged: (String? value) {
+              //       final dynamic oldValue = row
+              //               .getCells()
+              //               .firstWhereOrNull((DataGridCell dataCell) =>
+              //                   dataCell.columnName == dataGridCell.columnName)
+              //               ?.value ??
+              //           '';
+              //       if (oldValue == value || value == null) {
+              //         return;
+              //       }
+
+              //       final int dataRowIndex = dataGridRows.indexOf(row);
+              //       dataGridRows[dataRowIndex].getCells()[2] =
+              //           DataGridCell<String>(
+              //               columnName: 'Months', value: value);
+              //       _montlyproject[dataRowIndex].months = value.toString();
+              //       notifyListeners();
+              //     },
+              //     items: statusMenuItems
+              //         .map<DropdownMenuItem<String>>((String value) {
+              //       return DropdownMenuItem<String>(
+              //         value: value,
+              //         child: Text(
+              //           value,
+              //           textAlign: TextAlign.center,
+              //         ),
+              //       );
+              //     }).toList())
+
               //  dataGridCell.columnName == 'StartDate'
               //     ? Row(
               //         children: [
@@ -260,9 +350,9 @@ class MonthlyDataSource extends DataGridSource {
               //       )
               //     :
               Text(
-            dataGridCell.value.toString(),
-            textAlign: TextAlign.center,
-          ));
+                  dataGridCell.value.toString(),
+                  textAlign: TextAlign.center,
+                ));
     }).toList());
   }
 
@@ -298,6 +388,10 @@ class MonthlyDataSource extends DataGridSource {
           DataGridCell<String>(
               columnName: 'ActivityDetails', value: newCellValue);
       _montlyproject[dataRowIndex].activityDetails = newCellValue.toString();
+    } else if (column.columnName == 'Months') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<String>(columnName: 'Months', value: newCellValue);
+      _montlyproject[dataRowIndex].months = newCellValue.toString();
     }
     // } else if (column.columnName == 'Duration') {
     //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =

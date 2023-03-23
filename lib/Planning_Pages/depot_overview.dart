@@ -18,9 +18,10 @@ import '../widget/style.dart';
 var name;
 
 class DepotOverview extends StatefulWidget {
+  String? cityName;
   String? depoName;
 
-  DepotOverview({super.key, required this.depoName});
+  DepotOverview({super.key, required this.cityName, required this.depoName});
 
   @override
   State<DepotOverview> createState() => _DepotOverviewState();
@@ -99,7 +100,7 @@ class _DepotOverviewState extends State<DepotOverview> {
         appBar: PreferredSize(
             // ignore: sort_child_properties_last
             child: CustomAppBar(
-              text: 'Depot Overview',
+              text: '${widget.cityName} / ${widget.depoName} / Depot Overview',
               haveSynced: true,
               store: () {
                 FirebaseFirestore.instance

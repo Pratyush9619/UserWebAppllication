@@ -2,6 +2,7 @@ import 'package:assingment/Planning_Pages/depot_overview.dart';
 import 'package:assingment/Planning_Pages/overview.dart';
 import 'package:assingment/Planning_Pages/jmr.dart';
 import 'package:assingment/Planning_Pages/quality_checklist.dart';
+import 'package:assingment/Planning_Pages/safety_checklist.dart';
 import 'package:assingment/overview/daily_project.dart';
 import 'package:assingment/overview/detailed_Eng.dart';
 import 'package:assingment/overview/project_planning.dart';
@@ -45,6 +46,7 @@ class _OverviewPageState extends State<OverviewPage> {
     'assets/overview_image/jmr.png',
     'assets/overview_image/safety.png',
     'assets/overview_image/checklist_civil.png',
+    'assets/overview_image/safety_checklist.jpeg',
     'assets/overview_image/testing_commissioning.png',
     'assets/overview_image/closure_report.png',
     'assets/overview_image/detailedEng.jpg'
@@ -61,14 +63,15 @@ class _OverviewPageState extends State<OverviewPage> {
       'Detailed Engineering Of Project Documents like GTP, GA Drawing',
       'Tracking of Individual Project Progress (SI No 2 & 6 S1 No.link)',
       'Online JMR verification for projects',
+      'Safety check list & observation',
       'Quality check list & observation',
-      // 'Safety check list & observation',
       'FQP Checklist for Civil & Electrical work',
       'Testing & Commissioning Reports of Equipment',
       'Easy monitoring of O & M schedule for all the equipment of depots.',
     ];
     pages = [
       DepotOverview(
+        cityName: widget.cityName,
         depoName: widget.depoName,
       ),
       PlanningPage(
@@ -100,11 +103,11 @@ class _OverviewPageState extends State<OverviewPage> {
         depoName: widget.depoName,
       ),
 
-      // PlanningPage(
-      //   cityName: widget.cityName,
-      //   depoName: widget.depoName,
-      // ),
       Jmr(
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
+      SafetyChecklist(
         cityName: widget.cityName,
         depoName: widget.depoName,
       ),
@@ -133,7 +136,7 @@ class _OverviewPageState extends State<OverviewPage> {
     return Scaffold(
       appBar: PreferredSize(
           child: CustomAppBar(
-            text: 'Overview Page / ${widget.cityName} / ${widget.depoName}',
+            text: '${widget.cityName} / ${widget.depoName} / Overview Page ',
             haveSynced: false,
           ),
           preferredSize: Size.fromHeight(50)),

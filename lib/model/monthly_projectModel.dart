@@ -4,6 +4,7 @@ class MonthlyProjectModel {
   MonthlyProjectModel({
     required this.activityNo,
     required this.activityDetails,
+    required this.months,
     // required this.duration,
     // required this.startDate,
     // required this.endDate,
@@ -13,6 +14,7 @@ class MonthlyProjectModel {
   });
   dynamic activityNo;
   String? activityDetails;
+  String? months;
   // int? duration;
   // String? startDate;
   // String? endDate;
@@ -24,6 +26,7 @@ class MonthlyProjectModel {
     return DataGridRow(cells: <DataGridCell>[
       DataGridCell(columnName: 'ActivityNo', value: activityNo),
       DataGridCell(columnName: 'ActivityDetails', value: activityDetails),
+      DataGridCell(columnName: 'Months', value: months),
       // DataGridCell(columnName: 'Duration', value: duration),
       // DataGridCell(columnName: 'StartDate', value: startDate),
       // DataGridCell(columnName: 'EndDate', value: endDate),
@@ -37,6 +40,7 @@ class MonthlyProjectModel {
     return MonthlyProjectModel(
         activityNo: json['ActivityNo'],
         activityDetails: json['ActivityDetails'],
+        months: json['Months'],
         // duration: json['Duration'],
         // startDate: json['StartDate'],
         // endDate: json['EndDate'],

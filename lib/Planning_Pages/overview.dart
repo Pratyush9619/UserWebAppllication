@@ -43,7 +43,7 @@ class _OverviewPagesState extends State<Overview> {
             series: <CircularSeries>[
               PieSeries<ChartData, String>(
                   dataSource: chartData,
-                  dataLabelSettings: DataLabelSettings(isVisible: true),
+                  dataLabelSettings:const DataLabelSettings(isVisible: true),
                   xValueMapper: (ChartData data, _) => data.x,
                   yValueMapper: (ChartData data, _) => data.y)
             ],

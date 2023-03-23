@@ -72,6 +72,7 @@ class EmployeeDataSource extends DataGridSource {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UploadDocument(
+                              title: 'checklist',
                               cityName: cityName,
                               depoName: depoName,
                               activity:

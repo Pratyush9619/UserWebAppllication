@@ -182,7 +182,7 @@ class _PlanningPageState extends State<PlanningPage> {
     return Scaffold(
         appBar: PreferredSize(
             child: CustomAppBar(
-              text: 'Keys Events / ${widget.cityName} / ${widget.depoName}',
+              text: ' ${widget.cityName} / ${widget.depoName} / Keys Events',
               haveSynced: false,
             ),
             preferredSize: Size.fromHeight(50)),

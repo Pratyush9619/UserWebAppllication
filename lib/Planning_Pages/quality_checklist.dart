@@ -52,7 +52,7 @@ late QualityEPDataSource _qualityEPDataSource;
 
 late DataGridController _dataGridController;
 bool _isloading = true;
-List<dynamic> pss_tabledatalist = [];
+List<dynamic> psstabledatalist = [];
 List<dynamic> rmu_tabledatalist = [];
 List<dynamic> ct_tabledatalist = [];
 List<dynamic> cmu_tabledatalist = [];
@@ -143,7 +143,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
             appBar: AppBar(
               backgroundColor: blue,
               title: Text(
-                  'Quality Checklist / ${widget.cityName} / ${widget.depoName}'),
+                  '${widget.cityName} / ${widget.depoName} / Quality Checklist /'),
               actions: [
                 Padding(
                   padding:
@@ -262,7 +262,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
         }
       }
 
-      pss_tabledatalist.add(pss_table_data);
+      psstabledatalist.add(pss_table_data);
       pss_table_data = {};
     }
 
@@ -272,7 +272,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('PSS TABLE DATA')
         .doc('PSS DATA')
         .set({
-      'data': pss_tabledatalist,
+      'data': psstabledatalist,
     }).whenComplete(() {
       for (var i in _qualityrmuDataSource.dataGridRows) {
         for (var data in i.getCells()) {

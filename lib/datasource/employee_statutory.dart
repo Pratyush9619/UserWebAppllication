@@ -75,6 +75,7 @@ class EmployeeStatutoryDataSource extends DataGridSource {
                     onPressed: () {
                       Navigator.of(ctx).push(MaterialPageRoute(
                         builder: (context) => UploadDocument(
+                            title: 'checklist',
                             cityName: cityName,
                             depoName: depoName,
                             activity: '${row.getCells()[1].value.toString()}'),
