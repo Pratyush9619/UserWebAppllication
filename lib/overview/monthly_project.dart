@@ -130,7 +130,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                             autoFitPadding:
                                 const EdgeInsets.symmetric(horizontal: 16),
                             allowEditing: false,
-                            width: 150,
+                            width: 200,
                             label: Container(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
@@ -339,7 +339,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                             autoFitPadding:
                                 const EdgeInsets.symmetric(horizontal: 16),
                             allowEditing: false,
-                            width: 150,
+                            width: 200,
                             label: Container(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),

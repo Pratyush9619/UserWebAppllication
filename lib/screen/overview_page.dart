@@ -115,11 +115,6 @@ class _OverviewPageState extends State<OverviewPage> {
         cityName: widget.cityName,
         depoName: widget.depoName,
       ),
-      // PlanningPage(
-      //   cityName: widget.cityName,
-      //   depoName: widget.depoName,
-      // ),
-
       PlanningPage(
         cityName: widget.cityName,
         depoName: widget.depoName,
@@ -135,14 +130,15 @@ class _OverviewPageState extends State<OverviewPage> {
     ];
     return Scaffold(
       appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
           child: CustomAppBar(
             text: '${widget.cityName} / ${widget.depoName} / Overview Page ',
             haveSynced: false,
-          ),
-          preferredSize: Size.fromHeight(50)),
+          )),
       body: GridView.count(
-        crossAxisCount: 5,
+        crossAxisCount: 6,
         mainAxisSpacing: 10,
+        childAspectRatio: 1.0,
         children: List.generate(desription.length, (index) {
           return cards(desription[index], imagedata[index], index);
         }),
@@ -152,7 +148,7 @@ class _OverviewPageState extends State<OverviewPage> {
 
   Widget cards(String desc, String image, int index) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(17.0),
       child: GestureDetector(
         onTap: (() {
           Navigator.push(
@@ -162,8 +158,6 @@ class _OverviewPageState extends State<OverviewPage> {
               ));
         }),
         child: Container(
-          height: 100,
-          width: 100,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -173,12 +167,12 @@ class _OverviewPageState extends State<OverviewPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 height: 80,
                 width: 80,
                 child: Image.asset(image, fit: BoxFit.cover),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               Expanded(
                 child: Text(
                   desc,

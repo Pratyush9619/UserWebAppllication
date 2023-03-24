@@ -1,7 +1,4 @@
-import 'package:assingment/model/employee.dart';
-import 'package:assingment/KeysEvents/upload.dart';
 import 'package:assingment/model/monthly_projectModel.dart';
-import 'package:assingment/widget/style.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,32 +69,6 @@ class MonthlyDataSource extends DataGridSource {
     DateTime? date1;
     DateTime? endDate1;
     DateTime? _selected;
-    final selected = showMonthYearPicker(
-      context: mainContext,
-      initialDate: _selected ?? DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime(2022),
-      locale: Locale('ar'),
-    );
-
-    Future<void> _onPressed({
-      required BuildContext context,
-      String? locale,
-    }) async {
-      final localeObj = locale != null ? Locale(locale) : null;
-      final selected = await showMonthYearPicker(
-        context: context,
-        initialDate: _selected ?? DateTime.now(),
-        firstDate: DateTime(2019),
-        lastDate: DateTime(2022),
-        locale: localeObj,
-      );
-
-      if (selected != null) {
-        _selected = selected;
-        notifyListeners();
-      }
-    }
 
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
@@ -105,9 +76,72 @@ class MonthlyDataSource extends DataGridSource {
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: dataGridCell.columnName == 'Months'
-              ? TextButton(
-                  child: const Icon(Icons.abc),
-                  onPressed: () => _onPressed(context: mainContext),
+              ? Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: mainContext,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('All Date'),
+                                  content: Container(
+                                      height: 400,
+                                      width: 500,
+                                      child: SfDateRangePicker(
+                                        view: DateRangePickerView.month,
+                                        showTodayButton: true,
+                                        onSelectionChanged:
+                                            (DateRangePickerSelectionChangedArgs
+                                                args) {
+                                          if (args.value is PickerDateRange) {
+                                            rangeStartDate =
+                                                args.value.startDate;
+                                            rangeEndDate = args.value.endDate;
+                                          }
+                                          // else {
+                                          //   final List<PickerDateRange>
+                                          //       selectedRanges = args.value;
+                                          // }
+                                        },
+                                        selectionMode:
+                                            DateRangePickerSelectionMode.single,
+                                        showActionButtons: true,
+                                        onSubmit: ((value) {
+                                          date =
+                                              DateTime.parse(value.toString());
+                                          date1 =
+                                              DateTime.parse(value.toString());
+                                          // date2 =
+                                          //     DateTime.parse(value.toString());
+
+                                          final int dataRowIndex =
+                                              dataGridRows.indexOf(row);
+                                          if (dataRowIndex != null) {
+                                            final int dataRowIndex =
+                                                dataGridRows.indexOf(row);
+                                            dataGridRows[dataRowIndex]
+                                                    .getCells()[2] =
+                                                DataGridCell<String>(
+                                                    columnName: 'Months',
+                                                    value:
+                                                        DateFormat('MMMM yyyy')
+                                                            .format(date!));
+                                            _montlyproject[dataRowIndex]
+                                                    .months =
+                                                DateFormat('MMMM yyyy')
+                                                    .format(date!);
+                                            notifyListeners();
+
+                                            Navigator.pop(context);
+                                          }
+                                        }),
+                                      )),
+                                ));
+                      },
+                      icon: const Icon(Icons.calendar_today),
+                    ),
+                    Text(dataGridCell.value.toString()),
+                  ],
                 )
               :
               // DropdownButton<String>(

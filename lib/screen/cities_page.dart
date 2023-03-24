@@ -78,10 +78,8 @@ class _CitiesPageState extends State<CitiesPage> {
                             ),
                           ));
                     }),
-                    child: Cards(
-                      snapshot.data!.docs[index]['ImageUrl'],
-                      snapshot.data!.docs[index]['CityName'],
-                    ),
+                    child: cards(snapshot.data!.docs[index]['ImageUrl'],
+                        snapshot.data!.docs[index]['CityName'], index),
                   );
                 },
               );
@@ -97,60 +95,55 @@ class _CitiesPageState extends State<CitiesPage> {
         //   // crossAxisSpacing: 7,
         //   // mainAxisSpacing: 7,
         //   children: List.generate(citiesname.length, (index) {
-        //     return Cards(citiesname[index], index);
+        //     return cards(citiesname[index], index);
         //   }),
         // ),
         );
   }
 
-  Widget Cards(String img, String title) {
+  Widget cards(String img, String title, int index) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Stack(children: [
-        Container(
-          height: 200,
-          width: 200,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: blue,
-            image: DecorationImage(image: NetworkImage(img), fit: BoxFit.cover),
-          ),
-        ),
-        Positioned(
-          bottom: 40,
-          child: Container(
-            // padding: const EdgeInsets.only(left: 0),
-            // height: 20,
-            width: 180,
-            alignment: Alignment.center,
-            // color: blue,
-            child: Text(
-              title,
-              style: TextStyle(
-                  color: white, fontWeight: FontWeight.bold, fontSize: 18),
+      child: Column(
+        children: [
+          Container(
+            height: 150,
+            width: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: blue,
+              image:
+                  DecorationImage(image: NetworkImage(img), fit: BoxFit.cover),
             ),
           ),
-        )
-      ]),
-      // child: ElevatedButton(
-      //     style: ElevatedButton.styleFrom(
-      //       shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(10.0)),
-      //       //   minimumSize: MediaQuery.of(context).size,
-      //       backgroundColor: blue,
-      //     ),
-      //     onPressed: () {
-      //       onToScreen(index);
-      //     },
-      //     child: Text(title))
+          const SizedBox(
+            height: 10,
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                //   minimumSize: MediaQuery.of(context).size,
+                backgroundColor: blue,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DepotsPage(cityName: title),
+                    ));
+              },
+              child: Text(title)),
+        ],
+      ),
     );
   }
 
-  // void onToScreen(int index) {
-  //   Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => menuWidget[index],
-  //       ));
-  // }
+  void onToScreen(int index) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => menuWidget[index],
+        ));
+  }
 }

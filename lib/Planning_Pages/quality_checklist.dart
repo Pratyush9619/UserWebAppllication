@@ -155,7 +155,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                         color: Colors.blue),
                     child: TextButton(
                         onPressed: () {
-                          StoreData();
+                          storeData();
                         },
                         child: Text(
                           'Sync Data',
@@ -243,7 +243,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
     );
   }
 
-  void StoreData() {
+  void storeData() {
     Map<String, dynamic> pss_table_data = Map();
     Map<String, dynamic> rmu_table_data = Map();
     Map<String, dynamic> ct_table_data = Map();
@@ -318,7 +318,6 @@ class _QualityChecklistState extends State<QualityChecklist> {
                 cmu_table_data[data.columnName] = data.value;
               }
             }
-
             cmu_tabledatalist.add(cmu_table_data);
             cmu_table_data = {};
           }
@@ -330,11 +329,125 @@ class _QualityChecklistState extends State<QualityChecklist> {
               .doc('CTPT METERING DATA')
               .set({
             'data': cmu_tabledatalist,
-          }).whenComplete(
-                  () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: const Text('Data are synced'),
-                        backgroundColor: blue,
-                      )));
+          }).whenComplete(() {
+            for (var i in _qualityacdDataSource.dataGridRows) {
+              for (var data in i.getCells()) {
+                if (data.columnName != 'button') {
+                  acdb_table_data[data.columnName] = data.value;
+                }
+              }
+              acdb_tabledatalist.add(acdb_table_data);
+              acdb_table_data = {};
+            }
+
+            FirebaseFirestore.instance
+                .collection('QualityChecklist')
+                .doc('${widget.depoName}')
+                .collection('ACDB METERING UNIT TABLE DATA')
+                .doc('ACDB METERING DATA')
+                .set({
+              'data': acdb_tabledatalist,
+            }).whenComplete(() {
+              for (var i in _qualityCIDataSource.dataGridRows) {
+                for (var data in i.getCells()) {
+                  if (data.columnName != 'button') {
+                    ci_table_data[data.columnName] = data.value;
+                  }
+                }
+                ci_tabledatalist.add(ci_table_data);
+                ci_table_data = {};
+              }
+
+              FirebaseFirestore.instance
+                  .collection('QualityChecklist')
+                  .doc('${widget.depoName}')
+                  .collection('CI METERING UNIT TABLE DATA')
+                  .doc('CI METERING DATA')
+                  .set({
+                'data': ci_tabledatalist,
+              }).whenComplete(() {
+                for (var i in _qualityCDIDataSource.dataGridRows) {
+                  for (var data in i.getCells()) {
+                    if (data.columnName != 'button') {
+                      cdi_table_data[data.columnName] = data.value;
+                    }
+                  }
+                  cdi_tabledatalist.add(cdi_table_data);
+                  cdi_table_data = {};
+                }
+
+                FirebaseFirestore.instance
+                    .collection('QualityChecklist')
+                    .doc('${widget.depoName}')
+                    .collection('CDI METERING UNIT TABLE DATA')
+                    .doc('CDI METERING DATA')
+                    .set({
+                  'data': cdi_tabledatalist,
+                }).whenComplete(() {
+                  for (var i in _qualityMSPDataSource.dataGridRows) {
+                    for (var data in i.getCells()) {
+                      if (data.columnName != 'button') {
+                        msp_table_data[data.columnName] = data.value;
+                      }
+                    }
+                    msp_tabledatalist.add(msp_table_data);
+                    msp_table_data = {};
+                  }
+
+                  FirebaseFirestore.instance
+                      .collection('QualityChecklist')
+                      .doc('${widget.depoName}')
+                      .collection('MSP METERING UNIT TABLE DATA')
+                      .doc('MSP METERING DATA')
+                      .set({
+                    'data': msp_tabledatalist,
+                  }).whenComplete(() {
+                    for (var i in _qualityChargerDataSource.dataGridRows) {
+                      for (var data in i.getCells()) {
+                        if (data.columnName != 'button') {
+                          charger_table_data[data.columnName] = data.value;
+                        }
+                      }
+                      charger_tabledatalist.add(charger_table_data);
+                      charger_table_data = {};
+                    }
+
+                    FirebaseFirestore.instance
+                        .collection('QualityChecklist')
+                        .doc('${widget.depoName}')
+                        .collection('CHARGER METERING UNIT TABLE DATA')
+                        .doc('CHARGER METERING DATA')
+                        .set({
+                      'data': charger_tabledatalist,
+                    }).whenComplete(() {
+                      for (var i in _qualityEPDataSource.dataGridRows) {
+                        for (var data in i.getCells()) {
+                          if (data.columnName != 'button') {
+                            ep_table_data[data.columnName] = data.value;
+                          }
+                        }
+                        ep_tabledatalist.add(ep_table_data);
+                        ep_table_data = {};
+                      }
+
+                      FirebaseFirestore.instance
+                          .collection('QualityChecklist')
+                          .doc('${widget.depoName}')
+                          .collection('EARTH PIT METERING UNIT TABLE DATA')
+                          .doc('EARTH PIT METERING DATA')
+                          .set({
+                        'data': ep_tabledatalist,
+                      }).whenComplete(() => ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: const Text('Data are synced'),
+                                backgroundColor: blue,
+                              )));
+                    });
+                  });
+                });
+              });
+            });
+          });
         });
       });
     });

@@ -69,9 +69,9 @@ class DepotOverviewDatasource extends DataGridSource {
     DateTime? date1;
     DateTime? endDate1;
     DateRangePickerController _datecontroller = DateRangePickerController();
-    var _chosenValue;
-    var _chosenImapact;
-    var _status;
+    // var _chosenValue;
+    // var _chosenImapact;
+    // var _status;
 
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
@@ -117,9 +117,6 @@ class DepotOverviewDatasource extends DataGridSource {
                                             rangeStartDate =
                                                 args.value.startDate;
                                             rangeEndDate = args.value.endDate;
-                                          } else {
-                                            final List<PickerDateRange>
-                                                selectedRanges = args.value;
                                           }
                                         },
                                         selectionMode:
