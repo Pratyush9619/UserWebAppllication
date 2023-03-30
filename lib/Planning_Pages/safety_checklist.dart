@@ -1,9 +1,12 @@
+import 'package:assingment/KeysEvents/Grid_DataTable.dart';
 import 'package:assingment/model/safety_checklistModel.dart';
 import 'package:assingment/widget/custom_appbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../components/loading_page.dart';
 import '../datasource/safetychecklist_datasource.dart';
 import '../widget/style.dart';
 
@@ -20,6 +23,9 @@ class SafetyChecklist extends StatefulWidget {
 List<SafetyChecklistModel> safetylisttable = <SafetyChecklistModel>[];
 late SafetyChecklistDataSource _safetyChecklistDataSource;
 late DataGridController _dataGridController;
+List<dynamic> tabledata2 = [];
+Stream? _stream;
+var alldata;
 
 class _SafetyChecklistState extends State<SafetyChecklist> {
   @override
@@ -27,6 +33,11 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
     safetylisttable = getData();
     _safetyChecklistDataSource = SafetyChecklistDataSource(safetylisttable);
     _dataGridController = DataGridController();
+
+    _stream = FirebaseFirestore.instance
+        .collection('SafetyChecklistTable')
+        .doc(widget.depoName!)
+        .snapshots();
     super.initState();
   }
 
@@ -39,129 +50,294 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
             // icon: Icons.logout,
             haveSynced: true,
             store: () {
-              // StoreData();
+              store();
             }),
         preferredSize: Size.fromHeight(50),
       ),
-      body: Column(
-        children: [
-          Expanded(
-              child: SfDataGridTheme(
-            data: SfDataGridThemeData(headerColor: blue),
-            child: SfDataGrid(
-              source: _safetyChecklistDataSource,
-              //key: key,
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: StreamBuilder(
+            stream: _stream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingPage();
+              }
+              if (!snapshot.hasData || snapshot.data.exists == false) {
+                return SfDataGridTheme(
+                  data: SfDataGridThemeData(headerColor: blue),
+                  child: SfDataGrid(
+                    source: _safetyChecklistDataSource,
+                    //key: key,
 
-              allowEditing: true,
-              frozenColumnsCount: 2,
-              gridLinesVisibility: GridLinesVisibility.both,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-              selectionMode: SelectionMode.single,
-              navigationMode: GridNavigationMode.cell,
-              columnWidthMode: ColumnWidthMode.auto,
-              editingGestureType: EditingGestureType.tap,
-              controller: _dataGridController,
+                    allowEditing: true,
+                    frozenColumnsCount: 2,
+                    gridLinesVisibility: GridLinesVisibility.both,
+                    headerGridLinesVisibility: GridLinesVisibility.both,
+                    selectionMode: SelectionMode.single,
+                    navigationMode: GridNavigationMode.cell,
+                    columnWidthMode: ColumnWidthMode.auto,
+                    editingGestureType: EditingGestureType.tap,
+                    controller: _dataGridController,
 
-              columns: [
-                GridColumn(
-                  columnName: 'srNo',
-                  autoFitPadding: const EdgeInsets.symmetric(horizontal: 16),
-                  allowEditing: false,
-                  width: 80,
-                  label: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    alignment: Alignment.center,
-                    child: Text('Sr No',
-                        overflow: TextOverflow.values.first,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: white)),
+                    columns: [
+                      GridColumn(
+                        columnName: 'srNo',
+                        autoFitPadding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+                        allowEditing: false,
+                        width: 80,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Sr No',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                      GridColumn(
+                        width: 450,
+                        columnName: 'Details',
+                        allowEditing: false,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Details of Enclosure ',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'Status',
+                        allowEditing: false,
+                        width: 150,
+                        label: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                              'Status of Submission of information/ documents ',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: white,
+                              )),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'Remark',
+                        allowEditing: true,
+                        width: 150,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Remarks',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'Photo',
+                        allowEditing: false,
+                        width: 180,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Upload Photo',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'ViewPhoto',
+                        allowEditing: false,
+                        width: 180,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('View Photo',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                GridColumn(
-                  width: 450,
-                  columnName: 'Details',
-                  allowEditing: false,
-                  label: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    alignment: Alignment.center,
-                    child: Text('Details of Enclosure ',
-                        overflow: TextOverflow.values.first,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: white)),
+                );
+              } else {
+                alldata = '';
+                alldata = snapshot.data['data'] as List<dynamic>;
+                safetylisttable.clear();
+                alldata.forEach((element) {
+                  safetylisttable.add(SafetyChecklistModel.fromJson(element));
+                  _safetyChecklistDataSource =
+                      SafetyChecklistDataSource(safetylisttable);
+                  _dataGridController = DataGridController();
+                });
+                return SfDataGridTheme(
+                  data: SfDataGridThemeData(headerColor: blue),
+                  child: SfDataGrid(
+                    source: _safetyChecklistDataSource,
+                    //key: key,
+
+                    allowEditing: true,
+                    frozenColumnsCount: 2,
+                    gridLinesVisibility: GridLinesVisibility.both,
+                    headerGridLinesVisibility: GridLinesVisibility.both,
+                    selectionMode: SelectionMode.single,
+                    navigationMode: GridNavigationMode.cell,
+                    columnWidthMode: ColumnWidthMode.auto,
+                    editingGestureType: EditingGestureType.tap,
+                    controller: _dataGridController,
+
+                    columns: [
+                      GridColumn(
+                        columnName: 'srNo',
+                        autoFitPadding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+                        allowEditing: false,
+                        width: 80,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Sr No',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                      GridColumn(
+                        width: 450,
+                        columnName: 'Details',
+                        allowEditing: false,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Details of Enclosure ',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'Status',
+                        allowEditing: false,
+                        width: 150,
+                        label: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                              'Status of Submission of information/ documents ',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: white,
+                              )),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'Remark',
+                        allowEditing: true,
+                        width: 150,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Remarks',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'Photo',
+                        allowEditing: false,
+                        width: 180,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Upload Photo',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'ViewPhoto',
+                        allowEditing: false,
+                        width: 180,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('View Photo',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                GridColumn(
-                  columnName: 'Status',
-                  allowEditing: false,
-                  width: 150,
-                  label: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    alignment: Alignment.center,
-                    child:
-                        Text('Status of Submission of information/ documents ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: white,
-                            )),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'Remark',
-                  allowEditing: true,
-                  width: 150,
-                  label: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    alignment: Alignment.center,
-                    child: Text('Remarks',
-                        overflow: TextOverflow.values.first,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: white)),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'Photo',
-                  allowEditing: false,
-                  width: 180,
-                  label: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    alignment: Alignment.center,
-                    child: Text('Upload Photo',
-                        overflow: TextOverflow.values.first,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: white)),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'ViewPhoto',
-                  allowEditing: false,
-                  width: 180,
-                  label: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    alignment: Alignment.center,
-                    child: Text('View Photo',
-                        overflow: TextOverflow.values.first,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: white)),
-                  ),
-                ),
-              ],
-            ),
-          ))
-        ],
+                );
+              }
+              return NodataAvailable();
+            },
+          ),
+        ),
       ),
     );
+  }
+
+  void store() {
+    Map<String, dynamic> table_data = Map();
+    for (var i in _safetyChecklistDataSource.dataGridRows) {
+      for (var data in i.getCells()) {
+        if (data.columnName != 'button') {
+          table_data[data.columnName] = data.value;
+        }
+      }
+
+      tabledata2.add(table_data);
+      table_data = {};
+    }
+
+    FirebaseFirestore.instance
+        .collection('SafetyChecklistTable')
+        .doc(widget.depoName!)
+        .set(
+      {'data': tabledata2},
+      SetOptions(merge: true),
+    ).whenComplete(() {
+      tabledata2.clear();
+      // Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Data are synced'),
+        backgroundColor: blue,
+      ));
+    });
   }
 
   List<SafetyChecklistModel> getData() {

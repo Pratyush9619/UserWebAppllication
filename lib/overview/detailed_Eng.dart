@@ -97,7 +97,7 @@ class _DetailedEngtState extends State<DetailedEng>
         appBar: AppBar(
             backgroundColor: blue,
             title: Text(
-              'Detailed Engineering',
+              '${widget.cityName} / ${widget.depoName} / Detailed Engineering',
             ),
             actions: [
               Padding(

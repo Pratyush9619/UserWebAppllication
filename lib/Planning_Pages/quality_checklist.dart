@@ -14,6 +14,7 @@ import '../KeysEvents/Grid_DataTable.dart';
 import '../QualityDatasource/quality_EP.dart';
 import '../QualityDatasource/quality_ct.dart';
 import '../QualityDatasource/quality_pss.dart';
+import '../components/loading_page.dart';
 import '../model/quality_checklistModel.dart';
 import '../widget/style.dart';
 
@@ -53,16 +54,25 @@ late QualityEPDataSource _qualityEPDataSource;
 late DataGridController _dataGridController;
 bool _isloading = true;
 List<dynamic> psstabledatalist = [];
-List<dynamic> rmu_tabledatalist = [];
-List<dynamic> ct_tabledatalist = [];
-List<dynamic> cmu_tabledatalist = [];
-List<dynamic> acdb_tabledatalist = [];
-List<dynamic> ci_tabledatalist = [];
-List<dynamic> cdi_tabledatalist = [];
-List<dynamic> msp_tabledatalist = [];
-List<dynamic> charger_tabledatalist = [];
-List<dynamic> ep_tabledatalist = [];
+List<dynamic> rmutabledatalist = [];
+List<dynamic> cttabledatalist = [];
+List<dynamic> cmutabledatalist = [];
+List<dynamic> acdbtabledatalist = [];
+List<dynamic> citabledatalist = [];
+List<dynamic> cditabledatalist = [];
+List<dynamic> msptabledatalist = [];
+List<dynamic> chargertabledatalist = [];
+List<dynamic> eptabledatalist = [];
 Stream? _stream;
+Stream? _stream1;
+Stream? _stream2;
+Stream? _stream3;
+Stream? _stream4;
+Stream? _stream5;
+Stream? _stream6;
+Stream? _stream7;
+Stream? _stream8;
+Stream? _stream9;
 var alldata;
 int? _selectedIndex = 0;
 List<String> title = [
@@ -83,13 +93,74 @@ class _QualityChecklistState extends State<QualityChecklist> {
   void initState() {
     _isloading = false;
     _stream = FirebaseFirestore.instance
-        .collection('c')
+        .collection('QualityChecklist')
         .doc('${widget.depoName}')
+        .collection('PSS TABLE DATA')
+        .doc('PSS DATA')
         .snapshots();
 
-    // checklisttable = getData();
-    // _checklistDataSource = QualityChecklistDataSource(checklisttable);
-    // _dataGridController = DataGridController();
+    _stream1 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('RMU TABLE DATA')
+        .doc('RMU DATA')
+        .snapshots();
+
+    _stream2 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('CONVENTIONAL TRANSFORMER TABLE DATA')
+        .doc('CONVENTIONAL TRANSFORMER DATA')
+        .snapshots();
+
+    _stream3 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('CTPT METERING UNIT TABLE DATA')
+        .doc('CTPT METERING DATA')
+        .snapshots();
+
+    _stream4 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('ACDB TABLE DATA')
+        .doc('ACDB DATA')
+        .snapshots();
+
+    _stream5 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('CABLE INSTALLATION TABLE DATA')
+        .doc('CABLE INSTALLATION DATA')
+        .snapshots();
+
+    _stream6 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('CDI TABLE DATA')
+        .doc('CDI DATA')
+        .snapshots();
+
+    _stream7 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('MSP TABLE DATA')
+        .doc('MSP DATA')
+        .snapshots();
+
+    _stream8 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('CHARGER TABLE DATA')
+        .doc('CHARGER DATA')
+        .snapshots();
+
+    _stream9 = FirebaseFirestore.instance
+        .collection('QualityChecklist')
+        .doc('${widget.depoName}')
+        .collection('EARTH TABLE DATA')
+        .doc('EARTH PIT DATA')
+        .snapshots();
 
     qualitylisttable1 = getData();
     _qualityPSSDataSource = QualityPSSDataSource(qualitylisttable1);
@@ -274,6 +345,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .set({
       'data': psstabledatalist,
     }).whenComplete(() {
+      psstabledatalist.clear();
       for (var i in _qualityrmuDataSource.dataGridRows) {
         for (var data in i.getCells()) {
           if (data.columnName != 'button') {
@@ -281,7 +353,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
           }
         }
 
-        rmu_tabledatalist.add(rmu_table_data);
+        rmutabledatalist.add(rmu_table_data);
         rmu_table_data = {};
       }
 
@@ -291,8 +363,9 @@ class _QualityChecklistState extends State<QualityChecklist> {
           .collection('RMU TABLE DATA')
           .doc('RMU DATA')
           .set({
-        'data': rmu_tabledatalist,
+        'data': rmutabledatalist,
       }).whenComplete(() {
+        rmutabledatalist.clear();
         for (var i in _qualityctDataSource.dataGridRows) {
           for (var data in i.getCells()) {
             if (data.columnName != 'button') {
@@ -300,7 +373,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
             }
           }
 
-          ct_tabledatalist.add(ct_table_data);
+          cttabledatalist.add(ct_table_data);
           ct_table_data = {};
         }
 
@@ -310,15 +383,16 @@ class _QualityChecklistState extends State<QualityChecklist> {
             .collection('CONVENTIONAL TRANSFORMER TABLE DATA')
             .doc('CONVENTIONAL TRANSFORMER DATA')
             .set({
-          'data': ct_tabledatalist,
+          'data': cttabledatalist,
         }).whenComplete(() {
+          cttabledatalist.clear();
           for (var i in _qualitycmuDataSource.dataGridRows) {
             for (var data in i.getCells()) {
               if (data.columnName != 'button') {
                 cmu_table_data[data.columnName] = data.value;
               }
             }
-            cmu_tabledatalist.add(cmu_table_data);
+            cmutabledatalist.add(cmu_table_data);
             cmu_table_data = {};
           }
 
@@ -328,120 +402,128 @@ class _QualityChecklistState extends State<QualityChecklist> {
               .collection('CTPT METERING UNIT TABLE DATA')
               .doc('CTPT METERING DATA')
               .set({
-            'data': cmu_tabledatalist,
+            'data': cmutabledatalist,
           }).whenComplete(() {
+            cmutabledatalist.clear();
             for (var i in _qualityacdDataSource.dataGridRows) {
               for (var data in i.getCells()) {
                 if (data.columnName != 'button') {
                   acdb_table_data[data.columnName] = data.value;
                 }
               }
-              acdb_tabledatalist.add(acdb_table_data);
+              acdbtabledatalist.add(acdb_table_data);
               acdb_table_data = {};
             }
 
             FirebaseFirestore.instance
                 .collection('QualityChecklist')
                 .doc('${widget.depoName}')
-                .collection('ACDB METERING UNIT TABLE DATA')
-                .doc('ACDB METERING DATA')
+                .collection('ACDB TABLE DATA')
+                .doc('ACDB DATA')
                 .set({
-              'data': acdb_tabledatalist,
+              'data': acdbtabledatalist,
             }).whenComplete(() {
+              acdbtabledatalist.clear();
               for (var i in _qualityCIDataSource.dataGridRows) {
                 for (var data in i.getCells()) {
                   if (data.columnName != 'button') {
                     ci_table_data[data.columnName] = data.value;
                   }
                 }
-                ci_tabledatalist.add(ci_table_data);
+                citabledatalist.add(ci_table_data);
                 ci_table_data = {};
               }
 
               FirebaseFirestore.instance
                   .collection('QualityChecklist')
                   .doc('${widget.depoName}')
-                  .collection('CI METERING UNIT TABLE DATA')
-                  .doc('CI METERING DATA')
+                  .collection('CABLE INSTALLATION TABLE DATA')
+                  .doc('CABLE INSTALLATION DATA')
                   .set({
-                'data': ci_tabledatalist,
+                'data': citabledatalist,
               }).whenComplete(() {
+                citabledatalist.clear();
                 for (var i in _qualityCDIDataSource.dataGridRows) {
                   for (var data in i.getCells()) {
                     if (data.columnName != 'button') {
                       cdi_table_data[data.columnName] = data.value;
                     }
                   }
-                  cdi_tabledatalist.add(cdi_table_data);
+                  cditabledatalist.add(cdi_table_data);
                   cdi_table_data = {};
                 }
 
                 FirebaseFirestore.instance
                     .collection('QualityChecklist')
                     .doc('${widget.depoName}')
-                    .collection('CDI METERING UNIT TABLE DATA')
-                    .doc('CDI METERING DATA')
+                    .collection('CDI TABLE DATA')
+                    .doc('CDI DATA')
                     .set({
-                  'data': cdi_tabledatalist,
+                  'data': cditabledatalist,
                 }).whenComplete(() {
+                  cditabledatalist.clear();
                   for (var i in _qualityMSPDataSource.dataGridRows) {
                     for (var data in i.getCells()) {
                       if (data.columnName != 'button') {
                         msp_table_data[data.columnName] = data.value;
                       }
                     }
-                    msp_tabledatalist.add(msp_table_data);
+                    msptabledatalist.add(msp_table_data);
                     msp_table_data = {};
                   }
 
                   FirebaseFirestore.instance
                       .collection('QualityChecklist')
                       .doc('${widget.depoName}')
-                      .collection('MSP METERING UNIT TABLE DATA')
-                      .doc('MSP METERING DATA')
+                      .collection('MSP TABLE DATA')
+                      .doc('MSP DATA')
                       .set({
-                    'data': msp_tabledatalist,
+                    'data': msptabledatalist,
                   }).whenComplete(() {
+                    msptabledatalist.clear();
                     for (var i in _qualityChargerDataSource.dataGridRows) {
                       for (var data in i.getCells()) {
                         if (data.columnName != 'button') {
                           charger_table_data[data.columnName] = data.value;
                         }
                       }
-                      charger_tabledatalist.add(charger_table_data);
+                      chargertabledatalist.add(charger_table_data);
                       charger_table_data = {};
                     }
 
                     FirebaseFirestore.instance
                         .collection('QualityChecklist')
                         .doc('${widget.depoName}')
-                        .collection('CHARGER METERING UNIT TABLE DATA')
-                        .doc('CHARGER METERING DATA')
+                        .collection('CHARGER TABLE DATA')
+                        .doc('CHARGER DATA')
                         .set({
-                      'data': charger_tabledatalist,
+                      'data': chargertabledatalist,
                     }).whenComplete(() {
+                      chargertabledatalist.clear();
                       for (var i in _qualityEPDataSource.dataGridRows) {
                         for (var data in i.getCells()) {
                           if (data.columnName != 'button') {
                             ep_table_data[data.columnName] = data.value;
                           }
                         }
-                        ep_tabledatalist.add(ep_table_data);
+                        eptabledatalist.add(ep_table_data);
                         ep_table_data = {};
                       }
 
                       FirebaseFirestore.instance
                           .collection('QualityChecklist')
                           .doc('${widget.depoName}')
-                          .collection('EARTH PIT METERING UNIT TABLE DATA')
-                          .doc('EARTH PIT METERING DATA')
+                          .collection('EARTH TABLE DATA')
+                          .doc('EARTH PIT DATA')
                           .set({
-                        'data': ep_tabledatalist,
-                      }).whenComplete(() => ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: const Text('Data are synced'),
-                                backgroundColor: blue,
-                              )));
+                        'data': eptabledatalist,
+                      }).whenComplete(() {
+                        eptabledatalist.clear();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: const Text('Data are synced'),
+                          backgroundColor: blue,
+                        ));
+                      });
                     });
                   });
                 });
@@ -469,14 +551,14 @@ upperScreen() {
             Row(
               children: [
                 Image.asset('assets/Tata-Power.jpeg', height: 50, width: 100),
-                Text('TATA POWER'),
+                const Text('TATA POWER'),
               ],
             ),
             Text(
               title[int.parse(_selectedIndex.toString())],
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
-            Text('TPCL /DIST/EV/CHECKLIST ')
+            const Text('TPCL /DIST/EV/CHECKLIST ')
           ],
         ),
       ),
@@ -505,11 +587,29 @@ upperScreen() {
       ),
       Expanded(
         child: StreamBuilder(
-          stream: _stream,
+          stream: _selectedIndex == 0
+              ? _stream
+              : _selectedIndex == 1
+                  ? _stream1
+                  : _selectedIndex == 2
+                      ? _stream2
+                      : _selectedIndex == 3
+                          ? _stream3
+                          : _selectedIndex == 4
+                              ? _stream4
+                              : _selectedIndex == 5
+                                  ? _stream5
+                                  : _selectedIndex == 6
+                                      ? _stream6
+                                      : _selectedIndex == 7
+                                          ? _stream7
+                                          : _selectedIndex == 8
+                                              ? _stream8
+                                              : _stream9,
           builder: (context, snapshot) {
-            // if (snapshot.connectionState == ConnectionState.waiting) {
-            //   return LoadingPage();
-            // }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return LoadingPage();
+            }
             if (!snapshot.hasData || snapshot.data.exists == false) {
               return SfDataGridTheme(
                 data: SfDataGridThemeData(headerColor: blue),
@@ -658,13 +758,68 @@ upperScreen() {
               qualitylisttable1.clear();
               alldata.forEach((element) {
                 qualitylisttable1.add(QualitychecklistModel.fromJson(element));
-                _qualityPSSDataSource = QualityPSSDataSource(qualitylisttable1);
-                _dataGridController = DataGridController();
+                if (_selectedIndex == 0) {
+                  _qualityPSSDataSource =
+                      QualityPSSDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 1) {
+                  _qualityrmuDataSource =
+                      QualityrmuDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 2) {
+                  _qualityctDataSource = QualityctDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 3) {
+                  _qualitycmuDataSource =
+                      QualitycmuDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 4) {
+                  _qualityacdDataSource =
+                      QualityacdDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 5) {
+                  _qualityCIDataSource = QualityCIDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 6) {
+                  _qualityCDIDataSource =
+                      QualityCDIDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 7) {
+                  _qualityMSPDataSource =
+                      QualityMSPDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 8) {
+                  _qualityChargerDataSource =
+                      QualityChargerDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                } else if (_selectedIndex == 9) {
+                  _qualityEPDataSource = QualityEPDataSource(qualitylisttable1);
+                  _dataGridController = DataGridController();
+                }
               });
               return SfDataGridTheme(
                 data: SfDataGridThemeData(headerColor: blue),
                 child: SfDataGrid(
-                  source: _qualityPSSDataSource,
+                  source: _selectedIndex == 0
+                      ? _qualityPSSDataSource
+                      : _selectedIndex == 1
+                          ? _qualityrmuDataSource
+                          : _selectedIndex == 2
+                              ? _qualityctDataSource
+                              : _selectedIndex == 3
+                                  ? _qualitycmuDataSource
+                                  : _selectedIndex == 4
+                                      ? _qualityacdDataSource
+                                      : _selectedIndex == 5
+                                          ? _qualityCIDataSource
+                                          : _selectedIndex == 6
+                                              ? _qualityCDIDataSource
+                                              : _selectedIndex == 7
+                                                  ? _qualityMSPDataSource
+                                                  : _selectedIndex == 8
+                                                      ? _qualityChargerDataSource
+                                                      : _qualityEPDataSource,
+
                   //key: key,
                   allowEditing: true,
                   frozenColumnsCount: 2,
@@ -682,6 +837,7 @@ upperScreen() {
                   columns: [
                     GridColumn(
                       columnName: 'srNo',
+                      width: 80,
                       autoFitPadding:
                           const EdgeInsets.symmetric(horizontal: 16),
                       allowEditing: true,
@@ -697,13 +853,13 @@ upperScreen() {
                       ),
                     ),
                     GridColumn(
-                      width: 200,
+                      width: 350,
                       columnName: 'checklist',
                       allowEditing: true,
                       label: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         alignment: Alignment.center,
-                        child: Text('Description of items',
+                        child: Text('ACTIVITY',
                             overflow: TextOverflow.values.first,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -713,11 +869,12 @@ upperScreen() {
                     ),
                     GridColumn(
                       columnName: 'responsibility',
+                      width: 250,
                       allowEditing: true,
                       label: Container(
                         padding: const EdgeInsets.all(8.0),
                         alignment: Alignment.center,
-                        child: Text('Activity Details',
+                        child: Text('RESPONSIBILITY',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -726,12 +883,13 @@ upperScreen() {
                       ),
                     ),
                     GridColumn(
-                      columnName: 'reference',
+                      columnName: 'DOCUMENT REFERENCE',
                       allowEditing: true,
+                      width: 250,
                       label: Container(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         alignment: Alignment.center,
-                        child: Text('BOQ RefNo',
+                        child: Text('DOCUMENT REFERENCE',
                             overflow: TextOverflow.values.first,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -742,11 +900,11 @@ upperScreen() {
                     GridColumn(
                       columnName: 'observation',
                       allowEditing: true,
-                      width: 180,
+                      width: 200,
                       label: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         alignment: Alignment.center,
-                        child: Text('Abstract of JMR',
+                        child: Text('OBSERVATION',
                             overflow: TextOverflow.values.first,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -757,11 +915,11 @@ upperScreen() {
                     GridColumn(
                       columnName: 'photoNo',
                       allowEditing: true,
-                      width: 80,
+                      width: 150,
                       label: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         alignment: Alignment.center,
-                        child: Text('UOM',
+                        child: Text('PHOTO NO.',
                             overflow: TextOverflow.values.first,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -807,7 +965,7 @@ upperScreen() {
                 _qualityPSSDataSource.buildDataGridRows();
                 _qualityPSSDataSource.updateDatagridSource();
               } else if (_selectedIndex == 1) {
-                qualitylisttable2.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -820,7 +978,7 @@ upperScreen() {
                 _qualityrmuDataSource.buildDataGridRows();
                 _qualityrmuDataSource.updateDatagridSource();
               } else if (_selectedIndex == 2) {
-                qualitylisttable3.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -833,7 +991,7 @@ upperScreen() {
                 _qualityctDataSource.buildDataGridRows();
                 _qualityctDataSource.updateDatagridSource();
               } else if (_selectedIndex == 3) {
-                qualitylisttable4.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -846,7 +1004,7 @@ upperScreen() {
                 _qualitycmuDataSource.buildDataGridRows();
                 _qualitycmuDataSource.updateDatagridSource();
               } else if (_selectedIndex == 4) {
-                qualitylisttable5.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -859,7 +1017,7 @@ upperScreen() {
                 _qualityacdDataSource.buildDataGridRows();
                 _qualityacdDataSource.updateDatagridSource();
               } else if (_selectedIndex == 5) {
-                qualitylisttable6.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -872,7 +1030,7 @@ upperScreen() {
                 _qualityCIDataSource.buildDataGridRows();
                 _qualityCIDataSource.updateDatagridSource();
               } else if (_selectedIndex == 6) {
-                qualitylisttable7.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -885,7 +1043,7 @@ upperScreen() {
                 _qualityCDIDataSource.buildDataGridRows();
                 _qualityCDIDataSource.updateDatagridSource();
               } else if (_selectedIndex == 7) {
-                qualitylisttable8.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -898,7 +1056,7 @@ upperScreen() {
                 _qualityMSPDataSource.buildDataGridRows();
                 _qualityMSPDataSource.updateDatagridSource();
               } else if (_selectedIndex == 8) {
-                qualitylisttable9.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -911,7 +1069,7 @@ upperScreen() {
                 _qualityChargerDataSource.buildDataGridRows();
                 _qualityChargerDataSource.updateDatagridSource();
               } else if (_selectedIndex == 9) {
-                qualitylisttable10.add(
+                qualitylisttable1.add(
                   QualitychecklistModel(
                     srNo: 1,
                     checklist: 'checklist',
@@ -936,7 +1094,7 @@ HeaderValue(String title, String hintValue) {
   return Container(
     color: lighblue,
     width: 625,
-    padding: EdgeInsets.all(3),
+    padding: const EdgeInsets.all(3),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -953,7 +1111,7 @@ HeaderValue(String title, String hintValue) {
             decoration: const InputDecoration(
                 contentPadding: EdgeInsets.only(top: 0, bottom: 0, left: 5)),
             initialValue: hintValue,
-            style: TextStyle(fontSize: 15),
+            style: const TextStyle(fontSize: 15),
           ),
         )),
       ],
