@@ -209,22 +209,26 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 child: StreamBuilder(
                                   stream: _stream1,
                                   builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      managername =
-                                          snapshot.data!.get('ManagerName');
-                                      return Padding(
-                                        padding: const EdgeInsets.only(top: 8),
-                                        child: Text(
-                                          managername,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: black),
-                                        ),
-                                      );
-                                    } else {
-                                      return Text('ddd');
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container();
                                     }
+                                    managername = snapshot.data!
+                                            .data()
+                                            .toString()
+                                            .contains('ManagerName')
+                                        ? snapshot.data!.get('ManagerName')
+                                        : '';
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text(
+                                        managername,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: black),
+                                      ),
+                                    );
 
                                     // TextFormField(
                                     //     initialValue: snapshot.data!
@@ -281,7 +285,12 @@ class _DepotOverviewState extends State<DepotOverview> {
                                   gridLinesVisibility: GridLinesVisibility.both,
                                   headerGridLinesVisibility:
                                       GridLinesVisibility.both,
-                                  selectionMode: SelectionMode.single,
+                                  // checkboxColumnSettings:
+                                  //     DataGridCheckboxColumnSettings(
+                                  //         showCheckboxOnHeader: false),
+
+                                  // showCheckboxColumn: true,
+                                  selectionMode: SelectionMode.multiple,
                                   navigationMode: GridNavigationMode.cell,
                                   columnWidthMode: ColumnWidthMode.auto,
                                   editingGestureType: EditingGestureType.tap,
@@ -531,7 +540,11 @@ class _DepotOverviewState extends State<DepotOverview> {
                                   gridLinesVisibility: GridLinesVisibility.both,
                                   headerGridLinesVisibility:
                                       GridLinesVisibility.both,
-                                  selectionMode: SelectionMode.single,
+                                  // checkboxColumnSettings:
+                                  //     DataGridCheckboxColumnSettings(
+                                  //         showCheckboxOnHeader: false),
+                                  // showCheckboxColumn: true,
+                                  selectionMode: SelectionMode.multiple,
                                   navigationMode: GridNavigationMode.cell,
                                   columnWidthMode: ColumnWidthMode.auto,
                                   editingGestureType: EditingGestureType.tap,
@@ -841,7 +854,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 minLines: 1,
                                 autofocus: false,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 15),
+                                style: const TextStyle(fontSize: 15),
                                 onChanged: (value) {
                                   address = value;
                                 },
@@ -850,7 +863,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 })),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1092,7 +1105,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 width: 150,
                                 height: 35,
                                 decoration: BoxDecoration(
-                                    color: lighblue,
+                                    color: lightblue,
                                     border: Border.all(color: grey),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Row(
@@ -1273,7 +1286,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 decoration: BoxDecoration(
                                     border: Border.all(color: grey),
                                     borderRadius: BorderRadius.circular(5),
-                                    color: lighblue),
+                                    color: lightblue),
                                 child: Row(
                                   children: [
                                     if (result1 != null)

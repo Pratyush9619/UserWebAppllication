@@ -16,28 +16,26 @@ import '../datasource/employee_datasouce.dart';
 import '../widget/custom_appbar.dart';
 
 void main() {
-  runApp(MyHomePage());
+  runApp(KeyDataTable());
 }
 
 /// The application that contains datagrid on it.
 
 /// The home page of the application which hosts the datagrid.
-class MyHomePage extends StatefulWidget {
+class KeyDataTable extends StatefulWidget {
   String? cityName;
   String? depoName;
   String? keyEvents;
-  String? keyEvents2;
 
   /// Creates the home page.
-  MyHomePage(
-      {Key? key, this.cityName, this.depoName, this.keyEvents, this.keyEvents2})
+  KeyDataTable({Key? key, this.cityName, this.depoName, this.keyEvents})
       : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _KeyDataTableState createState() => _KeyDataTableState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _KeyDataTableState extends State<KeyDataTable> {
   bool _isloading = false;
   List<Employee> employees = <Employee>[];
   late EmployeeDataSource employeeDataSource;
@@ -81,8 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: PreferredSize(
         // ignore: sort_child_properties_last
         child: CustomAppBar(
-            text:
-                '${widget.cityName}/ ${widget.depoName}/ ${widget.keyEvents2}',
+            text: '${widget.cityName}/ ${widget.depoName}/ ${widget.keyEvents}',
             // icon: Icons.logout,
             haveSynced: true,
             store: () {

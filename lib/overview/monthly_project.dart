@@ -2,6 +2,7 @@ import 'package:assingment/Jmr/jmr_home.dart';
 import 'package:assingment/KeysEvents/Grid_DataTable.dart';
 import 'package:assingment/datasource/monthlyproject_datasource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -9,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../Planning_Pages/summary.dart';
 import '../components/loading_page.dart';
 import '../model/monthly_projectModel.dart';
 import '../widget/custom_appbar.dart';
@@ -50,8 +52,17 @@ class _MonthlyProjectState extends State<MonthlyProject> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
+          // ignore: sort_child_properties_last
           child: CustomAppBar(
             text: ' ${widget.cityName}/ ${widget.depoName} / Monthly Report',
+            haveSummary: true,
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViewSummary(
+                      cityName: widget.cityName.toString(),
+                      depoName: widget.depoName.toString()),
+                )),
             haveSynced: true,
             store: () {
               StoreData();
@@ -71,7 +82,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                 children: [
                   Expanded(
                       child: SfDataGridTheme(
-                    data: SfDataGridThemeData(headerColor: lighblue),
+                    data: SfDataGridThemeData(headerColor: lightblue),
                     child: SfDataGrid(
                         source: monthlyDataSource,
                         allowEditing: true,
@@ -281,7 +292,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                 children: [
                   Expanded(
                       child: SfDataGridTheme(
-                    data: SfDataGridThemeData(headerColor: lighblue),
+                    data: SfDataGridThemeData(headerColor: lightblue),
                     child: SfDataGrid(
                         source: monthlyDataSource,
                         allowEditing: true,

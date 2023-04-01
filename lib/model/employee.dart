@@ -14,15 +14,16 @@ class Employee {
     required this.actualDuration,
     required this.delay,
     required this.reasonDelay,
+    this.dependency,
     required this.unit,
     required this.scope,
     required this.qtyExecuted,
     required this.balanceQty,
     required this.percProgress,
-    this.weightage,
+    required this.weightage,
   });
 
-  int srNo;
+  dynamic srNo;
   String activity;
   int originalDuration;
   String? startDate;
@@ -30,14 +31,15 @@ class Employee {
   String? actualstartDate;
   String? actualendDate;
   int actualDuration;
-  int delay;
   String? reasonDelay;
+  int delay;
+  String? dependency;
   int unit;
   int scope;
   int qtyExecuted;
   int balanceQty;
   int percProgress;
-  dynamic weightage;
+  double weightage;
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
@@ -61,7 +63,7 @@ class Employee {
 
   DataGridRow getDataGridRow() {
     return DataGridRow(cells: <DataGridCell>[
-      DataGridCell<int>(columnName: 'srNo', value: srNo),
+      DataGridCell<dynamic>(columnName: 'srNo', value: srNo),
       DataGridCell<String>(columnName: 'Activity', value: activity),
       const DataGridCell<Widget>(columnName: 'button', value: null),
       DataGridCell<int>(
@@ -72,11 +74,31 @@ class Employee {
       DataGridCell<String>(columnName: 'ActualEnd', value: actualendDate),
       DataGridCell<int>(columnName: 'ActualDuration', value: actualDuration),
       DataGridCell<int>(columnName: 'Delay', value: delay),
-      DataGridCell(columnName: 'ReasonDelay', value: reasonDelay),
+      DataGridCell<String>(columnName: 'ReasonDelay', value: reasonDelay),
       DataGridCell<int>(columnName: 'Unit', value: unit),
       DataGridCell<int>(columnName: 'QtyScope', value: scope),
       DataGridCell<int>(columnName: 'QtyExecuted', value: qtyExecuted),
       DataGridCell<int>(columnName: 'BalancedQty', value: balanceQty),
+      DataGridCell<int>(columnName: 'Progress', value: percProgress),
+      DataGridCell<double>(columnName: 'Weightage', value: weightage),
+    ]);
+  }
+
+  DataGridRow getKeyDataGridRow() {
+    return DataGridRow(cells: <DataGridCell>[
+      DataGridCell<dynamic>(columnName: 'srNo', value: srNo),
+      DataGridCell<String>(columnName: 'Activity', value: activity),
+      // const DataGridCell<Widget>(columnName: 'button', value: null),
+      DataGridCell<int>(
+          columnName: 'OriginalDuration', value: originalDuration),
+      DataGridCell<String>(columnName: 'StartDate', value: startDate),
+      DataGridCell<String>(columnName: 'EndDate', value: endDate),
+      DataGridCell<String>(columnName: 'ActualStart', value: actualstartDate),
+      DataGridCell<String>(columnName: 'ActualEnd', value: actualendDate),
+      DataGridCell<int>(columnName: 'ActuaslDuration', value: actualDuration),
+      DataGridCell<int>(columnName: 'Delay', value: delay),
+      DataGridCell<String>(columnName: 'Dependency', value: dependency),
+
       DataGridCell<int>(columnName: 'Progress', value: percProgress),
       DataGridCell<double>(columnName: 'Weightage', value: weightage),
     ]);

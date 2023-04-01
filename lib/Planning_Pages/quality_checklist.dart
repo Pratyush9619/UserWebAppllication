@@ -1,19 +1,20 @@
-import 'package:assingment/QualityDatasource/quality_acdb.dart';
-import 'package:assingment/QualityDatasource/quality_cdi.dart';
-import 'package:assingment/QualityDatasource/quality_charger.dart';
-import 'package:assingment/QualityDatasource/quality_ci.dart';
-import 'package:assingment/QualityDatasource/quality_cmu.dart';
-import 'package:assingment/QualityDatasource/quality_msp.dart';
-import 'package:assingment/QualityDatasource/quality_rmu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+
 import '../KeysEvents/Grid_DataTable.dart';
 import '../QualityDatasource/quality_EP.dart';
+import '../QualityDatasource/quality_acdb.dart';
+import '../QualityDatasource/quality_cdi.dart';
+import '../QualityDatasource/quality_charger.dart';
+import '../QualityDatasource/quality_ci.dart';
+import '../QualityDatasource/quality_cmu.dart';
 import '../QualityDatasource/quality_ct.dart';
+import '../QualityDatasource/quality_msp.dart';
 import '../QualityDatasource/quality_pss.dart';
+import '../QualityDatasource/quality_rmu.dart';
 import '../components/loading_page.dart';
 import '../model/quality_checklistModel.dart';
 import '../widget/style.dart';
@@ -223,7 +224,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                     height: 15,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.blue),
+                        color: lightblue),
                     child: TextButton(
                         onPressed: () {
                           storeData();
@@ -544,7 +545,7 @@ upperScreen() {
       Container(
         padding: EdgeInsets.all(8),
         height: 80,
-        decoration: BoxDecoration(color: lighblue),
+        decoration: BoxDecoration(color: lightblue),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -563,7 +564,7 @@ upperScreen() {
         ),
       ),
       Container(
-        decoration: BoxDecoration(color: lighblue),
+        decoration: BoxDecoration(color: lightblue),
         child: Row(
           children: [
             Column(
@@ -939,7 +940,8 @@ upperScreen() {
                 ),
               );
             } else {
-              return NodataAvailable();
+              // here w3e have to put Nodata page
+              return LoadingPage();
             }
           },
         ),
@@ -1092,7 +1094,7 @@ upperScreen() {
 
 HeaderValue(String title, String hintValue) {
   return Container(
-    color: lighblue,
+    color: lightblue,
     width: 625,
     padding: const EdgeInsets.all(3),
     child: Row(

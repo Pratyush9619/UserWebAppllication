@@ -1,9 +1,11 @@
-import 'dart:html';
+import 'dart:html' as html;
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../widget/style.dart';
@@ -70,7 +72,7 @@ class _ViewFileState extends State<ViewFile> {
       });
     } else {
       HttpClient client = HttpClient();
-      final Uri url = Uri.base.resolve(path!);
+      final Uri url = Uri.base.resolve(path);
       final HttpClientRequest request = await client.getUrl(url);
       final HttpClientResponse response = await request.close();
       _documentBytes = await consolidateHttpClientResponseBytes(response);
@@ -132,4 +134,25 @@ class _ViewFileState extends State<ViewFile> {
         // ),
         );
   }
+}
+
+downloadFileWeb(String url, String fileName) async {
+  final httpsReference =
+      firebase_storage.FirebaseStorage.instance.refFromURL(url);
+
+  try {
+    const oneMegabyte = 1024 * 1024;
+    final Uint8List? data = await httpsReference.getData(oneMegabyte);
+    // Data for "images/island.jpg" is returned, use this as needed.
+    XFile.fromData(data!,
+            mimeType: "application/octet-stream", name: fileName + ".pdf")
+        .saveTo("C:/"); // here Path is ignored
+  } on FirebaseException catch (e) {
+    // Handle any errors.
+  }
+  // for other platforms see this solution : https://firebase.google.com/docs/storage/flutter/download-files#download_to_a_local_file
+}
+
+previewPDFFile(url) {
+  html.window.open(url, "_blank"); //opens pdf in new tab
 }

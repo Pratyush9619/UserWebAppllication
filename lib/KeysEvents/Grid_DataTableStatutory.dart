@@ -47,7 +47,9 @@ class _MyHomePage2State extends State<MyHomePage2> {
   void initState() {
     super.initState();
     _stream = FirebaseFirestore.instance
-        .collection(widget.depoName!)
+        .collection('KeyEventsTable')
+        .doc(widget.depoName!)
+        .collection('AllKeyEventsTable')
         .doc('${widget.depoName}${widget.keyEvents}')
         .snapshots();
     _isloading = false;
@@ -527,7 +529,9 @@ class _MyHomePage2State extends State<MyHomePage2> {
     }
 
     FirebaseFirestore.instance
-        .collection(widget.depoName!)
+        .collection('KeyEventsTable')
+        .doc(widget.depoName!)
+        .collection('AllKeyEventsTable')
         .doc('${widget.depoName}${widget.keyEvents}')
         .set({
       'data': tabledata2,

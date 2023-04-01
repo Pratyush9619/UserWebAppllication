@@ -1,4 +1,5 @@
 import 'package:assingment/KeysEvents/Grid_DataTable.dart';
+import 'package:assingment/Planning_Pages/summary.dart';
 import 'package:assingment/model/safety_checklistModel.dart';
 import 'package:assingment/widget/custom_appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -48,6 +49,14 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
         child: CustomAppBar(
             text: '${widget.cityName} / ${widget.depoName} / SafetyChecklist',
             // icon: Icons.logout,
+            haveSummary: true,
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViewSummary(
+                      cityName: widget.cityName.toString(),
+                      depoName: widget.depoName.toString()),
+                )),
             haveSynced: true,
             store: () {
               store();

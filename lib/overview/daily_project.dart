@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../KeysEvents/Grid_DataTable.dart';
+import '../Planning_Pages/summary.dart';
 import '../components/loading_page.dart';
 import '../model/daily_projectModel.dart';
 import '../widget/custom_appbar.dart';
@@ -49,6 +50,14 @@ class _DailyProjectState extends State<DailyProject> {
           child: CustomAppBar(
             text: 'Dailly Report/ ${widget.cityName}/ ${widget.depoName}',
             haveSynced: true,
+            haveSummary: true,
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViewSummary(
+                      cityName: widget.cityName.toString(),
+                      depoName: widget.depoName.toString()),
+                )),
             store: () {
               StoreData();
             },
@@ -63,7 +72,7 @@ class _DailyProjectState extends State<DailyProject> {
               return LoadingPage();
             } else if (!snapshot.hasData || snapshot.data.exists == false) {
               return SfDataGridTheme(
-                data: SfDataGridThemeData(headerColor: lighblue),
+                data: SfDataGridThemeData(headerColor: lightblue),
                 child: SfDataGrid(
                     source: _dailyDataSource,
                     allowEditing: true,
@@ -243,7 +252,7 @@ class _DailyProjectState extends State<DailyProject> {
                 _dataGridController = DataGridController();
               });
               return SfDataGridTheme(
-                data: SfDataGridThemeData(headerColor: lighblue),
+                data: SfDataGridThemeData(headerColor: lightblue),
                 child: SfDataGrid(
                     source: _dailyDataSource,
                     allowEditing: true,

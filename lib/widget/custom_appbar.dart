@@ -11,7 +11,9 @@ class CustomAppBar extends StatelessWidget {
   final String? text;
   // final IconData? icon;
   final bool haveSynced;
+  final bool haveSummary;
   final void Function()? store;
+  VoidCallback? onTap;
   bool havebottom;
   bool isdetailedTab;
   TabBar? tabBar;
@@ -20,7 +22,9 @@ class CustomAppBar extends StatelessWidget {
       {super.key,
       this.text,
       this.haveSynced = false,
+      this.haveSummary = false,
       this.store,
+      this.onTap,
       this.havebottom = false,
       this.isdetailedTab = false,
       this.tabBar});
@@ -34,6 +38,24 @@ class CustomAppBar extends StatelessWidget {
               text.toString(),
             ),
             actions: [
+              haveSummary
+                  ? Padding(
+                      padding:
+                          const EdgeInsets.only(right: 40, top: 10, bottom: 10),
+                      child: Container(
+                        height: 15,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blue),
+                        child: TextButton(
+                            onPressed: onTap,
+                            child: Text(
+                              'View Summary',
+                              style: TextStyle(color: white, fontSize: 20),
+                            )),
+                      ),
+                    )
+                  : Container(),
               haveSynced
                   ? Padding(
                       padding:
@@ -55,7 +77,7 @@ class CustomAppBar extends StatelessWidget {
                     )
                   : Container(),
               Padding(
-                  padding: const EdgeInsets.only(right: 150),
+                  padding: const EdgeInsets.only(right: 40),
                   child: GestureDetector(
                       onTap: () {
                         onWillPop(context);
@@ -75,7 +97,7 @@ class CustomAppBar extends StatelessWidget {
                   //     onWillPop(context);
                   //   },
                   // )
-                  )
+                  ),
             ],
             bottom: havebottom
                 ? TabBar(

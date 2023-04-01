@@ -69,32 +69,12 @@ class DepotOverviewDatasource extends DataGridSource {
     DateTime? date1;
     DateTime? endDate1;
     DateRangePickerController _datecontroller = DateRangePickerController();
-    // var _chosenValue;
-    // var _chosenImapact;
-    // var _status;
 
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-          alignment:
-              //  (dataGridCell.columnName == 'srNo' ||
-              //         dataGridCell.columnName == 'Activity' ||
-              //         dataGridCell.columnName == 'OriginalDuration' ||
-              // dataGridCell.columnName == 'StartDate' ||
-              //         dataGridCell.columnName == 'EndDate' ||
-              //         dataGridCell.columnName == 'ActualStart' ||
-              //         dataGridCell.columnName == 'ActualEnd' ||
-              //         dataGridCell.columnName == 'ActualDuration' ||
-              //         dataGridCell.columnName == 'Delay' ||
-              //         dataGridCell.columnName == 'Unit' ||
-              //         dataGridCell.columnName == 'QtyScope' ||
-              //         dataGridCell.columnName == 'QtyExecuted' ||
-              //         dataGridCell.columnName == 'BalancedQty' ||
-              //         dataGridCell.columnName == 'Progress' ||
-              //         dataGridCell.columnName == 'Weightage')
-              Alignment.center,
-          // : Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: (dataGridCell.columnName == 'Date')
               ? Row(
                   children: [
@@ -454,9 +434,6 @@ class DepotOverviewDatasource extends DataGridSource {
 
     final bool isNumericType = column.columnName == 'OriginalDuration' ||
         column.columnName == 'srNo' ||
-        // column.columnName == 'EndDate' ||
-        // column.columnName == 'ActualStart' ||
-        // column.columnName == 'ActualEnd' ||
         column.columnName == 'ActualDuration' ||
         column.columnName == 'Delay' ||
         column.columnName == 'Unit' ||

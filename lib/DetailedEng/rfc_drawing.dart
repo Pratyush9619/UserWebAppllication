@@ -23,7 +23,7 @@ class _RfcDrawingState extends State<RfcDrawing> {
       body: Column(children: [
         Expanded(
             child: SfDataGridTheme(
-          data: SfDataGridThemeData(headerColor: lighblue),
+          data: SfDataGridThemeData(headerColor: lightblue),
           child: SfDataGrid(
               source: _detailedDataSource,
               allowEditing: true,

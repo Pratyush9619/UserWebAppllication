@@ -45,7 +45,6 @@ class _PlanningPageState extends State<PlanningPage> {
     'Civil Infra Development Completed At Bus Depot.',
     'Electrical Infra Development Completed At Bus Depot',
     'Bus Depot Work Completed & Handover To TML',
-    // 'Statutory Matrix and  Status'
   ];
   List<String> imagedata = [
     'assets/keyevents/A1image.png',
@@ -58,134 +57,65 @@ class _PlanningPageState extends State<PlanningPage> {
     'assets/keyevents/A8image.jpg',
     'assets/keyevents/A9image.png',
     'assets/keyevents/A10image.png',
-    // 'assets/keyevents/A10image.jpg',
   ];
 
   @override
   Widget build(BuildContext context) {
-    // menuWidget = [
-    //   const OpenPdf(),
-    //   // SiteSurveys(
-    //   //     title:
-    //   //         'Site Survey, Job Scope Finalization & Proposed Layout Submission'),
-    //   MyHomePage(
-    //     depoName: widget.depoName,
-    //     keyEvents: 'A2',
-    //   ),
-    //   MyHomePage(
-    //     depoName: widget.depoName,
-    //     keyEvents: 'A3',
-    //   ),
-    //   // MyHomePage(
-    //   //   depoName: widget.depoName,
-    //   //   keyEvents: 'A4',
-    //   // ),
-    //   // MyHomePage(
-    //   //   depoName: widget.depoName,
-    //   //   keyEvents: 'A5',
-    //   // ),
-    //   // MyHomePage(
-    //   //   depoName: widget.depoName,
-    //   //   keyEvents: 'A6',
-    //   // ),
-    //   // MyHomePage(
-    //   //   depoName: widget.depoName,
-    //   //   keyEvents: 'A7',
-    //   // ),
-    //   // MyHomePage(
-    //   //   depoName: widget.depoName,
-    //   //   keyEvents: 'A8',
-    //   // ),
-    //   // MyHomePage(
-    //   //   depoName: widget.depoName,
-    //   //   keyEvents: 'A9',
-    //   // ),
-    //   // MyHomePage(
-    //   //   depoName: widget.depoName,
-    //   //   keyEvents: 'A10',
-    //   // ),
-    //   // SiteSurveys(
-    //   //     title:
-    //   //         'Detailed Engineering For Approval Of Civil & Electrical Layout, GA Drawing From TML.'),
-    //   SiteSurveys(title: 'Site Mobilization Activity Completed.'),
-    //   SiteSurveys(title: 'Approval Of Statutory Clearances Of BUS Depot.'),
-    //   SiteSurveys(title: 'Procurement Of Order Finalization Completed.'),
-    //   SiteSurveys(title: 'Receipt Of All Materials At Site'),
-    //   SiteSurveys(title: 'Civil Infra Development Completed At Bus Depot.'),
-    //   SiteSurveys(title: 'Electrical Infra Development Completed At Bus Depot'),
-    //   SiteSurveys(title: 'Bus Depot Work Completed & Handover To TML'),
-    // ];
     menuWidget = [
       OpenPdf(),
-      // SiteSurveys(
-      //     title:
-      //         'Site Survey, Job Scope Finalization & Proposed Layout Submission'),
-      MyHomePage(
-        cityName: widget.cityName,
-        depoName: widget.depoName,
-        keyEvents: 'A1',
-        keyEvents2: 'A2',
-      ),
-      MyHomePage(
+      KeyDataTable(
         cityName: widget.cityName,
         depoName: widget.depoName,
         keyEvents: 'A2',
-        keyEvents2: 'A3',
       ),
-      // SiteSurveys(
-      //     title:
-      //         'Detailed Engineering For Approval Of Civil & Electrical Layout, GA Drawing From TML.'),
-      MyHomePage(
+      KeyDataTable(
         cityName: widget.cityName,
         depoName: widget.depoName,
         keyEvents: 'A3',
-        keyEvents2: 'A4',
       ),
-
-      MyHomePage2(
+      KeyDataTable(
         cityName: widget.cityName,
         depoName: widget.depoName,
         keyEvents: 'A4',
-        keyEvents2: 'A5',
       ),
-      MyHomePage(
+      KeyDataTable(
         cityName: widget.cityName,
         depoName: widget.depoName,
         keyEvents: 'A5',
-        keyEvents2: 'A6',
       ),
-      MyHomePage(
+      KeyDataTable(
         cityName: widget.cityName,
         depoName: widget.depoName,
         keyEvents: 'A6',
-        keyEvents2: 'A7',
       ),
-      MyHomePage(
+      KeyDataTable(
         cityName: widget.cityName,
         depoName: widget.depoName,
         keyEvents: 'A7',
-        keyEvents2: 'A8',
       ),
-      MyHomePage(
+      KeyDataTable(
         cityName: widget.cityName,
         depoName: widget.depoName,
         keyEvents: 'A8',
-        keyEvents2: 'A9',
       ),
-      MyHomePage(
+      KeyDataTable(
         cityName: widget.cityName,
         depoName: widget.depoName,
         keyEvents: 'A9',
-        keyEvents2: 'A10',
+      ),
+      KeyDataTable(
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+        keyEvents: 'A10',
       ),
     ];
     return Scaffold(
         appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(50),
             child: CustomAppBar(
               text: ' ${widget.cityName} / ${widget.depoName} / Keys Events',
               haveSynced: false,
-            ),
-            preferredSize: Size.fromHeight(50)),
+            )),
         body: GridView.count(
           crossAxisCount: 5,
           children: List.generate(pointname.length, (index) {
