@@ -1,15 +1,11 @@
 import 'dart:html';
-
 import 'package:assingment/KeysEvents/Grid_DataTable.dart';
-import 'package:assingment/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:async/async.dart';
 import '../KeysEvents/upload.dart';
 import '../components/loading_page.dart';
 import '../datasource/key_datasource.dart';
@@ -248,196 +244,177 @@ class _KeyEventsState extends State<KeyEvents> {
                       asstartdate.clear();
                       asenddate.clear();
                       weight.clear();
-
                       for (int i = 0; i < length; i++) {
-                        if (i == 0) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A10') {
-                              var alldataA10 = snapshot.data.docs[0]['data']
-                                  as List<dynamic>;
-                              sdate10 = alldataA10[0]['StartDate'];
-                              edate10 =
-                                  alldataA10[alldataA10.length - 1]['EndDate'];
-                              asdate10 = alldataA10[0]['ActualStart'];
-                              aedate10 = alldataA10[alldataA10.length - 1]
-                                  ['ActualEnd'];
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A10') {
+                            var alldataA10 =
+                                snapshot.data.docs[j]['data'] as List<dynamic>;
+                            sdate10 = alldataA10[0]['StartDate'];
+                            edate10 =
+                                alldataA10[alldataA10.length - 1]['EndDate'];
+                            asdate10 = alldataA10[0]['ActualStart'];
+                            aedate10 =
+                                alldataA10[alldataA10.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA10.length; i++) {
-                                var weightage = alldataA10[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
-                              weight10.add(totalweightage);
+                            for (int i = 0; i < alldataA10.length; i++) {
+                              var weightage = alldataA10[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
+                            weight10.add(totalweightage);
                           }
                         }
-                        if (i == 1) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A2') {
-                              var alldataA2 = snapshot.data.docs[1]['data']
-                                  as List<dynamic>;
-                              sdate2 = alldataA2[0]['StartDate'];
-                              edate2 =
-                                  alldataA2[alldataA2.length - 1]['EndDate'];
-                              asdate2 = alldataA2[0]['ActualStart'];
-                              aedate2 =
-                                  alldataA2[alldataA2.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA2.length; i++) {
-                                var weightage = alldataA2[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
-                              weight2.add(totalweightage);
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A2') {
+                            var alldataA2 =
+                                snapshot.data.docs[j]['data'] as List<dynamic>;
+                            sdate2 = alldataA2[0]['StartDate'];
+                            edate2 = alldataA2[alldataA2.length - 1]['EndDate'];
+                            asdate2 = alldataA2[0]['ActualStart'];
+                            aedate2 =
+                                alldataA2[alldataA2.length - 1]['ActualEnd'];
+
+                            for (int i = 0; i < alldataA2.length; i++) {
+                              var weightage = alldataA2[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
+                            weight2.add(totalweightage);
                           }
                         }
-                        if (i == 2) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A3') {
-                              var alldataA3 = snapshot.data.docs[2]['data']
-                                  as List<dynamic>;
-                              sdate3 = alldataA3[0]['StartDate'];
-                              edate3 =
-                                  alldataA3[alldataA3.length - 1]['EndDate'];
-                              asdate3 = alldataA3[0]['ActualStart'];
-                              aedate3 =
-                                  alldataA3[alldataA3.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA3.length; i++) {
-                                var weightage = alldataA3[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
-                              weight3.add(totalweightage);
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A3') {
+                            var alldataA3 =
+                                snapshot.data.docs[j]['data'] as List<dynamic>;
+                            sdate3 = alldataA3[0]['StartDate'];
+                            edate3 = alldataA3[alldataA3.length - 1]['EndDate'];
+                            asdate3 = alldataA3[0]['ActualStart'];
+                            aedate3 =
+                                alldataA3[alldataA3.length - 1]['ActualEnd'];
+
+                            for (int i = 0; i < alldataA3.length; i++) {
+                              var weightage = alldataA3[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
+                            weight3.add(totalweightage);
                           }
                         }
-                        if (i == 3) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A4') {
-                              var alldataA4 = snapshot.data.docs[3]['data']
-                                  as List<dynamic>;
-                              sdate4 = alldataA4[0]['StartDate'];
-                              edate4 =
-                                  alldataA4[alldataA4.length - 1]['EndDate'];
-                              asdate4 = alldataA4[0]['ActualStart'];
-                              aedate4 =
-                                  alldataA4[alldataA4.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA4.length; i++) {
-                                var weightage = alldataA4[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
-                              weight4.add(totalweightage);
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A4') {
+                            var alldataA4 =
+                                snapshot.data.docs[j]['data'] as List<dynamic>;
+                            sdate4 = alldataA4[0]['StartDate'];
+                            edate4 = alldataA4[alldataA4.length - 1]['EndDate'];
+                            asdate4 = alldataA4[0]['ActualStart'];
+                            aedate4 =
+                                alldataA4[alldataA4.length - 1]['ActualEnd'];
+
+                            for (int i = 0; i < alldataA4.length; i++) {
+                              var weightage = alldataA4[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
+                            weight4.add(totalweightage);
                           }
                         }
-                        if (i == 4) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A5') {
-                              var alldataA5 = snapshot.data.docs[4]['data']
-                                  as List<dynamic>;
-                              sdate5 = alldataA5[0]['StartDate'];
-                              edate5 =
-                                  alldataA5[alldataA5.length - 1]['EndDate'];
-                              asdate5 = alldataA5[0]['ActualStart'];
-                              aedate5 =
-                                  alldataA5[alldataA5.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA5.length; i++) {
-                                var weightage = alldataA5[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
-                              weight5.add(totalweightage);
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A5') {
+                            var alldataA5 =
+                                snapshot.data.docs[4]['data'] as List<dynamic>;
+                            sdate5 = alldataA5[0]['StartDate'];
+                            edate5 = alldataA5[alldataA5.length - 1]['EndDate'];
+                            asdate5 = alldataA5[0]['ActualStart'];
+                            aedate5 =
+                                alldataA5[alldataA5.length - 1]['ActualEnd'];
+
+                            for (int i = 0; i < alldataA5.length; i++) {
+                              var weightage = alldataA5[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
+                            weight5.add(totalweightage);
                           }
                         }
-                        if (i == 5) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A6') {
-                              var alldataA6 = snapshot.data.docs[5]['data']
-                                  as List<dynamic>;
-                              sdate6 = alldataA6[0]['StartDate'];
-                              edate6 =
-                                  alldataA6[alldataA6.length - 1]['EndDate'];
-                              asdate6 = alldataA6[0]['ActualStart'];
-                              aedate6 =
-                                  alldataA6[alldataA6.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA6.length; i++) {
-                                var weightage = alldataA6[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
-                              weight6.add(totalweightage);
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A6') {
+                            var alldataA6 =
+                                snapshot.data.docs[j]['data'] as List<dynamic>;
+                            sdate6 = alldataA6[0]['StartDate'];
+                            edate6 = alldataA6[alldataA6.length - 1]['EndDate'];
+                            asdate6 = alldataA6[0]['ActualStart'];
+                            aedate6 =
+                                alldataA6[alldataA6.length - 1]['ActualEnd'];
+
+                            for (int i = 0; i < alldataA6.length; i++) {
+                              var weightage = alldataA6[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
+                            weight6.add(totalweightage);
                           }
                         }
-                        if (i == 6) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A7') {
-                              var alldataA7 = snapshot.data.docs[6]['data']
-                                  as List<dynamic>;
-                              sdate7 = alldataA7[0]['StartDate'];
-                              edate7 =
-                                  alldataA7[alldataA7.length - 1]['EndDate'];
-                              asdate7 = alldataA7[0]['ActualStart'];
-                              aedate7 =
-                                  alldataA7[alldataA7.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA7.length; i++) {
-                                var weightage = alldataA7[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
-                              weight7.add(totalweightage);
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A7') {
+                            var alldataA7 =
+                                snapshot.data.docs[j]['data'] as List<dynamic>;
+                            sdate7 = alldataA7[0]['StartDate'];
+                            edate7 = alldataA7[alldataA7.length - 1]['EndDate'];
+                            asdate7 = alldataA7[0]['ActualStart'];
+                            aedate7 =
+                                alldataA7[alldataA7.length - 1]['ActualEnd'];
+
+                            for (int i = 0; i < alldataA7.length; i++) {
+                              var weightage = alldataA7[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
+                            weight7.add(totalweightage);
                           }
                         }
-                        if (i == 7) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A8') {
-                              var alldataA8 = snapshot.data.docs[7]['data']
-                                  as List<dynamic>;
-                              sdate8 = alldataA8[0]['StartDate'];
-                              edate8 =
-                                  alldataA8[alldataA8.length - 1]['EndDate'];
-                              asdate8 = alldataA8[0]['ActualStart'];
-                              aedate8 =
-                                  alldataA8[alldataA8.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA8.length; i++) {
-                                var weightage = alldataA8[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
-                              weight8.add(totalweightage);
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A8') {
+                            var alldataA8 =
+                                snapshot.data.docs[j]['data'] as List<dynamic>;
+                            sdate8 = alldataA8[0]['StartDate'];
+                            edate8 = alldataA8[alldataA8.length - 1]['EndDate'];
+                            asdate8 = alldataA8[0]['ActualStart'];
+                            aedate8 =
+                                alldataA8[alldataA8.length - 1]['ActualEnd'];
+
+                            for (int i = 0; i < alldataA8.length; i++) {
+                              var weightage = alldataA8[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
+                            weight8.add(totalweightage);
                           }
                         }
-                        if (i == 8) {
-                          for (int j = 0; j < length; j++) {
-                            if (snapshot.data.docs[j].reference.id.toString() ==
-                                '${widget.depoName}A9') {
-                              var alldataA9 = snapshot.data.docs[8]['data']
-                                  as List<dynamic>;
-                              sdate9 = alldataA9[0]['StartDate'];
-                              edate9 =
-                                  alldataA9[alldataA9.length - 1]['EndDate'];
-                              asdate9 = alldataA9[0]['ActualStart'];
-                              aedate9 =
-                                  alldataA9[alldataA9.length - 1]['ActualEnd'];
 
-                              for (int i = 0; i < alldataA9.length; i++) {
-                                var weightage = alldataA9[i]['Weightage'];
-                                totalweightage = totalweightage + weightage;
-                              }
+                        for (int j = 0; j < length; j++) {
+                          if (snapshot.data.docs[j].reference.id.toString() ==
+                              '${widget.depoName}A9') {
+                            var alldataA9 =
+                                snapshot.data.docs[j]['data'] as List<dynamic>;
+                            sdate9 = alldataA9[0]['StartDate'];
+                            edate9 = alldataA9[alldataA9.length - 1]['EndDate'];
+                            asdate9 = alldataA9[0]['ActualStart'];
+                            aedate9 =
+                                alldataA9[alldataA9.length - 1]['ActualEnd'];
+
+                            for (int i = 0; i < alldataA9.length; i++) {
+                              var weightage = alldataA9[i]['Weightage'];
+                              totalweightage = totalweightage + weightage;
                             }
-                            weight9.add(totalweightage);
                           }
+                          weight9.add(totalweightage);
                         }
                       }
                       // }
@@ -1302,10 +1279,9 @@ class _KeyEventsState extends State<KeyEvents> {
     ];
   }
 
-  int durationParse(DateTime fromtime, DateTime todate) {
-    DateTime startdate =
-        DateTime.parse(DateFormat('dd-MM-yyyy').format(fromtime));
-    DateTime enddate = DateTime.parse(DateFormat('dd-MM-yyyy').format(todate));
+  int durationParse(String fromtime, String todate) {
+    DateTime startdate = DateFormat('dd-MM-yyyy').parse(fromtime);
+    DateTime enddate = DateFormat('dd-MM-yyyy').parse(todate);
     return enddate.difference(startdate).inDays;
   }
 
@@ -1314,7 +1290,7 @@ class _KeyEventsState extends State<KeyEvents> {
       Employee(
           srNo: 'A1',
           activity: 'Letter of Award reveived  from TML',
-          originalDuration: 0,
+          originalDuration: 1,
           startDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
           endDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
           actualstartDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
@@ -1329,41 +1305,52 @@ class _KeyEventsState extends State<KeyEvents> {
           percProgress: 100,
           weightage: 10),
       Employee(
-        srNo: 'A2',
-        activity:
-            'Site Survey, Job scope finalization  and Proposed layout submission',
-        originalDuration: 10,
-        startDate: sdate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        endDate: edate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualstartDate:
-            asdate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualendDate:
-            aedate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
-        delay: 0,
-        reasonDelay: '',
-        unit: 0,
-        scope: 0,
-        qtyExecuted: 0,
-        balanceQty: 0,
-        percProgress: 0,
-        weightage: weight2.isNotEmpty
-            ? double.parse(weight2[0].toStringAsFixed(4))
-            : 0.0,
-      ),
+          srNo: 'A2',
+          activity:
+              'Site Survey, Job scope finalization  and Proposed layout submission',
+          originalDuration: durationParse(
+              sdate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+              edate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+          startDate: sdate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+          endDate: edate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+          actualstartDate:
+              asdate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+          actualendDate:
+              aedate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+          actualDuration: durationParse(
+              asdate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+              aedate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+          delay: durationParse(
+              edate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+              aedate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+          reasonDelay: '',
+          unit: 0,
+          scope: 0,
+          qtyExecuted: 0,
+          balanceQty: 0,
+          percProgress: 0,
+          weightage: weight2.isNotEmpty
+              ? double.parse(weight2[0].toStringAsFixed(4))
+              : 0.0),
       Employee(
         srNo: 'A3',
         activity:
             'Detailed Engineering for Approval of  Civil & Electrical  Layout, GA Drawing from TML',
-        originalDuration: 1,
+        originalDuration: durationParse(
+            sdate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            edate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         startDate: sdate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         endDate: edate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualstartDate:
             asdate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualendDate:
             aedate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
-        delay: 0,
+        actualDuration: durationParse(
+            asdate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+        delay: durationParse(
+            edate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate3 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         reasonDelay: '',
         unit: 0,
         scope: 0,
@@ -1377,15 +1364,21 @@ class _KeyEventsState extends State<KeyEvents> {
       Employee(
         srNo: 'A4',
         activity: 'Site Mobalization activity Completed',
-        originalDuration: 1,
+        originalDuration: durationParse(
+            sdate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            edate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         startDate: sdate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         endDate: edate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualstartDate:
             asdate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualendDate:
             aedate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
-        delay: 0,
+        actualDuration: durationParse(
+            asdate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+        delay: durationParse(
+            edate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate4 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         reasonDelay: '',
         unit: 0,
         scope: 0,
@@ -1399,15 +1392,21 @@ class _KeyEventsState extends State<KeyEvents> {
       Employee(
         srNo: 'A5',
         activity: 'Approval of statutory clearances of BUS Depot',
-        originalDuration: 1,
+        originalDuration: durationParse(
+            sdate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            edate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         startDate: sdate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         endDate: edate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualstartDate:
             asdate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualendDate:
             aedate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
-        delay: 0,
+        actualDuration: durationParse(
+            asdate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+        delay: durationParse(
+            edate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate5 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         reasonDelay: '',
         unit: 0,
         scope: 0,
@@ -1421,15 +1420,21 @@ class _KeyEventsState extends State<KeyEvents> {
       Employee(
         srNo: 'A6',
         activity: 'Procurement of Order Finalisation Completed',
-        originalDuration: 1,
+        originalDuration: durationParse(
+            sdate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            edate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         startDate: sdate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         endDate: edate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualstartDate:
             asdate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualendDate:
             aedate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
-        delay: 0,
+        actualDuration: durationParse(
+            asdate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+        delay: durationParse(
+            edate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate6 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         reasonDelay: '',
         unit: 0,
         scope: 0,
@@ -1443,15 +1448,21 @@ class _KeyEventsState extends State<KeyEvents> {
       Employee(
         srNo: 'A7',
         activity: 'Receipt of all Materials at Site',
-        originalDuration: 1,
+        originalDuration: durationParse(
+            sdate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            edate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         startDate: sdate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         endDate: edate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualstartDate:
             asdate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualendDate:
             aedate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
-        delay: 0,
+        actualDuration: durationParse(
+            asdate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+        delay: durationParse(
+            edate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate7 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         reasonDelay: '',
         unit: 0,
         scope: 0,
@@ -1465,14 +1476,18 @@ class _KeyEventsState extends State<KeyEvents> {
       Employee(
         srNo: 'A8',
         activity: 'Civil Infra Development completed at Bus Depot',
-        originalDuration: 1,
+        originalDuration: durationParse(
+            sdate8 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            edate8 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         startDate: sdate8 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         endDate: edate8 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualstartDate:
             asdate8 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualendDate:
             aedate8 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
+        actualDuration: durationParse(
+            asdate8 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate8 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         delay: 0,
         reasonDelay: '',
         unit: 0,
@@ -1487,15 +1502,21 @@ class _KeyEventsState extends State<KeyEvents> {
       Employee(
         srNo: 'A9',
         activity: 'Electrical Infra Development completed at Bus Depot',
-        originalDuration: 1,
+        originalDuration: durationParse(
+            sdate9 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            edate9 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         startDate: sdate9 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         endDate: edate9 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualstartDate:
             asdate9 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualendDate:
             aedate9 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
-        delay: 0,
+        actualDuration: durationParse(
+            asdate9 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate9 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+        delay: durationParse(
+            edate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate2 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         reasonDelay: '',
         unit: 0,
         scope: 0,
@@ -1509,15 +1530,21 @@ class _KeyEventsState extends State<KeyEvents> {
       Employee(
         srNo: 'A10',
         activity: 'Bus Depot work Completed & Handover to TML',
-        originalDuration: 1,
+        originalDuration: durationParse(
+            sdate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            edate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         startDate: sdate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         endDate: edate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualstartDate:
             asdate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
         actualendDate:
             aedate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        actualDuration: 0,
-        delay: 0,
+        actualDuration: durationParse(
+            asdate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
+        delay: durationParse(
+            edate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now()),
+            aedate10 ?? DateFormat('dd-MM-yyyy').format(DateTime.now())),
         reasonDelay: '',
         unit: 0,
         scope: 0,
@@ -1530,33 +1557,6 @@ class _KeyEventsState extends State<KeyEvents> {
       ),
     ];
   }
-
-  //   return StreamBuilder(
-  //     stream: FirebaseFirestore.instance
-  //         .collection('${widget.depoName}A2')
-  //         .snapshots(),
-  //     builder: (context, snapshot) {
-  //       final DocumentSnapshot = snapshot.data!.docs[0];
-  //       alldata = DocumentSnapshot['data'] as List<dynamic>;
-  //       if (snapshot.hasData) {
-  //         return alldata.forEach((element) {
-  //           _employees.add(Employee.fromJson(element));
-  //           for (int i = 0; i < alldata.length; i++) {
-  //             double allWeightage = DocumentSnapshot['data'][i]['Weightage'];
-  //             totalweightage = totalweightage + allWeightage;
-  //             startdate = DocumentSnapshot['data'][0]['StartDate'];
-  //             enddate = DocumentSnapshot['data'][alldata.length - 1]['EndDate'];
-  //             actualstartdate = DocumentSnapshot['data'][0]['ActualStart'];
-  //             actualenddate =
-  //                 DocumentSnapshot['data'][alldata.length - 1]['ActualEnd'];
-  //           }
-  //         });
-  //       } else {
-  //         return LoadingPage();
-  //       }
-  //     },
-  //   );
-  // }
 }
 
 class ChartData {

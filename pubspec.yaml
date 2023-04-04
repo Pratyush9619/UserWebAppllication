@@ -52,8 +52,8 @@ dependencies:
   syncfusion_flutter_charts: ^20.3.58
   syncfusion_flutter_core: ^20.4.49
   syncfusion_flutter_datagrid: ^20.4.49
-  syncfusion_flutter_datepicker: ^20.3.58
-  syncfusion_flutter_pdfviewer: ^20.3.58
+  syncfusion_flutter_datepicker: ^20.3.38
+  syncfusion_flutter_pdfviewer: ^20.4.54
   tab_indicator_styler: ^2.0.0
   table_calendar: ^3.0.8
 

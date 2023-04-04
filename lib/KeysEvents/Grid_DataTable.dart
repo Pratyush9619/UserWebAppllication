@@ -23,12 +23,12 @@ void main() {
 
 /// The home page of the application which hosts the datagrid.
 class KeyDataTable extends StatefulWidget {
-  String? cityName;
   String? depoName;
+  String? cityName;
   String? keyEvents;
 
   /// Creates the home page.
-  KeyDataTable({Key? key, this.cityName, this.depoName, this.keyEvents})
+  KeyDataTable({Key? key, this.depoName, this.cityName, this.keyEvents})
       : super(key: key);
 
   @override
@@ -52,19 +52,8 @@ class _KeyDataTableState extends State<KeyDataTable> {
         .collection('AllKeyEventsTable')
         .doc('${widget.depoName}${widget.keyEvents}')
         .snapshots();
-    // FirebaseFirestore.instance
-    //     .collection(widget.depoName!)
-    //     .doc('${widget.depoName}${widget.keyEvents}')
-    //     .snapshots();
-    super.initState();
 
-    // getFirestoreData().whenComplete(() {
-    //   setState(() {
-    //     employeeDataSource = EmployeeDataSource(employees);
-    //     _dataGridController = DataGridController();
-    //     _isloading = false;
-    //   });
-    // });
+    super.initState();
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
@@ -198,7 +187,7 @@ class _KeyDataTableState extends State<KeyDataTable> {
                         GridColumn(
                           columnName: 'StartDate',
                           allowEditing: false,
-                          width: 120,
+                          width: 150,
                           label: Container(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             alignment: Alignment.center,
@@ -418,8 +407,7 @@ class _KeyDataTableState extends State<KeyDataTable> {
         .collection('AllKeyEventsTable')
         .doc('${widget.depoName}${widget.keyEvents}')
         .get();
-    // .doc()
-    // await tabledata.doc('${widget.depoName}${widget.keyEvents}').get();
+
     var data = snapshot.data() as Map;
     var alldata = data['data'] as List<dynamic>;
 

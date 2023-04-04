@@ -1,6 +1,4 @@
-import 'package:assingment/model/employee.dart';
-import 'package:assingment/KeysEvents/upload.dart';
-import 'package:assingment/widget/style.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,10 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../KeysEvents/viewFIle.dart';
+import '../model/employee.dart';
+
 class EmployeeDataSource extends DataGridSource {
-  String cityName;
-  String depoName;
   BuildContext mainContext;
+  String? cityName;
+  String? depoName;
+
   EmployeeDataSource(
       this._employees, this.mainContext, this.cityName, this.depoName) {
     buildDataGridRows();
@@ -26,17 +28,18 @@ class EmployeeDataSource extends DataGridSource {
   List<Employee> _employees = [];
 
   List<DataGridRow> dataGridRows = [];
-  final _dateFormatter = DateFormat.yMd();
 
   /// [DataGridCell] on [onSubmitCell] method.
   dynamic newCellValue;
 
   /// Help to control the editable text in [TextField] widget.
   TextEditingController editingController = TextEditingController();
-  final DateRangePickerController _controller = DateRangePickerController();
+  final DataGridController _dataGridController = DataGridController();
 
   @override
   List<DataGridRow> get rows => dataGridRows;
+
+  final DateRangePickerController _controller = DateRangePickerController();
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
@@ -48,6 +51,7 @@ class EmployeeDataSource extends DataGridSource {
     DateTime? rangeEndDate1 = DateTime.now();
     DateTime? date1;
     DateTime? endDate1;
+    DateRangePickerController _datecontroller = DateRangePickerController();
     int? balnceQtyValue;
     double? percProgress;
     final int dataIndex = dataGridRows.indexOf(row);
@@ -58,21 +62,35 @@ class EmployeeDataSource extends DataGridSource {
           ((_employees[dataIndex].balanceQty / _employees[dataIndex].scope) *
               _employees[dataIndex].weightage);
     }
-
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          alignment:
+              //  (dataGridCell.columnName == 'srNo' ||
+              //         dataGridCell.columnName == 'Activity' ||
+              //         dataGridCell.columnName == 'OriginalDuration' ||
+              // dataGridCell.columnName == 'StartDate' ||
+              //         dataGridCell.columnName == 'EndDate' ||
+              //         dataGridCell.columnName == 'ActualStart' ||
+              //         dataGridCell.columnName == 'ActualEnd' ||
+              //         dataGridCell.columnName == 'ActualDuration' ||
+              //         dataGridCell.columnName == 'Delay' ||
+              //         dataGridCell.columnName == 'Unit' ||
+              //         dataGridCell.columnName == 'QtyScope' ||
+              //         dataGridCell.columnName == 'QtyExecuted' ||
+              //         dataGridCell.columnName == 'BalancedQty' ||
+              //         dataGridCell.columnName == 'Progress' ||
+              //         dataGridCell.columnName == 'Weightage')
+              Alignment.center,
+          // : Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: dataGridCell.columnName == 'button'
               ? LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
+                  builder: (BuildContext ctx, BoxConstraints constraints) {
                   return ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: blue),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => UploadDocument(
-                              title: 'checklist',
+                        Navigator.of(ctx).push(MaterialPageRoute(
+                          builder: (context) => ViewFile(
                               cityName: cityName,
                               depoName: depoName,
                               activity:
@@ -96,10 +114,9 @@ class EmployeeDataSource extends DataGridSource {
                         //               ],
                         //             ))));
                       },
-                      child: const Text('Upload'));
+                      child: const Text('View'));
                 })
-              : dataGridCell.columnName == 'ActualStart' ||
-                      dataGridCell.columnName == 'ActualEnd'
+              : (dataGridCell.columnName == 'ActualStart')
                   ? Row(
                       children: [
                         IconButton(
@@ -137,6 +154,9 @@ class EmployeeDataSource extends DataGridSource {
 
                                         Duration diff =
                                             endDate!.difference(date!);
+
+                                        print('Difference' +
+                                            diff.inDays.toString());
 
                                         final int dataRowIndex =
                                             dataGridRows.indexOf(row);
@@ -213,7 +233,7 @@ class EmployeeDataSource extends DataGridSource {
                                                 columnName: 'Progress'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
-                                                    .percProgress,
+                                                    .weightage,
                                                 columnName: 'Weightage'),
                                           ]);
 
@@ -276,11 +296,11 @@ class EmployeeDataSource extends DataGridSource {
                                                 columnName: 'ActualDuration'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
-                                                    .reasonDelay,
+                                                    .delay,
                                                 columnName: 'Delay'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
-                                                    .delay,
+                                                    .reasonDelay,
                                                 columnName: 'ReasonDelay'),
                                             DataGridCell(
                                                 value: _employees[dataRowIndex]
@@ -395,111 +415,6 @@ class EmployeeDataSource extends DataGridSource {
                                                   dataRowIndex, 8));
                                           notifyListeners();
                                         }
-
-                                        if (dataRowIndex != null) {
-                                          DateTime dd = DateFormat("dd-MM-yyyy")
-                                              .parse(_employees[dataRowIndex]
-                                                  .actualendDate
-                                                  .toString());
-                                          DateTime dd1 =
-                                              DateFormat("dd-MM-yyyy").parse(
-                                                  _employees[dataRowIndex]
-                                                      .endDate
-                                                      .toString());
-
-                                          //  DateTime.parse(
-                                          //     _employees[dataRowIndex]
-                                          //         .actualendDate
-                                          //         .toString());
-                                          // DateTime.parse(
-                                          //     _employees[dataRowIndex]
-                                          //         .actualendDate
-                                          //         .toString());
-                                          //     _employees[dataRowIndex]
-                                          //             .actualendDate -
-                                          //         _employees[dataRowIndex]
-                                          //             .endDate;
-                                          Duration diff1 = dd.difference(dd1);
-                                          // print('delay' + d.toString());
-                                          _employees[dataRowIndex].delay =
-                                              int.parse(
-                                                  diff1.inDays.toString());
-                                          dataGridRows[dataRowIndex] =
-                                              DataGridRow(cells: [
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .srNo,
-                                                columnName: 'srNo'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .activity,
-                                                columnName: 'Activity'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex],
-                                                columnName: 'button'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .originalDuration,
-                                                columnName: 'OriginalDuration'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .startDate,
-                                                columnName: 'StartDate'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .endDate,
-                                                columnName: 'EndDate'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .actualstartDate,
-                                                columnName: 'ActualStart'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .actualendDate,
-                                                columnName: 'ActualEnd'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .actualDuration,
-                                                columnName: 'ActualDuration'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .delay,
-                                                columnName: 'Delay'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .reasonDelay,
-                                                columnName: 'ReasonDelay'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .reasonDelay,
-                                                columnName: 'Unit'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .scope,
-                                                columnName: 'QtyScope'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .qtyExecuted,
-                                                columnName: 'QtyExecuted'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .balanceQty,
-                                                columnName: 'BalancedQty'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .percProgress,
-                                                columnName: 'Progress'),
-                                            DataGridCell(
-                                                value: _employees[dataRowIndex]
-                                                    .weightage,
-                                                columnName: 'Weightage'),
-                                          ]);
-
-                                          updateDataGrid(
-                                              rowColumnIndex: RowColumnIndex(
-                                                  dataRowIndex, 9));
-                                          notifyListeners();
-                                        }
                                       }),
                                       onCancel: () {
                                         _controller.selectedRanges = null;
@@ -513,19 +428,408 @@ class EmployeeDataSource extends DataGridSource {
                         Text(dataGridCell.value.toString()),
                       ],
                     )
-                  : (dataGridCell.columnName == 'BalancedQty')
-                      ? Text(balnceQtyValue.toString())
+                  : (dataGridCell.columnName == 'StartDate'
+                      // ||
+                      // dataGridCell.columnName == 'EndDate' ||
+                      //    dataGridCell.columnName == 'ActualStart'
+                      // ||
+                      // dataGridCell.columnName == 'ActualEnd'
+                      )
+                      ? Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: mainContext,
+                                  builder: (context) => AlertDialog(
+                                      title: const Text('All Date'),
+                                      content: Container(
+                                        height: 400,
+                                        width: 500,
+                                        child: SfDateRangePicker(
+                                          view: DateRangePickerView.month,
+                                          showTodayButton: true,
+                                          controller: _datecontroller,
+                                          onSelectionChanged:
+                                              (DateRangePickerSelectionChangedArgs
+                                                  args) {
+                                            if (args.value is PickerDateRange) {
+                                              rangeStartDate1 =
+                                                  args.value.startDate;
+                                              rangeEndDate1 =
+                                                  args.value.endDate;
+                                            } else {
+                                              final List<PickerDateRange>
+                                                  selectedRanges = args.value;
+                                            }
+                                          },
+                                          selectionMode:
+                                              DateRangePickerSelectionMode
+                                                  .range,
+                                          showActionButtons: true,
+                                          onSubmit: ((value) {
+                                            date1 = DateTime.parse(
+                                                rangeStartDate1.toString());
 
-                      // updateDataGrid(
-                      //     rowColumnIndex: RowColumnIndex(
-                      //         dataRowIndex, 9));
-                      // notifyListeners();
-                      : (dataGridCell.columnName == 'Progress')
-                          ? Text(percProgress!.toStringAsFixed(2) + '%')
-                          : Text(
-                              dataGridCell.value.toString(),
-                              textAlign: TextAlign.center,
-                            ));
+                                            endDate1 = DateTime.parse(
+                                                rangeEndDate1.toString());
+
+                                            Duration diff1 =
+                                                endDate1!.difference(date1!);
+
+                                            final int dataRowIndex =
+                                                dataGridRows.indexOf(row);
+
+                                            if (dataRowIndex != null) {
+                                              _employees[dataRowIndex]
+                                                      .startDate =
+                                                  DateFormat('dd-MM-yyyy')
+                                                      .format(date1!);
+
+                                              dataGridRows[dataRowIndex] =
+                                                  DataGridRow(cells: [
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .srNo,
+                                                    columnName: 'srNo'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .activity,
+                                                    columnName: 'Activity'),
+                                                DataGridCell(
+                                                    value: _employees[
+                                                        dataRowIndex],
+                                                    columnName: 'button'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .originalDuration,
+                                                    columnName:
+                                                        'OriginalDuration'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .startDate,
+                                                    columnName: 'StartDate'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .endDate,
+                                                    columnName: 'EndDate'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualstartDate,
+                                                    columnName: 'ActualStart'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualendDate,
+                                                    columnName: 'ActualEnd'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualDuration,
+                                                    columnName:
+                                                        'ActualDuration'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .delay,
+                                                    columnName: 'Delay'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .reasonDelay,
+                                                    columnName: 'ReasonDelay'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .unit,
+                                                    columnName: 'Unit'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .scope,
+                                                    columnName: 'QtyScope'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .qtyExecuted,
+                                                    columnName: 'QtyExecuted'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .balanceQty,
+                                                    columnName: 'BalancedQty'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .percProgress,
+                                                    columnName: 'Progress'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .weightage,
+                                                    columnName: 'Weightage'),
+                                              ]);
+
+                                              updateDataGrid(
+                                                  rowColumnIndex:
+                                                      RowColumnIndex(
+                                                          dataRowIndex, 4));
+
+                                              notifyListeners();
+
+                                              print('state$date');
+                                              print('valuedata$value');
+
+                                              print('start $rangeStartDate');
+                                              print('End $rangeEndDate');
+                                              // date = rangeStartDate;
+                                              print('object$date');
+
+                                              Navigator.pop(context);
+                                            }
+                                            if (dataRowIndex != null) {
+                                              _employees[dataRowIndex].endDate =
+                                                  DateFormat('dd-MM-yyyy')
+                                                      .format(endDate1!);
+
+                                              dataGridRows[dataRowIndex] =
+                                                  DataGridRow(cells: [
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .srNo,
+                                                    columnName: 'srNo'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .activity,
+                                                    columnName: 'Activity'),
+                                                DataGridCell(
+                                                    value: _employees[
+                                                        dataRowIndex],
+                                                    columnName: 'button'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .originalDuration,
+                                                    columnName:
+                                                        'OriginalDuration'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .startDate,
+                                                    columnName: 'StartDate'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .endDate,
+                                                    columnName: 'EndDate'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualstartDate,
+                                                    columnName: 'ActualStart'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualendDate,
+                                                    columnName: 'ActualEnd'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualDuration,
+                                                    columnName:
+                                                        'ActualDuration'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .delay,
+                                                    columnName: 'Delay'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .reasonDelay,
+                                                    columnName: 'ReasonDelay'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .unit,
+                                                    columnName: 'Unit'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .scope,
+                                                    columnName: 'QtyScope'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .qtyExecuted,
+                                                    columnName: 'QtyExecuted'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .balanceQty,
+                                                    columnName: 'BalancedQty'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .percProgress,
+                                                    columnName: 'Progress'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .weightage,
+                                                    columnName: 'Weightage'),
+                                              ]);
+
+                                              updateDataGrid(
+                                                  rowColumnIndex:
+                                                      RowColumnIndex(
+                                                          dataRowIndex, 5));
+
+                                              notifyListeners();
+                                            }
+                                            if (dataRowIndex != null) {
+                                              _employees[dataRowIndex]
+                                                      .originalDuration =
+                                                  int.parse(
+                                                      diff1.inDays.toString());
+
+                                              dataGridRows[dataRowIndex] =
+                                                  DataGridRow(cells: [
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .srNo,
+                                                    columnName: 'srNo'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .activity,
+                                                    columnName: 'Activity'),
+                                                DataGridCell(
+                                                    value: _employees[
+                                                        dataRowIndex],
+                                                    columnName: 'button'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .originalDuration,
+                                                    columnName:
+                                                        'OriginalDuration'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .startDate,
+                                                    columnName: 'StartDate'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .endDate,
+                                                    columnName: 'EndDate'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualstartDate,
+                                                    columnName: 'ActualStart'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualendDate,
+                                                    columnName: 'ActualEnd'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .actualDuration,
+                                                    columnName:
+                                                        'ActualDuration'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .delay,
+                                                    columnName: 'Delay'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .reasonDelay,
+                                                    columnName: 'ReasonDelay'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .unit,
+                                                    columnName: 'Unit'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .scope,
+                                                    columnName: 'QtyScope'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .qtyExecuted,
+                                                    columnName: 'QtyExecuted'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .balanceQty,
+                                                    columnName: 'BalancedQty'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .percProgress,
+                                                    columnName: 'Progress'),
+                                                DataGridCell(
+                                                    value:
+                                                        _employees[dataRowIndex]
+                                                            .weightage,
+                                                    columnName: 'Weightage'),
+                                              ]);
+
+                                              updateDataGrid(
+                                                  rowColumnIndex:
+                                                      RowColumnIndex(
+                                                          dataRowIndex, 3));
+
+                                              notifyListeners();
+                                            }
+                                          }),
+                                          onCancel: () {
+                                            _controller.selectedRanges = null;
+                                          },
+                                        ),
+                                      )),
+                                );
+                              },
+                              icon: const Icon(Icons.calendar_today),
+                            ),
+                            Text(dataGridCell.value.toString()),
+                          ],
+                        )
+                      : (dataGridCell.columnName == 'BalancedQty')
+                          ? Text(balnceQtyValue.toString())
+
+                          // updateDataGrid(
+                          //     rowColumnIndex: RowColumnIndex(
+                          //         dataRowIndex, 9));
+                          // notifyListeners();
+                          : (dataGridCell.columnName == 'Progress')
+                              ? Text(percProgress!.toStringAsFixed(2) + '%')
+                              : Text(
+                                  dataGridCell.value.toString(),
+                                  textAlign: TextAlign.center,
+                                )
+          //         :
+
+          //  Text(
+          //     dataGridCell.value.toString(),
+          //   ),
+          );
     }).toList());
   }
 
@@ -554,8 +858,8 @@ class EmployeeDataSource extends DataGridSource {
     }
     if (column.columnName == 'srNo') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<int>(columnName: 'srNo', value: newCellValue);
-      _employees[dataRowIndex].srNo = newCellValue as int;
+          DataGridCell<dynamic>(columnName: 'srNo', value: newCellValue);
+      _employees[dataRowIndex].srNo = newCellValue;
     } else if (column.columnName == 'Activity') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'Activity', value: newCellValue);
@@ -586,14 +890,14 @@ class EmployeeDataSource extends DataGridSource {
           DataGridCell<int>(
               columnName: 'ActualDuration', value: newCellValue as int);
       _employees[dataRowIndex].actualDuration = newCellValue;
-    } else if (column.columnName == 'Delay') {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<int>(columnName: 'Delay', value: newCellValue as int);
-      _employees[dataRowIndex].delay = newCellValue;
     } else if (column.columnName == 'ReasonDelay') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'ReasonDelay', value: newCellValue);
       _employees[dataRowIndex].reasonDelay = newCellValue;
+    } else if (column.columnName == 'Delay') {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<int>(columnName: 'Delay', value: newCellValue as int);
+      _employees[dataRowIndex].delay = newCellValue;
     } else if (column.columnName == 'Unit') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(columnName: 'Unit', value: newCellValue as int);
@@ -612,17 +916,15 @@ class EmployeeDataSource extends DataGridSource {
           DataGridCell<int>(
               columnName: 'BalancedQty', value: newCellValue as int);
       _employees[dataRowIndex].balanceQty = newCellValue;
-    } else {
+    } else if (column.columnName == 'Progress') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(columnName: 'Progress', value: newCellValue as int);
       _employees[dataRowIndex].percProgress = newCellValue;
+    } else {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<double>(columnName: 'Weightage', value: newCellValue);
+      _employees[dataRowIndex].weightage = newCellValue;
     }
-    // else {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<int>(
-    //           columnName: 'Weightage', value: newCellValue as int);
-    //   _employees[dataRowIndex].weightage = newCellValue;
-    // }
     // Future storeData() async {
     //   await FirebaseFirestore.instance.collection('A1').add({
     //     'Weightage':
@@ -658,7 +960,7 @@ class EmployeeDataSource extends DataGridSource {
     newCellValue = null;
 
     final bool isNumericType = column.columnName == 'OriginalDuration' ||
-        // column.columnName == 'StartDate' ||
+        column.columnName == 'srNo' ||
         // column.columnName == 'EndDate' ||
         // column.columnName == 'ActualStart' ||
         // column.columnName == 'ActualEnd' ||
@@ -701,7 +1003,7 @@ class EmployeeDataSource extends DataGridSource {
         onChanged: (String value) {
           if (value.isNotEmpty) {
             if (isNumericType) {
-              newCellValue = int.parse(value);
+              newCellValue = double.parse(value);
             } else if (isDateTimeType) {
               newCellValue = value;
             } else {
@@ -723,9 +1025,9 @@ class EmployeeDataSource extends DataGridSource {
   RegExp _getRegExp(
       bool isNumericKeyBoard, bool isDateTimeBoard, String columnName) {
     return isNumericKeyBoard
-        ? RegExp('[0-9]')
+        ? RegExp('[0-9.]')
         : isDateTimeBoard
-            ? RegExp('[0-9/]')
+            ? RegExp('[0-9-]')
             : RegExp('[a-zA-Z ]');
   }
 }

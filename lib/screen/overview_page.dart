@@ -1,12 +1,11 @@
 import 'package:assingment/Planning_Pages/depot_overview.dart';
-import 'package:assingment/Planning_Pages/overview.dart';
 import 'package:assingment/Planning_Pages/jmr.dart';
 import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:assingment/Planning_Pages/safety_checklist.dart';
 import 'package:assingment/overview/daily_project.dart';
 import 'package:assingment/overview/detailed_Eng.dart';
 import 'package:assingment/overview/key_events.dart';
-import 'package:assingment/overview/project_planning.dart';
+
 import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +49,8 @@ class _OverviewPageState extends State<OverviewPage> {
     'assets/overview_image/quality.png',
     // 'assets/overview_image/testing_commissioning.png',
     'assets/overview_image/testing_commissioning.png',
-    'assets/overview_image/easy_monitoring.jpg'
+    'assets/overview_image/easy_monitoring.jpg',
+    'assets/overview_image/closure_report.png'
   ];
 
   @override
@@ -70,6 +70,7 @@ class _OverviewPageState extends State<OverviewPage> {
       // 'FQP Checklist for Civil & Electrical work',
       'Testing & Commissioning Reports of Equipment',
       'Easy monitoring of O & M schedule for all the equipment of depots.',
+      'Closure Report',
     ];
     pages = [
       DepotOverview(
@@ -79,11 +80,11 @@ class _OverviewPageState extends State<OverviewPage> {
 
       KeyEvents(
         depoName: widget.depoName,
-        cityName: widget.depoName,
+        cityName: widget.cityName,
       ),
       KeyEvents(
         depoName: widget.depoName,
-        cityName: widget.depoName,
+        cityName: widget.cityName,
       ),
       // PlanningPage(
       //   cityName: widget.cityName,
@@ -94,12 +95,12 @@ class _OverviewPageState extends State<OverviewPage> {
       //   depoName: widget.depoName,
       // ),
       MonthlyProject(
-        cityName: widget.cityName,
         depoName: widget.depoName,
+        cityName: widget.cityName,
       ),
       DailyProject(
-        cityName: widget.cityName,
         depoName: widget.depoName,
+        cityName: widget.cityName,
       ),
       DetailedEng(
         cityName: widget.cityName,

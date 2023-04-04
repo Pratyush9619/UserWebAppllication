@@ -1,5 +1,6 @@
 import 'dart:html' as html;
 import 'dart:io';
+import 'package:assingment/components/loading_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/foundation.dart';
@@ -36,11 +37,12 @@ class _ViewFileState extends State<ViewFile> {
     Widget child = const Center(child: CircularProgressIndicator());
     if (_isLoading) {
       if (_documentBytes != null) {
+        print('dfdf$_documentBytes');
         child = SfPdfViewer.memory(
           _documentBytes!,
         );
       } else {
-        child = NodataAvailable();
+        child = LoadingPage();
       }
     }
 
@@ -50,12 +52,14 @@ class _ViewFileState extends State<ViewFile> {
         backgroundColor: blue,
       ),
       body: child,
+      //  SfPdfViewer.network(
+      //     'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')
     );
   }
 
   void getPdfBytes() async {
     String? path =
-        'https://firebasestorage.googleapis.com/v0/b/tp-zap-solz.appspot.com/o/checklist%2F${widget.cityName}%2F${widget.depoName}%2F${widget.activity}?alt=media&token=ca6d1483-c5a6-4216-a46b-98ccd2de0c06';
+        'https://firebasestorage.googleapis.com/v0/b/flutterfirebase-6c279.appspot.com/o/GIS.pdf?alt=media&token=51654170-c140-4ffa-ae1a-9fb431d0dee2';
 
     if (kIsWeb) {
       firebase_storage.Reference pdfRef =
@@ -63,8 +67,8 @@ class _ViewFileState extends State<ViewFile> {
                   bucket: 'tp-zap-solz.appspot.com')
               .refFromURL(path);
       //size mentioned here is max size to download from firebase.
-      print(pdfRef);
-      await pdfRef.getData().then((value) {
+      print('khkhkh${pdfRef}');
+      await pdfRef.getData(104857600).then((value) {
         _documentBytes = value;
         setState(() {
           _isLoading = true;
@@ -144,8 +148,7 @@ downloadFileWeb(String url, String fileName) async {
     const oneMegabyte = 1024 * 1024;
     final Uint8List? data = await httpsReference.getData(oneMegabyte);
     // Data for "images/island.jpg" is returned, use this as needed.
-    XFile.fromData(data!,
-            mimeType: "application/octet-stream", name: fileName + ".pdf")
+    XFile.fromData(data!, mimeType: "application/pdf", name: fileName + ".pdf")
         .saveTo("C:/"); // here Path is ignored
   } on FirebaseException catch (e) {
     // Handle any errors.

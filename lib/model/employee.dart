@@ -98,7 +98,10 @@ class Employee {
       DataGridCell<int>(columnName: 'ActuaslDuration', value: actualDuration),
       DataGridCell<int>(columnName: 'Delay', value: delay),
       DataGridCell<String>(columnName: 'Dependency', value: dependency),
-
+      // DataGridCell<int>(columnName: 'Unit', value: unit),
+      // DataGridCell<int>(columnName: 'QtyScope', value: scope),
+      // DataGridCell<int>(columnName: 'QtyExecuted', value: qtyExecuted),
+      // DataGridCell<int>(columnName: 'BalancedQty', value: balanceQty),
       DataGridCell<int>(columnName: 'Progress', value: percProgress),
       DataGridCell<double>(columnName: 'Weightage', value: weightage),
     ]);

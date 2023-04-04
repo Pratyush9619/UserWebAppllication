@@ -19,6 +19,7 @@ import '../widget/style.dart';
 class MonthlyProject extends StatefulWidget {
   String? cityName;
   String? depoName;
+
   MonthlyProject({super.key, required this.cityName, required this.depoName});
 
   @override
@@ -33,6 +34,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
   Stream? _stream;
   var alldata;
   bool _isloading = true;
+  String title = 'Monthly Project';
   @override
   void initState() {
     // getmonthlyReport();
@@ -43,6 +45,8 @@ class _MonthlyProjectState extends State<MonthlyProject> {
     _stream = FirebaseFirestore.instance
         .collection('MonthlyProjectReport')
         .doc('${widget.depoName}')
+        .collection('Monthly Data')
+        .doc(DateFormat('MMMM').format(DateTime.now()))
         .snapshots();
     _isloading = false;
     super.initState();
@@ -54,21 +58,23 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       appBar: PreferredSize(
           // ignore: sort_child_properties_last
           child: CustomAppBar(
-            text: ' ${widget.cityName}/ ${widget.depoName} / Monthly Report',
+            text:
+                ' ${widget.cityName}/ ${widget.depoName} / Monthly Report / ${DateFormat('MMMM').format(DateTime.now())}',
             haveSummary: true,
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ViewSummary(
                       cityName: widget.cityName.toString(),
-                      depoName: widget.depoName.toString()),
+                      depoName: widget.depoName.toString(),
+                      id: 'Monthly Report'),
                 )),
             haveSynced: true,
             store: () {
               StoreData();
             },
           ),
-          preferredSize: Size.fromHeight(50)),
+          preferredSize: const Size.fromHeight(50)),
       body: StreamBuilder(
           stream: _stream,
           builder: (context, snapshot) {
@@ -136,25 +142,25 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                             ),
                           ),
 
-                          GridColumn(
-                            columnName: 'Months',
-                            autoFitPadding:
-                                const EdgeInsets.symmetric(horizontal: 16),
-                            allowEditing: false,
-                            width: 200,
-                            label: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              alignment: Alignment.center,
-                              child: Text('Months',
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.values.first,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: white)),
-                            ),
-                          ),
+                          // GridColumn(
+                          //   columnName: 'Months',
+                          //   autoFitPadding:
+                          //       const EdgeInsets.symmetric(horizontal: 16),
+                          //   allowEditing: false,
+                          //   width: 200,
+                          //   label: Container(
+                          //     padding:
+                          //         const EdgeInsets.symmetric(horizontal: 8.0),
+                          //     alignment: Alignment.center,
+                          //     child: Text('Months',
+                          //         textAlign: TextAlign.center,
+                          //         overflow: TextOverflow.values.first,
+                          //         style: TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: 16,
+                          //             color: white)),
+                          //   ),
+                          // ),
                           // GridColumn(
                           //   columnName: 'Duration',
                           //   autoFitPadding:
@@ -345,25 +351,25 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                                       color: white)),
                             ),
                           ),
-                          GridColumn(
-                            columnName: 'Months',
-                            autoFitPadding:
-                                const EdgeInsets.symmetric(horizontal: 16),
-                            allowEditing: false,
-                            width: 200,
-                            label: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              alignment: Alignment.center,
-                              child: Text('Months',
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.values.first,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: white)),
-                            ),
-                          ),
+                          // GridColumn(
+                          //   columnName: 'Months',
+                          //   autoFitPadding:
+                          //       const EdgeInsets.symmetric(horizontal: 16),
+                          //   allowEditing: false,
+                          //   width: 200,
+                          //   label: Container(
+                          //     padding:
+                          //         const EdgeInsets.symmetric(horizontal: 8.0),
+                          //     alignment: Alignment.center,
+                          //     child: Text('Months',
+                          //         textAlign: TextAlign.center,
+                          //         overflow: TextOverflow.values.first,
+                          //         style: TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: 16,
+                          //             color: white)),
+                          //   ),
+                          // ),
                           // GridColumn(
                           //   columnName: 'Duration',
                           //   autoFitPadding:
@@ -510,6 +516,8 @@ class _MonthlyProjectState extends State<MonthlyProject> {
     FirebaseFirestore.instance
         .collection('MonthlyProjectReport')
         .doc('${widget.depoName}')
+        .collection('Monthly Data')
+        .doc(DateFormat('MMMM').format(DateTime.now()))
         .set({
       'data': tabledata2,
     }).whenComplete(() {
@@ -527,7 +535,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       MonthlyProjectModel(
           activityNo: 'A1',
           activityDetails: 'Letter of Award From TML',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -538,7 +546,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
           activityNo: 'A2',
           activityDetails:
               'Site Survey, Job scope finalization  and Proposed layout submission',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -549,7 +557,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
           activityNo: 'A3',
           activityDetails:
               'Detailed Engineering for Approval of  Civil & Electrical  Layout, GA Drawing from TML',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -559,7 +567,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       MonthlyProjectModel(
           activityNo: 'A4',
           activityDetails: 'Site Mobalization activity Completed',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -569,7 +577,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       MonthlyProjectModel(
           activityNo: 'A5',
           activityDetails: 'Approval of statutory clearances of BUS Depot',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -579,7 +587,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       MonthlyProjectModel(
           activityNo: 'A6',
           activityDetails: 'Procurement of Order Finalisation Completed',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -589,7 +597,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       MonthlyProjectModel(
           activityNo: 'A7',
           activityDetails: 'Receipt of all Materials at Site',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -599,7 +607,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       MonthlyProjectModel(
           activityNo: 'A8',
           activityDetails: 'Civil Infra Development completed at Bus Depot',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -610,7 +618,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
           activityNo: 'A9',
           activityDetails:
               'Electrical Infra Development completed at Bus Depot',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),
@@ -620,7 +628,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       MonthlyProjectModel(
           activityNo: 'A10',
           activityDetails: 'Bus Depot work Completed & Handover to TML',
-          months: 'Jan',
+          // months: 'Jan',
           // duration: 1,
           // startDate: DateFormat().add_yMd().format(DateTime.now()),
           // endDate: DateFormat().add_yMd().format(DateTime.now()),

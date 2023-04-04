@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import '../KeysEvents/Grid_DataTable.dart';
 import '../Planning_Pages/summary.dart';
 import '../components/loading_page.dart';
 import '../model/daily_projectModel.dart';
@@ -21,7 +20,7 @@ class DailyProject extends StatefulWidget {
 }
 
 class _DailyProjectState extends State<DailyProject> {
-  List<DailyProjectModel> DailyProject = <DailyProjectModel>[];
+  List<DailyProjectModel> dailyproject = <DailyProjectModel>[];
   late DailyDataSource _dailyDataSource;
   late DataGridController _dataGridController;
   List<dynamic> tabledata2 = [];
@@ -30,13 +29,15 @@ class _DailyProjectState extends State<DailyProject> {
   @override
   void initState() {
     getmonthlyReport();
-    DailyProject = getmonthlyReport();
-    _dailyDataSource = DailyDataSource(DailyProject, context);
+    dailyproject = getmonthlyReport();
+    _dailyDataSource = DailyDataSource(dailyproject, context);
     _dataGridController = DataGridController();
 
     _stream = FirebaseFirestore.instance
         .collection('DailyProjectReport')
         .doc('${widget.depoName}')
+        .collection('Daily Data')
+        .doc(DateFormat.yMMMMd().format(DateTime.now()))
         .snapshots();
     // TODO: implement initState
     super.initState();
@@ -48,21 +49,24 @@ class _DailyProjectState extends State<DailyProject> {
       appBar: PreferredSize(
           // ignore: sort_child_properties_last
           child: CustomAppBar(
-            text: 'Dailly Report/ ${widget.cityName}/ ${widget.depoName}',
+            text:
+                'Dailly Report/ ${widget.cityName}/ ${widget.depoName} / ${DateFormat.yMMMMd().format(DateTime.now())}',
             haveSynced: true,
             haveSummary: true,
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ViewSummary(
-                      cityName: widget.cityName.toString(),
-                      depoName: widget.depoName.toString()),
+                    cityName: widget.cityName.toString(),
+                    depoName: widget.depoName.toString(),
+                    id: 'Daily Report',
+                  ),
                 )),
             store: () {
               StoreData();
             },
           ),
-          preferredSize: Size.fromHeight(50)),
+          preferredSize: const Size.fromHeight(50)),
       body: Column(children: [
         Expanded(
             child: StreamBuilder(
@@ -105,24 +109,24 @@ class _DailyProjectState extends State<DailyProject> {
                               ),
                         ),
                       ),
-                      GridColumn(
-                        columnName: 'Date',
-                        autoFitPadding:
-                            const EdgeInsets.symmetric(horizontal: 16),
-                        allowEditing: false,
-                        width: 160,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Date',
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
+                      // GridColumn(
+                      //   columnName: 'Date',
+                      //   autoFitPadding:
+                      //       const EdgeInsets.symmetric(horizontal: 16),
+                      //   allowEditing: false,
+                      //   width: 160,
+                      //   label: Container(
+                      //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      //     alignment: Alignment.center,
+                      //     child: Text('Date',
+                      //         textAlign: TextAlign.center,
+                      //         overflow: TextOverflow.values.first,
+                      //         style: TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: 16,
+                      //             color: white)),
+                      //   ),
+                      // ),
                       // GridColumn(
                       //   visible: false,
                       //   columnName: 'State',
@@ -245,10 +249,10 @@ class _DailyProjectState extends State<DailyProject> {
             } else {
               alldata = '';
               alldata = snapshot.data['data'] as List<dynamic>;
-              DailyProject.clear();
+              dailyproject.clear();
               alldata.forEach((element) {
-                DailyProject.add(DailyProjectModel.fromjson(element));
-                _dailyDataSource = DailyDataSource(DailyProject, context);
+                dailyproject.add(DailyProjectModel.fromjson(element));
+                _dailyDataSource = DailyDataSource(dailyproject, context);
                 _dataGridController = DataGridController();
               });
               return SfDataGridTheme(
@@ -285,24 +289,24 @@ class _DailyProjectState extends State<DailyProject> {
                               ),
                         ),
                       ),
-                      GridColumn(
-                        columnName: 'Date',
-                        autoFitPadding:
-                            const EdgeInsets.symmetric(horizontal: 16),
-                        allowEditing: false,
-                        width: 160,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Date',
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
+                      // GridColumn(
+                      //   columnName: 'Date',
+                      //   autoFitPadding:
+                      //       const EdgeInsets.symmetric(horizontal: 16),
+                      //   allowEditing: false,
+                      //   width: 160,
+                      //   label: Container(
+                      //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      //     alignment: Alignment.center,
+                      //     child: Text('Date',
+                      //         textAlign: TextAlign.center,
+                      //         overflow: TextOverflow.values.first,
+                      //         style: TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: 16,
+                      //             color: white)),
+                      //   ),
+                      // ),
                       // GridColumn(
                       //   visible: false,
                       //   columnName: 'State',
@@ -429,9 +433,9 @@ class _DailyProjectState extends State<DailyProject> {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: (() {
-            DailyProject.add(DailyProjectModel(
+            dailyproject.add(DailyProjectModel(
                 siNo: 1,
-                date: DateFormat().add_yMd().format(DateTime.now()),
+                // date: DateFormat().add_yMd().format(DateTime.now()),
                 // state: "Maharashtra",
                 // depotName: 'depotName',
                 typeOfActivity: 'Electrical Infra',
@@ -460,6 +464,8 @@ class _DailyProjectState extends State<DailyProject> {
     FirebaseFirestore.instance
         .collection('DailyProjectReport')
         .doc('${widget.depoName}')
+        .collection('Daily Data')
+        .doc(DateFormat.yMMMMd().format(DateTime.now()))
         .set({
       'data': tabledata2,
     }).whenComplete(() {
@@ -476,7 +482,7 @@ class _DailyProjectState extends State<DailyProject> {
     return [
       DailyProjectModel(
           siNo: 1,
-          date: DateFormat().add_yMd().format(DateTime.now()),
+          // date: DateFormat().add_yMd().format(DateTime.now()),
           // state: "Maharashtra",
           // depotName: 'depotName',
           typeOfActivity: 'Electrical Infra',

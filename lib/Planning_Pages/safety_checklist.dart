@@ -4,6 +4,7 @@ import 'package:assingment/model/safety_checklistModel.dart';
 import 'package:assingment/widget/custom_appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -38,6 +39,8 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
     _stream = FirebaseFirestore.instance
         .collection('SafetyChecklistTable')
         .doc(widget.depoName!)
+        .collection('Safety Data')
+        .doc(DateFormat('MMMM').format(DateTime.now()))
         .snapshots();
     super.initState();
   }
@@ -47,7 +50,8 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
       appBar: PreferredSize(
         // ignore: sort_child_properties_last
         child: CustomAppBar(
-            text: '${widget.cityName} / ${widget.depoName} / SafetyChecklist',
+            text:
+                '${widget.cityName} / ${widget.depoName} / SafetyChecklist / ${DateFormat('MMMM').format(DateTime.now())}',
             // icon: Icons.logout,
             haveSummary: true,
             onTap: () => Navigator.push(
@@ -55,7 +59,8 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                 MaterialPageRoute(
                   builder: (context) => ViewSummary(
                       cityName: widget.cityName.toString(),
-                      depoName: widget.depoName.toString()),
+                      depoName: widget.depoName.toString(),
+                      id: 'Safety Checklist Report'),
                 )),
             haveSynced: true,
             store: () {
@@ -77,8 +82,6 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                   data: SfDataGridThemeData(headerColor: blue),
                   child: SfDataGrid(
                     source: _safetyChecklistDataSource,
-                    //key: key,
-
                     allowEditing: true,
                     frozenColumnsCount: 2,
                     gridLinesVisibility: GridLinesVisibility.both,
@@ -88,7 +91,6 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                     columnWidthMode: ColumnWidthMode.auto,
                     editingGestureType: EditingGestureType.tap,
                     controller: _dataGridController,
-
                     columns: [
                       GridColumn(
                         columnName: 'srNo',
@@ -336,6 +338,8 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
     FirebaseFirestore.instance
         .collection('SafetyChecklistTable')
         .doc(widget.depoName!)
+        .collection('Safety Data')
+        .doc(DateFormat('MMMM').format(DateTime.now()))
         .set(
       {'data': tabledata2},
       SetOptions(merge: true),
