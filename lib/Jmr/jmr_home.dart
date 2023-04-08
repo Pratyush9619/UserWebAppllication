@@ -5,12 +5,11 @@ import 'package:assingment/model/jmr.dart';
 import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import '../KeysEvents/Grid_DataTable.dart';
 import '../datasource/jmr_datasource.dart';
 import '../widget/custom_appbar.dart';
+import '../widget/nodata_available.dart';
 
 class JMRPage extends StatefulWidget {
   String? cityName;
@@ -57,7 +56,7 @@ class _JMRPageState extends State<JMRPage> {
         // ignore: sort_child_properties_last
         child: CustomAppBar(
             text:
-                '${widget.cityName} / ${widget.depoName} / widget.title.toString()',
+                '${widget.cityName} / ${widget.depoName} / ${widget.title.toString()}',
             // icon: Icons.logout,
             haveSynced: true,
             store: () {
@@ -290,6 +289,26 @@ class _JMRPageState extends State<JMRPage> {
                                           color: white)),
                                 ),
                               ),
+                              GridColumn(
+                                columnName: 'Delete',
+                                autoFitPadding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                allowEditing: false,
+                                width: 120,
+                                label: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  alignment: Alignment.center,
+                                  child: Text('Delete Row',
+                                      overflow: TextOverflow.values.first,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: white)
+                                      //    textAlign: TextAlign.center,
+                                      ),
+                                ),
+                              ),
                             ],
 
                             // stackedHeaderRows: [
@@ -470,6 +489,26 @@ class _JMRPageState extends State<JMRPage> {
                                           color: white)),
                                 ),
                               ),
+                              GridColumn(
+                                columnName: 'Delete',
+                                autoFitPadding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                allowEditing: false,
+                                width: 120,
+                                label: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  alignment: Alignment.center,
+                                  child: Text('Delete Row',
+                                      overflow: TextOverflow.values.first,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: white)
+                                      //    textAlign: TextAlign.center,
+                                      ),
+                                ),
+                              ),
                             ],
                             // stackedHeaderRows: [
                             //   StackedHeaderRow(cells: [
@@ -559,6 +598,7 @@ class _JMRPageState extends State<JMRPage> {
                   child: Align(
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
+                        heroTag: "btn1",
                         onPressed: () {
                           jmrtable.add(
                             JMRModel(
@@ -583,6 +623,7 @@ class _JMRPageState extends State<JMRPage> {
               ],
             ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: "btn2",
         isExtended: true,
         onPressed: () {},
         label: Text('Upload Excel For Data'),

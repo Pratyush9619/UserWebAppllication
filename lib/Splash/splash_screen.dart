@@ -26,7 +26,7 @@ class SplashScreenState extends State<SplashScreen> {
         const Duration(milliseconds: 2000),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) =>
-                // LoginRegister()
+                //  const LoginRegister()
                 HomePage())));
     // user ? const LoginRegister() : const HomePage())));
   }

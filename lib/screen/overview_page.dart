@@ -1,10 +1,12 @@
 import 'package:assingment/Planning_Pages/depot_overview.dart';
 import 'package:assingment/Planning_Pages/jmr.dart';
 import 'package:assingment/Planning_Pages/quality_checklist.dart';
+import 'package:assingment/Planning_Pages/resource_allocation.dart';
 import 'package:assingment/Planning_Pages/safety_checklist.dart';
 import 'package:assingment/overview/daily_project.dart';
 import 'package:assingment/overview/detailed_Eng.dart';
 import 'package:assingment/overview/key_events.dart';
+import 'package:assingment/overview/testing_report.dart';
 
 import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +42,9 @@ class _OverviewPageState extends State<OverviewPage> {
     'assets/overview_image/overview.png',
     'assets/overview_image/project_planning.png',
     'assets/overview_image/resource.png',
-    'assets/overview_image/monthly.png',
     'assets/overview_image/daily_progress.png',
+    'assets/overview_image/monthly.png',
+
     'assets/overview_image/detailed_engineering.png',
     'assets/overview_image/jmr.png',
     // 'assets/overview_image/safety.png',
@@ -49,8 +52,8 @@ class _OverviewPageState extends State<OverviewPage> {
     'assets/overview_image/quality.png',
     // 'assets/overview_image/testing_commissioning.png',
     'assets/overview_image/testing_commissioning.png',
+    'assets/overview_image/closure_report.png',
     'assets/overview_image/easy_monitoring.jpg',
-    'assets/overview_image/closure_report.png'
   ];
 
   @override
@@ -59,8 +62,9 @@ class _OverviewPageState extends State<OverviewPage> {
       'Overview of Project Progress Status of ${widget.depoName} EV Bus Charging Infra',
       'Project Planning & Scheduling Bus Depot Wise [Gant Chart] ',
       'Resource Allocation Planning',
-      'Monthly Project Monitoring & Review',
       'Submission of Daily Progress Report for Individual Project',
+      'Monthly Project Monitoring & Review',
+
       'Detailed Engineering Of Project Documents like GTP, GA Drawing',
       // 'Tracking of Individual Project Progress (SI No 2 & 6 S1 No.link)',
       'Online JMR verification for projects',
@@ -69,36 +73,27 @@ class _OverviewPageState extends State<OverviewPage> {
       // 'Quality check list & observation',
       // 'FQP Checklist for Civil & Electrical work',
       'Testing & Commissioning Reports of Equipment',
-      'Easy monitoring of O & M schedule for all the equipment of depots.',
       'Closure Report',
+      'Easy monitoring of O & M schedule for all the equipment of depots.',
     ];
     pages = [
       DepotOverview(
         cityName: widget.cityName,
         depoName: widget.depoName,
       ),
-
       KeyEvents(
         depoName: widget.depoName,
         cityName: widget.cityName,
       ),
-      KeyEvents(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-      ),
-      // PlanningPage(
-      //   cityName: widget.cityName,
-      //   depoName: widget.depoName,
-      // ),
-      // PlanningPage(
-      //   cityName: widget.cityName,
-      //   depoName: widget.depoName,
-      // ),
-      MonthlyProject(
+      ResourceAllocation(
         depoName: widget.depoName,
         cityName: widget.cityName,
       ),
       DailyProject(
+        depoName: widget.depoName,
+        cityName: widget.cityName,
+      ),
+      MonthlyProject(
         depoName: widget.depoName,
         cityName: widget.cityName,
       ),
@@ -123,10 +118,14 @@ class _OverviewPageState extends State<OverviewPage> {
         cityName: widget.cityName,
         depoName: widget.depoName,
       ),
-      // PlanningPage(
-      //   cityName: widget.cityName,
+      // KeyEvents(
       //   depoName: widget.depoName,
+      //   cityName: widget.depoName,
       // ),
+      TestingReport(
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
       KeyEvents(
         depoName: widget.depoName,
         cityName: widget.depoName,

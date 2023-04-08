@@ -126,7 +126,6 @@ TextStyle overlineWhite60 = GoogleFonts.ibmPlexSans(
     letterSpacing: 1.5,
     color: white60);
 Color red = Color(0xffff2e50);
-Color red2 = Color(0xffff526e);
 
 //********************* */
 TextStyle title16 = GoogleFonts.ibmPlexSans(

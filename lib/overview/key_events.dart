@@ -229,8 +229,8 @@ class _KeyEventsState extends State<KeyEvents> {
         ? LoadingPage()
         : Scaffold(
             appBar: AppBar(
-              title:
-                  Text('Key Events / ${widget.cityName} / ${widget.depoName}'),
+              title: Text(
+                  '${widget.cityName} / ${widget.depoName} / Key Events  '),
               backgroundColor: blue,
             ),
             body: StreamBuilder(

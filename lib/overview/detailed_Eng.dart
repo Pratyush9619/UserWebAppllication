@@ -544,6 +544,26 @@ class _DetailedEngtState extends State<DetailedEng>
                                 ),
                           ),
                         ),
+                        GridColumn(
+                          columnName: 'Delete',
+                          autoFitPadding:
+                              const EdgeInsets.symmetric(horizontal: 16),
+                          allowEditing: false,
+                          width: 120,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Delete Row',
+                                overflow: TextOverflow.values.first,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)
+                                //    textAlign: TextAlign.center,
+                                ),
+                          ),
+                        ),
                       ]);
                 } else {
                   alldata = '';
@@ -735,6 +755,26 @@ class _DetailedEngtState extends State<DetailedEng>
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             alignment: Alignment.center,
                             child: Text('Release Date',
+                                overflow: TextOverflow.values.first,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)
+                                //    textAlign: TextAlign.center,
+                                ),
+                          ),
+                        ),
+                        GridColumn(
+                          columnName: 'Delete',
+                          autoFitPadding:
+                              const EdgeInsets.symmetric(horizontal: 16),
+                          allowEditing: false,
+                          width: 120,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Delete Row',
                                 overflow: TextOverflow.values.first,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -956,6 +996,25 @@ class _DetailedEngtState extends State<DetailedEng>
                               ),
                         ),
                       ),
+                      GridColumn(
+                        columnName: 'Delete',
+                        autoFitPadding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+                        allowEditing: false,
+                        width: 120,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Delete Row',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)
+                              //    textAlign: TextAlign.center,
+                              ),
+                        ),
+                      ),
                     ]);
               } else {
                 alldata = '';
@@ -1140,6 +1199,25 @@ class _DetailedEngtState extends State<DetailedEng>
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           alignment: Alignment.center,
                           child: Text('Release Date',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)
+                              //    textAlign: TextAlign.center,
+                              ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'Delete',
+                        autoFitPadding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+                        allowEditing: false,
+                        width: 120,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Delete Row',
                               overflow: TextOverflow.values.first,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -1384,6 +1462,26 @@ class _DetailedEngtState extends State<DetailedEng>
                                 ),
                           ),
                         ),
+                        GridColumn(
+                          columnName: 'Delete',
+                          autoFitPadding:
+                              const EdgeInsets.symmetric(horizontal: 16),
+                          allowEditing: false,
+                          width: 120,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Delete Row',
+                                overflow: TextOverflow.values.first,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)
+                                //    textAlign: TextAlign.center,
+                                ),
+                          ),
+                        ),
                       ]);
                 } else {
                   alldata = '';
@@ -1576,6 +1674,26 @@ class _DetailedEngtState extends State<DetailedEng>
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             alignment: Alignment.center,
                             child: Text('Release Date',
+                                overflow: TextOverflow.values.first,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: white)
+                                //    textAlign: TextAlign.center,
+                                ),
+                          ),
+                        ),
+                        GridColumn(
+                          columnName: 'Delete',
+                          autoFitPadding:
+                              const EdgeInsets.symmetric(horizontal: 16),
+                          allowEditing: false,
+                          width: 120,
+                          label: Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            alignment: Alignment.center,
+                            child: Text('Delete Row',
                                 overflow: TextOverflow.values.first,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,

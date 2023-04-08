@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../model/jmr.dart';
+import '../widget/style.dart';
 
 class JmrDataSource extends DataGridSource {
   // BuildContext mainContext;
@@ -67,7 +68,16 @@ class JmrDataSource extends DataGridSource {
               Alignment.center,
           // : Alignment.center,
           padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child:
+          child: (dataGridCell.columnName == 'Delete')
+              ? IconButton(
+                  onPressed: () {
+                    dataGridRows.remove(row);
+                    notifyListeners();
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: red,
+                  ))
               // dataGridCell.columnName == 'button'
               //     ? LayoutBuilder(
               //         builder: (BuildContext context, BoxConstraints constraints) {
@@ -400,9 +410,9 @@ class JmrDataSource extends DataGridSource {
               //             ],
               //           )
               //         :
-              Text(
-            dataGridCell.value.toString(),
-          ));
+              : Text(
+                  dataGridCell.value.toString(),
+                ));
     }).toList());
   }
 

@@ -48,6 +48,7 @@ class JMRModel {
       DataGridCell<dynamic>(columnName: 'Rate', value: rate),
       DataGridCell<dynamic>(columnName: 'TotalQty', value: TotalQty),
       DataGridCell<dynamic>(columnName: 'TotalAmount', value: TotalAmount),
+      DataGridCell(columnName: 'Delete', value: null)
     ]);
   }
 }

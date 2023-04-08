@@ -2,6 +2,7 @@ import 'package:assingment/model/employee.dart';
 import 'package:assingment/KeysEvents/upload.dart';
 import 'package:assingment/model/monthly_projectModel.dart';
 import 'package:assingment/widget/style.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +14,14 @@ import '../model/daily_projectModel.dart';
 
 class DailyDataSource extends DataGridSource {
   // String cityName;
-  // String depoName;
+  String depoName;
   BuildContext mainContext;
+
+  List data = [];
   DailyDataSource(
     this._montlyproject,
     this.mainContext,
+    this.depoName,
   ) {
     buildDataGridRows();
   }
@@ -45,7 +49,6 @@ class DailyDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
-    DateTime? rangeStartDate = DateTime.now();
     DateTime? rangeEndDate = DateTime.now();
     DateTime? date;
     DateTime? endDate;
@@ -53,77 +56,100 @@ class DailyDataSource extends DataGridSource {
     DateTime? rangeEndDate1 = DateTime.now();
     DateTime? date1;
     DateTime? endDate1;
+    final int dataRowIndex = dataGridRows.indexOf(row);
+
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: (dataGridCell.columnName == 'Date')
-              ? Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: mainContext,
-                            builder: (context) => AlertDialog(
-                                  title: const Text('All Date'),
-                                  content: Container(
-                                      height: 400,
-                                      width: 500,
-                                      child: SfDateRangePicker(
-                                        view: DateRangePickerView.month,
-                                        showTodayButton: true,
-                                        onSelectionChanged:
-                                            (DateRangePickerSelectionChangedArgs
-                                                args) {
-                                          if (args.value is PickerDateRange) {
-                                            rangeStartDate =
-                                                args.value.startDate;
-                                            rangeEndDate = args.value.endDate;
-                                          } else {
-                                            final List<PickerDateRange>
-                                                selectedRanges = args.value;
-                                          }
-                                        },
-                                        selectionMode:
-                                            DateRangePickerSelectionMode.single,
-                                        showActionButtons: true,
-                                        onSubmit: ((value) {
-                                          date =
-                                              DateTime.parse(value.toString());
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: (dataGridCell.columnName == 'Delete')
+              ? IconButton(
+                  onPressed: () async {
+                    // FirebaseFirestore.instance
+                    //     .collection('DailyProjectReport')
+                    //     .doc(depoName)
+                    //     .collection('Daily Data')
+                    //     .doc(DateFormat.yMMMMd().format(DateTime.now()))
+                    //     .update({
+                    //   'data': FieldValue.arrayRemove([0])
+                    // });
+                    print('object$dataRowIndex');
+                    dataGridRows.remove(row);
+                    notifyListeners();
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: red,
+                  ))
+              : (dataGridCell.columnName == 'Date')
+                  ? Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: mainContext,
+                                builder: (context) => AlertDialog(
+                                      title: const Text('All Date'),
+                                      content: SizedBox(
+                                          height: 400,
+                                          width: 500,
+                                          child: SfDateRangePicker(
+                                            view: DateRangePickerView.month,
+                                            showTodayButton: true,
+                                            onSelectionChanged:
+                                                (DateRangePickerSelectionChangedArgs
+                                                    args) {
+                                              if (args.value
+                                                  is PickerDateRange) {
+                                                rangeEndDate =
+                                                    args.value.endDate;
+                                              } else {
+                                                final List<PickerDateRange>
+                                                    selectedRanges = args.value;
+                                              }
+                                            },
+                                            selectionMode:
+                                                DateRangePickerSelectionMode
+                                                    .single,
+                                            showActionButtons: true,
+                                            onSubmit: ((value) {
+                                              date = DateTime.parse(
+                                                  value.toString());
 
-                                          final int dataRowIndex =
-                                              dataGridRows.indexOf(row);
-                                          if (dataRowIndex != null) {
-                                            final int dataRowIndex =
-                                                dataGridRows.indexOf(row);
-                                            dataGridRows[dataRowIndex]
-                                                    .getCells()[1] =
-                                                DataGridCell<String>(
-                                                    columnName: 'Date',
-                                                    value:
-                                                        DateFormat('dd-MM-yyyy')
+                                              final int dataRowIndex =
+                                                  dataGridRows.indexOf(row);
+                                              if (dataRowIndex != null) {
+                                                final int dataRowIndex =
+                                                    dataGridRows.indexOf(row);
+                                                dataGridRows[dataRowIndex]
+                                                        .getCells()[1] =
+                                                    DataGridCell<String>(
+                                                        columnName: 'Date',
+                                                        value: DateFormat(
+                                                                'dd-MM-yyyy')
                                                             .format(date!));
-                                            _montlyproject[dataRowIndex].date =
-                                                DateFormat('dd-MM-yyyy')
-                                                    .format(date!);
-                                            notifyListeners();
+                                                _montlyproject[dataRowIndex]
+                                                        .date =
+                                                    DateFormat('dd-MM-yyyy')
+                                                        .format(date!);
+                                                notifyListeners();
 
-                                            Navigator.pop(context);
-                                          }
-                                        }),
-                                      )),
-                                ));
-                      },
-                      icon: const Icon(Icons.calendar_today),
-                    ),
-                    Text(dataGridCell.value.toString()),
-                  ],
-                )
-              : Text(
-                  dataGridCell.value.toString(),
-                  textAlign: TextAlign.center,
-                ));
+                                                Navigator.pop(context);
+                                              }
+                                            }),
+                                          )),
+                                    ));
+                          },
+                          icon: const Icon(Icons.calendar_today),
+                        ),
+                        Text(dataGridCell.value.toString()),
+                      ],
+                    )
+                  : Text(
+                      dataGridCell.value.toString(),
+                      textAlign: TextAlign.center,
+                    ));
     }).toList());
   }
 
@@ -154,21 +180,7 @@ class DailyDataSource extends DataGridSource {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(columnName: 'SiNo', value: newCellValue);
       _montlyproject[dataRowIndex].siNo = newCellValue as int;
-    } else if (column.columnName == 'Date') {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<String>(columnName: 'Date', value: newCellValue);
-      _montlyproject[dataRowIndex].date = newCellValue.toString();
-    }
-    // else if (column.columnName == 'State') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<String>(columnName: 'State', value: newCellValue);
-    //   _montlyproject[dataRowIndex].state = newCellValue;
-    // } else if (column.columnName == 'DepotName') {
-    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-    //       DataGridCell<dynamic>(columnName: 'DepotName', value: newCellValue);
-    //   _montlyproject[dataRowIndex].depotName = newCellValue;
-    // }
-    else if (column.columnName == 'TypeOfActivity') {
+    } else if (column.columnName == 'TypeOfActivity') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(
               columnName: 'TypeOfActivity', value: newCellValue);

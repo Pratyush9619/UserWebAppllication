@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
 import '../widget/style.dart';
 
 bool _isLoading = false;
@@ -25,7 +24,11 @@ class ViewFile extends StatefulWidget {
 }
 
 class _ViewFileState extends State<ViewFile> {
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   Uint8List? _documentBytes;
+  // final pdfController = PdfController(
+  //   document: PdfDocument.openAsset('assets/GIS.pdf'),
+  // );
   @override
   void initState() {
     getPdfBytes();
@@ -47,19 +50,28 @@ class _ViewFileState extends State<ViewFile> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Syncfusion Flutter PDF Viewer'),
-        backgroundColor: blue,
-      ),
-      body: child,
-      //  SfPdfViewer.network(
-      //     'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')
-    );
+        appBar: AppBar(
+          title: const Text('Syncfusion Flutter PDF Viewer'),
+          backgroundColor: blue,
+        ),
+        body: child
+        // child,
+        // body: PdfView(
+        //   controller: pdfController,
+        // )
+        //  SfPdfViewer.network(
+        //   'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf',
+        //   key: _pdfViewerKey,
+        // ),
+        // child,
+        //  SfPdfViewer.network(
+        //     'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')
+        );
   }
 
   void getPdfBytes() async {
     String? path =
-        'https://firebasestorage.googleapis.com/v0/b/flutterfirebase-6c279.appspot.com/o/GIS.pdf?alt=media&token=51654170-c140-4ffa-ae1a-9fb431d0dee2';
+        'https://firebasestorage.googleapis.com/v0/b/tp-zap-solz.appspot.com/o/checklist%2FJammu%2FDRDO%2Fdepot.pdf?alt=media&token=ca6d1483-c5a6-4216-a46b-98ccd2de0c06';
 
     if (kIsWeb) {
       firebase_storage.Reference pdfRef =

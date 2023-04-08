@@ -61,6 +61,7 @@ class DepotOverviewModel {
       DataGridCell<dynamic>(columnName: 'Reason', value: reason),
       DataGridCell(columnName: 'TargetDate', value: TargetDate),
       DataGridCell<dynamic>(columnName: 'Status', value: status),
+      const DataGridCell(columnName: 'Delete', value: null)
     ]);
   }
 }

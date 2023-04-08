@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class QualitychecklistModel {
@@ -25,7 +23,7 @@ class QualitychecklistModel {
         srNo: json['srNo'],
         checklist: json['checklist'],
         responsibility: json['responsibility'],
-        reference: json['reference'],
+        reference: json['Reference'],
         observation: json['observation'],
         photoNo: json['photoNo']);
     // weightage: json['Weightage']);
@@ -36,10 +34,10 @@ class QualitychecklistModel {
       DataGridCell<int>(columnName: 'srNo', value: srNo),
       DataGridCell<String>(columnName: 'checklist', value: checklist),
       DataGridCell<String>(columnName: 'responsibility', value: responsibility),
-      DataGridCell<String>(columnName: 'reference', value: reference),
+      DataGridCell<dynamic>(columnName: 'Reference', value: reference),
       DataGridCell<String>(columnName: 'observation', value: observation),
       DataGridCell<int>(columnName: 'photoNo', value: photoNo),
-      // DataGridCell<double>(columnName: 'Weightage', value: weightage),
+      const DataGridCell(columnName: 'Delete', value: null)
     ]);
   }
 }

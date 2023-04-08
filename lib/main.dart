@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'TP-EV-PMIS',
       theme: ThemeData(
         brightness: Brightness.light,
         fontFamily: 'ibmPlexSans',

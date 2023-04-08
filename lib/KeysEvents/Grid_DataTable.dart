@@ -1,11 +1,7 @@
 import 'dart:io';
-
 import 'package:assingment/Authentication/login_register.dart';
 import 'package:assingment/model/employee.dart';
-import 'package:assingment/KeysEvents/openpdf.dart';
-import 'package:assingment/KeysEvents/upload.dart';
 import 'package:assingment/components/loading_page.dart';
-import 'package:assingment/overview/project_planning.dart';
 import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +10,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../datasource/employee_datasouce.dart';
 import '../widget/custom_appbar.dart';
+import '../widget/nodata_available.dart';
 
 void main() {
   runApp(KeyDataTable());
@@ -665,61 +662,6 @@ class _KeyDataTableState extends State<KeyDataTable> {
 //       );
 //     }).toList());
 //   }
-
-NodataAvailable() {
-  return Center(
-      child: Padding(
-    padding: const EdgeInsets.all(10.0),
-    child: Container(
-      padding: EdgeInsets.all(10),
-      height: 1000,
-      width: 1000,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: blue)),
-      child: Column(children: [
-        Image.asset(
-          'assets/Tata-Power.jpeg',
-        ),
-        SizedBox(height: 50),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/sustainable.jpeg',
-              height: 100,
-              width: 100,
-            ),
-            SizedBox(width: 50),
-            Image.asset(
-              'assets/Green.jpeg',
-              height: 100,
-              width: 100,
-            )
-          ],
-        ),
-        const SizedBox(height: 50),
-        Center(
-          child: Container(
-            padding: EdgeInsets.all(25),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: blue)),
-            child: const Text(
-              '     No data available yet \n Please wait for admin process',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ),
-        )
-      ]),
-    ),
-  )
-      // Text(
-      //   "No Depot Available at This Time....",
-      //   style: TextStyle(color: black),
-      // ),
-      );
-}
 
 Future<bool> onWillPop(BuildContext context) async {
   bool a = false;

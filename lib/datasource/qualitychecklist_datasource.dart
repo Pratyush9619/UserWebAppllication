@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import '../model/jmr.dart';
+import '../widget/style.dart';
 
 class QualityChecklistDataSource extends DataGridSource {
   // BuildContext mainContext;
@@ -38,14 +38,6 @@ class QualityChecklistDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
-    DateTime? rangeStartDate = DateTime.now();
-    DateTime? rangeEndDate = DateTime.now();
-    DateTime? date;
-    DateTime? endDate;
-    DateTime? rangeStartDate1 = DateTime.now();
-    DateTime? rangeEndDate1 = DateTime.now();
-    DateTime? date1;
-    DateTime? endDate1;
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
@@ -443,11 +435,10 @@ class QualityChecklistDataSource extends DataGridSource {
           DataGridCell<String>(
               columnName: 'responsibility', value: newCellValue);
       _checklistModel[dataRowIndex].responsibility = newCellValue.toString();
-    } else if (column.columnName == 'reference') {
+    } else if (column.columnName == 'Reference') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<dynamic>(
-              columnName: 'reference', value: newCellValue as int);
-      _checklistModel[dataRowIndex].reference = newCellValue as dynamic;
+          DataGridCell<dynamic>(columnName: 'Reference', value: newCellValue);
+      _checklistModel[dataRowIndex].reference = newCellValue;
     } else if (column.columnName == 'observation') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'observation', value: newCellValue);
@@ -486,8 +477,7 @@ class QualityChecklistDataSource extends DataGridSource {
     final bool isNumericType = column.columnName == 'srNo' ||
         column.columnName == 'Rate' ||
         column.columnName == 'TotalQty' ||
-        column.columnName == 'TotalAmount' ||
-        column.columnName == 'RefNo';
+        column.columnName == 'TotalAmount';
 
     final bool isDateTimeType = column.columnName == 'StartDate' ||
         column.columnName == 'EndDate' ||

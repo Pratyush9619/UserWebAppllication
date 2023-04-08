@@ -46,7 +46,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
         .collection('MonthlyProjectReport')
         .doc('${widget.depoName}')
         .collection('Monthly Data')
-        .doc(DateFormat('MMMM').format(DateTime.now()))
+        .doc(DateFormat.yMMM().format(DateTime.now()))
         .snapshots();
     _isloading = false;
     super.initState();
@@ -252,7 +252,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               alignment: Alignment.center,
-                              child: Text('Status',
+                              child: Text('Remark/Status',
                                   overflow: TextOverflow.values.first,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -517,7 +517,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
         .collection('MonthlyProjectReport')
         .doc('${widget.depoName}')
         .collection('Monthly Data')
-        .doc(DateFormat('MMMM').format(DateTime.now()))
+        .doc(DateFormat.yMMM().format(DateTime.now()))
         .set({
       'data': tabledata2,
     }).whenComplete(() {

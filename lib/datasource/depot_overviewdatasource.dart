@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../model/depot_overview.dart';
+import '../widget/style.dart';
 
 class DepotOverviewDatasource extends DataGridSource {
   BuildContext mainContext;
@@ -75,66 +76,17 @@ class DepotOverviewDatasource extends DataGridSource {
       return Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: (dataGridCell.columnName == 'Date')
-              ? Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: mainContext,
-                            builder: (context) => AlertDialog(
-                                  title: const Text('All Date'),
-                                  content: Container(
-                                      height: 400,
-                                      width: 500,
-                                      child: SfDateRangePicker(
-                                        view: DateRangePickerView.month,
-                                        showTodayButton: true,
-                                        onSelectionChanged:
-                                            (DateRangePickerSelectionChangedArgs
-                                                args) {
-                                          if (args.value is PickerDateRange) {
-                                            rangeStartDate =
-                                                args.value.startDate;
-                                            rangeEndDate = args.value.endDate;
-                                          }
-                                        },
-                                        selectionMode:
-                                            DateRangePickerSelectionMode.single,
-                                        showActionButtons: true,
-                                        onSubmit: ((value) {
-                                          date =
-                                              DateTime.parse(value.toString());
-
-                                          final int dataRowIndex =
-                                              dataGridRows.indexOf(row);
-                                          if (dataRowIndex != null) {
-                                            final int dataRowIndex =
-                                                dataGridRows.indexOf(row);
-                                            dataGridRows[dataRowIndex]
-                                                    .getCells()[1] =
-                                                DataGridCell<String>(
-                                                    columnName: 'Date',
-                                                    value:
-                                                        DateFormat('dd-MM-yyyy')
-                                                            .format(date!));
-                                            _employees[dataRowIndex].date =
-                                                DateFormat('dd-MM-yyyy')
-                                                    .format(date!);
-                                            notifyListeners();
-
-                                            Navigator.pop(context);
-                                          }
-                                        }),
-                                      )),
-                                ));
-                      },
-                      icon: const Icon(Icons.calendar_today),
-                    ),
-                    Text(dataGridCell.value.toString()),
-                  ],
-                )
-              : (dataGridCell.columnName == 'TargetDate')
+          child: (dataGridCell.columnName == 'Delete')
+              ? IconButton(
+                  onPressed: () {
+                    dataGridRows.remove(row);
+                    notifyListeners();
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: red,
+                  ))
+              : (dataGridCell.columnName == 'Date')
                   ? Row(
                       children: [
                         IconButton(
@@ -158,9 +110,6 @@ class DepotOverviewDatasource extends DataGridSource {
                                                     args.value.startDate;
                                                 rangeEndDate =
                                                     args.value.endDate;
-                                              } else {
-                                                final List<PickerDateRange>
-                                                    selectedRanges = args.value;
                                               }
                                             },
                                             selectionMode:
@@ -177,15 +126,13 @@ class DepotOverviewDatasource extends DataGridSource {
                                                 final int dataRowIndex =
                                                     dataGridRows.indexOf(row);
                                                 dataGridRows[dataRowIndex]
-                                                        .getCells()[10] =
+                                                        .getCells()[1] =
                                                     DataGridCell<String>(
-                                                        columnName:
-                                                            'TargetDate',
+                                                        columnName: 'Date',
                                                         value: DateFormat(
                                                                 'dd-MM-yyyy')
                                                             .format(date!));
-                                                _employees[dataRowIndex]
-                                                        .TargetDate =
+                                                _employees[dataRowIndex].date =
                                                     DateFormat('dd-MM-yyyy')
                                                         .format(date!);
                                                 notifyListeners();
@@ -201,43 +148,77 @@ class DepotOverviewDatasource extends DataGridSource {
                         Text(dataGridCell.value.toString()),
                       ],
                     )
-                  : dataGridCell.columnName == 'TypeRisk'
-                      ? DropdownButton<String>(
-                          value: dataGridCell.value,
-                          autofocus: true,
-                          focusColor: Colors.transparent,
-                          underline: const SizedBox.shrink(),
-                          icon: const Icon(Icons.arrow_drop_down_sharp),
-                          isExpanded: true,
-                          style: textStyle,
-                          onChanged: (String? value) {
-                            final dynamic oldValue = row
-                                    .getCells()
-                                    .firstWhereOrNull((DataGridCell dataCell) =>
-                                        dataCell.columnName ==
-                                        dataGridCell.columnName)
-                                    ?.value ??
-                                '';
-                            if (oldValue == value || value == null) {
-                              return;
-                            }
+                  : (dataGridCell.columnName == 'TargetDate')
+                      ? Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: mainContext,
+                                    builder: (context) => AlertDialog(
+                                          title: const Text('All Date'),
+                                          content: Container(
+                                              height: 400,
+                                              width: 500,
+                                              child: SfDateRangePicker(
+                                                view: DateRangePickerView.month,
+                                                showTodayButton: true,
+                                                onSelectionChanged:
+                                                    (DateRangePickerSelectionChangedArgs
+                                                        args) {
+                                                  if (args.value
+                                                      is PickerDateRange) {
+                                                    rangeStartDate =
+                                                        args.value.startDate;
+                                                    rangeEndDate =
+                                                        args.value.endDate;
+                                                  } else {
+                                                    final List<PickerDateRange>
+                                                        selectedRanges =
+                                                        args.value;
+                                                  }
+                                                },
+                                                selectionMode:
+                                                    DateRangePickerSelectionMode
+                                                        .single,
+                                                showActionButtons: true,
+                                                onSubmit: ((value) {
+                                                  date = DateTime.parse(
+                                                      value.toString());
 
-                            final int dataRowIndex = dataGridRows.indexOf(row);
-                            dataGridRows[dataRowIndex].getCells()[3] =
-                                DataGridCell<String>(
-                                    columnName: 'TypeRisk', value: value);
-                            _employees[dataRowIndex].typeRisk =
-                                value.toString();
-                            notifyListeners();
-                          },
-                          items: typeRiskMenuItems
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList())
-                      : dataGridCell.columnName == 'impactRisk'
+                                                  final int dataRowIndex =
+                                                      dataGridRows.indexOf(row);
+                                                  if (dataRowIndex != null) {
+                                                    final int dataRowIndex =
+                                                        dataGridRows
+                                                            .indexOf(row);
+                                                    dataGridRows[dataRowIndex]
+                                                            .getCells()[
+                                                        10] = DataGridCell<
+                                                            String>(
+                                                        columnName:
+                                                            'TargetDate',
+                                                        value: DateFormat(
+                                                                'dd-MM-yyyy')
+                                                            .format(date!));
+                                                    _employees[dataRowIndex]
+                                                            .TargetDate =
+                                                        DateFormat('dd-MM-yyyy')
+                                                            .format(date!);
+                                                    notifyListeners();
+
+                                                    Navigator.pop(context);
+                                                  }
+                                                }),
+                                              )),
+                                        ));
+                              },
+                              icon: const Icon(Icons.calendar_today),
+                            ),
+                            Text(dataGridCell.value.toString()),
+                          ],
+                        )
+                      : dataGridCell.columnName == 'TypeRisk'
                           ? DropdownButton<String>(
                               value: dataGridCell.value,
                               autofocus: true,
@@ -261,14 +242,14 @@ class DepotOverviewDatasource extends DataGridSource {
 
                                 final int dataRowIndex =
                                     dataGridRows.indexOf(row);
-                                dataGridRows[dataRowIndex].getCells()[4] =
+                                dataGridRows[dataRowIndex].getCells()[3] =
                                     DataGridCell<String>(
-                                        columnName: 'impactRisk', value: value);
-                                _employees[dataRowIndex].impactRisk =
+                                        columnName: 'TypeRisk', value: value);
+                                _employees[dataRowIndex].typeRisk =
                                     value.toString();
                                 notifyListeners();
                               },
-                              items: impactRiskMenuItems
+                              items: typeRiskMenuItems
                                   .map<DropdownMenuItem<String>>(
                                       (String value) {
                                 return DropdownMenuItem<String>(
@@ -276,7 +257,7 @@ class DepotOverviewDatasource extends DataGridSource {
                                   child: Text(value),
                                 );
                               }).toList())
-                          : dataGridCell.columnName == 'Status'
+                          : dataGridCell.columnName == 'impactRisk'
                               ? DropdownButton<String>(
                                   value: dataGridCell.value,
                                   autofocus: true,
@@ -300,14 +281,15 @@ class DepotOverviewDatasource extends DataGridSource {
 
                                     final int dataRowIndex =
                                         dataGridRows.indexOf(row);
-                                    dataGridRows[dataRowIndex].getCells()[11] =
+                                    dataGridRows[dataRowIndex].getCells()[4] =
                                         DataGridCell<String>(
-                                            columnName: 'Status', value: value);
-                                    _employees[dataRowIndex].status =
+                                            columnName: 'impactRisk',
+                                            value: value);
+                                    _employees[dataRowIndex].impactRisk =
                                         value.toString();
                                     notifyListeners();
                                   },
-                                  items: statusMenuItems
+                                  items: impactRiskMenuItems
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
                                     return DropdownMenuItem<String>(
@@ -315,10 +297,53 @@ class DepotOverviewDatasource extends DataGridSource {
                                       child: Text(value),
                                     );
                                   }).toList())
-                              : Text(
-                                  dataGridCell.value.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                ));
+                              : dataGridCell.columnName == 'Status'
+                                  ? DropdownButton<String>(
+                                      value: dataGridCell.value,
+                                      autofocus: true,
+                                      focusColor: Colors.transparent,
+                                      underline: const SizedBox.shrink(),
+                                      icon: const Icon(
+                                          Icons.arrow_drop_down_sharp),
+                                      isExpanded: true,
+                                      style: textStyle,
+                                      onChanged: (String? value) {
+                                        final dynamic oldValue = row
+                                                .getCells()
+                                                .firstWhereOrNull(
+                                                    (DataGridCell dataCell) =>
+                                                        dataCell.columnName ==
+                                                        dataGridCell.columnName)
+                                                ?.value ??
+                                            '';
+                                        if (oldValue == value ||
+                                            value == null) {
+                                          return;
+                                        }
+
+                                        final int dataRowIndex =
+                                            dataGridRows.indexOf(row);
+                                        dataGridRows[dataRowIndex]
+                                                .getCells()[11] =
+                                            DataGridCell<String>(
+                                                columnName: 'Status',
+                                                value: value);
+                                        _employees[dataRowIndex].status =
+                                            value.toString();
+                                        notifyListeners();
+                                      },
+                                      items: statusMenuItems
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList())
+                                  : Text(
+                                      dataGridCell.value.toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                    ));
     }).toList());
   }
 

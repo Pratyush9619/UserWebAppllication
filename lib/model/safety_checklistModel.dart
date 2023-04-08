@@ -32,7 +32,6 @@ class SafetyChecklistModel {
     return DataGridRow(cells: <DataGridCell>[
       DataGridCell<double>(columnName: 'srNo', value: srNo),
       DataGridCell<String>(columnName: 'Details', value: details),
-
       DataGridCell<String>(columnName: 'Status', value: status),
       DataGridCell<String>(columnName: 'Remark', value: remark),
       DataGridCell<String>(columnName: 'Photo', value: photo),

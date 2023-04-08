@@ -520,6 +520,27 @@ class _DepotOverviewState extends State<DepotOverview> {
                                                 fontSize: 16)),
                                       ),
                                     ),
+                                    GridColumn(
+                                      columnName: 'Delete',
+                                      autoFitPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                      allowEditing: false,
+                                      width: 120,
+                                      label: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        alignment: Alignment.center,
+                                        child: Text('Delete Row',
+                                            overflow: TextOverflow.values.first,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            )
+                                            //    textAlign: TextAlign.center,
+                                            ),
+                                      ),
+                                    ),
                                   ],
                                 );
                               } else {
@@ -769,6 +790,27 @@ class _DepotOverviewState extends State<DepotOverview> {
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16)),
+                                      ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'Delete',
+                                      autoFitPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                      allowEditing: false,
+                                      width: 120,
+                                      label: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        alignment: Alignment.center,
+                                        child: Text('Delete Row',
+                                            overflow: TextOverflow.values.first,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            )
+                                            //    textAlign: TextAlign.center,
+                                            ),
                                       ),
                                     ),
                                   ],

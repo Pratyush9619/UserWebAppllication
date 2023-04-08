@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../model/jmr.dart';
+import '../widget/style.dart';
 
 class QualitycmuDataSource extends DataGridSource {
   // BuildContext mainContext;
@@ -68,7 +69,26 @@ class QualitycmuDataSource extends DataGridSource {
               Alignment.center,
           // : Alignment.center,
           padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child:
+          child: (dataGridCell.columnName == 'Delete')
+              ? IconButton(
+                  onPressed: () async {
+                    // FirebaseFirestore.instance
+                    //     .collection('DailyProjectReport')
+                    //     .doc(depoName)
+                    //     .collection('Daily Data')
+                    //     .doc(DateFormat.yMMMMd().format(DateTime.now()))
+                    //     .update({
+                    //   'data': FieldValue.arrayRemove([0])
+                    // });
+
+                    dataGridRows.remove(row);
+                    notifyListeners();
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: red,
+                  ))
+              :
               // dataGridCell.columnName == 'button'
               //     ? LayoutBuilder(
               //         builder: (BuildContext context, BoxConstraints constraints) {
@@ -402,8 +422,8 @@ class QualitycmuDataSource extends DataGridSource {
               //           )
               //         :
               Text(
-            dataGridCell.value.toString(),
-          ));
+                  dataGridCell.value.toString(),
+                ));
     }).toList());
   }
 

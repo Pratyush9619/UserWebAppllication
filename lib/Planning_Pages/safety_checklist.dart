@@ -40,7 +40,7 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
         .collection('SafetyChecklistTable')
         .doc(widget.depoName!)
         .collection('Safety Data')
-        .doc(DateFormat('MMMM').format(DateTime.now()))
+        .doc(DateFormat.yMMMMd().format(DateTime.now()))
         .snapshots();
     super.initState();
   }
@@ -51,7 +51,7 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
         // ignore: sort_child_properties_last
         child: CustomAppBar(
             text:
-                '${widget.cityName} / ${widget.depoName} / SafetyChecklist / ${DateFormat('MMMM').format(DateTime.now())}',
+                '${widget.cityName} / ${widget.depoName} / SafetyChecklist / ${DateFormat.yMMMMd().format(DateTime.now())}',
             // icon: Icons.logout,
             haveSummary: true,
             onTap: () => Navigator.push(
@@ -314,7 +314,6 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                   ),
                 );
               }
-              return NodataAvailable();
             },
           ),
         ),
@@ -339,7 +338,7 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
         .collection('SafetyChecklistTable')
         .doc(widget.depoName!)
         .collection('Safety Data')
-        .doc(DateFormat('MMMM').format(DateTime.now()))
+        .doc(DateFormat.yMMMMd().format(DateTime.now()))
         .set(
       {'data': tabledata2},
       SetOptions(merge: true),

@@ -30,7 +30,7 @@ class _DailyProjectState extends State<DailyProject> {
   void initState() {
     getmonthlyReport();
     dailyproject = getmonthlyReport();
-    _dailyDataSource = DailyDataSource(dailyproject, context);
+    _dailyDataSource = DailyDataSource(dailyproject, context, widget.depoName!);
     _dataGridController = DataGridController();
 
     _stream = FirebaseFirestore.instance
@@ -50,7 +50,7 @@ class _DailyProjectState extends State<DailyProject> {
           // ignore: sort_child_properties_last
           child: CustomAppBar(
             text:
-                'Dailly Report/ ${widget.cityName}/ ${widget.depoName} / ${DateFormat.yMMMMd().format(DateTime.now())}',
+                ' ${widget.cityName}/ ${widget.depoName} / Daily Report/ ${DateFormat.yMMMMd().format(DateTime.now())}',
             haveSynced: true,
             haveSummary: true,
             onTap: () => Navigator.push(
@@ -244,6 +244,25 @@ class _DailyProjectState extends State<DailyProject> {
                               ),
                         ),
                       ),
+                      GridColumn(
+                        columnName: 'Delete',
+                        autoFitPadding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+                        allowEditing: false,
+                        width: 120,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Delete Row',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)
+                              //    textAlign: TextAlign.center,
+                              ),
+                        ),
+                      ),
                     ]),
               );
             } else {
@@ -252,7 +271,8 @@ class _DailyProjectState extends State<DailyProject> {
               dailyproject.clear();
               alldata.forEach((element) {
                 dailyproject.add(DailyProjectModel.fromjson(element));
-                _dailyDataSource = DailyDataSource(dailyproject, context);
+                _dailyDataSource =
+                    DailyDataSource(dailyproject, context, widget.depoName!);
                 _dataGridController = DataGridController();
               });
               return SfDataGridTheme(
@@ -424,6 +444,25 @@ class _DailyProjectState extends State<DailyProject> {
                               ),
                         ),
                       ),
+                      GridColumn(
+                        columnName: 'Delete',
+                        autoFitPadding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+                        allowEditing: false,
+                        width: 120,
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          alignment: Alignment.center,
+                          child: Text('Delete Row',
+                              overflow: TextOverflow.values.first,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: white)
+                              //    textAlign: TextAlign.center,
+                              ),
+                        ),
+                      ),
                     ]),
               );
             }
@@ -452,7 +491,7 @@ class _DailyProjectState extends State<DailyProject> {
     Map<String, dynamic> table_data = Map();
     for (var i in _dailyDataSource.dataGridRows) {
       for (var data in i.getCells()) {
-        if (data.columnName != 'button') {
+        if (data.columnName != 'button' && data.columnName != 'Delete') {
           table_data[data.columnName] = data.value;
         }
       }

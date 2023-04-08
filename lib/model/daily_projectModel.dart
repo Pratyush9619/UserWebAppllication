@@ -41,7 +41,8 @@ class DailyProjectModel {
       DataGridCell(columnName: 'TypeOfActivity', value: typeOfActivity),
       DataGridCell(columnName: 'ActivityDetails', value: activityDetails),
       DataGridCell(columnName: 'Progress', value: progress),
-      DataGridCell(columnName: 'Status', value: status)
+      DataGridCell(columnName: 'Status', value: status),
+      const DataGridCell(columnName: 'Delete', value: null)
     ]);
   }
 }
