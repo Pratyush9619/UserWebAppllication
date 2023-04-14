@@ -1,8 +1,5 @@
 import 'package:assingment/Authentication/auth_service.dart';
-import 'package:assingment/Authentication/auth_service.dart';
-import 'package:assingment/Authentication/auth_service.dart';
 import 'package:assingment/Authentication/login_register.dart';
-import 'package:assingment/screen/home_page.dart';
 import 'package:assingment/widget/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +14,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formkey = GlobalKey<FormState>();
   AuthService authService = AuthService();
+  bool _isHidden = true;
 
   String? firstname;
   String? lastname;
@@ -54,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Display First Name is required';
+                              return 'First Name is required';
                             }
 
                             return null;
@@ -71,7 +69,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               firstname = value;
                             });
                           }),
-
                       const SizedBox(height: 24),
                       TextFormField(
                           textInputAction: TextInputAction.next,
@@ -80,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Display Last Name is required';
+                              return 'Last Name is required';
                             }
 
                             // if (value.length < 5 || value.length > 12) {
@@ -109,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Display Number is required';
+                              return 'Number is required';
                             }
 
                             if (value.length < 10) {
@@ -130,7 +127,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               phone = value;
                             });
                           }),
-
                       const SizedBox(height: 24),
                       TextFormField(
                           textInputAction: TextInputAction.next,
@@ -214,21 +210,31 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SizedBox(height: 24),
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
+                          suffixIcon: InkWell(
+                              onTap: _togglePasswordView,
+                              child: _isHidden
+                                  ? const Icon(Icons.visibility)
+                                  : Icon(
+                                      Icons.visibility_off,
+                                      color: grey,
+                                    )),
                           labelText: "Password",
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Password is required';
                           }
-
-                          if (value.length < 5 || value.length > 20) {
-                            return 'Password must be betweem 5 and 20 characters';
+                          if (!RegExp(
+                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                              .hasMatch(value)) {
+                            return 'Password should be 8 caharecter & contain alphabate , numbers & special character';
                           }
                           return null;
                         },
                         // key: ValueKey('password'),
-                        obscureText: true,
+                        obscureText: _isHidden,
+
                         style: bodyText2White60,
                         keyboardType: TextInputType.visiblePassword,
                         // onSaved: (value) {
@@ -256,9 +262,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             return 'Confirm Password not matched with password';
                           }
 
-                          if (value.length < 5 || value.length > 20) {
-                            return 'Confirm Password must be betweem 5 and 20 characters';
-                          }
+                          // if (value.length < 5 || value.length > 20) {
+                          //   return 'Confirm Password must be betweem 5 and 20 characters';
+                          // }
 
                           return null;
                         },
@@ -293,42 +299,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                       ),
-                      //  _space(28),
-                      // Row(
-                      //   children: [
-                      //     const Expanded(
-                      //       child: Divider(thickness: 2, height: 1),
-                      //     ),
-                      //     Text("   OR   ", style: subtitle2black),
-                      //     const Expanded(
-                      //       child: Divider(thickness: 2, height: 1),
-                      //     ),
-                      //   ],
-                      // ),
                       _space(28),
-                      // InkWell(
-                      //   onTap: () => _googleLogin(context, authService),
-                      //   child: Container(
-                      //     height: 50,
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(6),
-                      //       color: darkGrey,
-                      //     ),
-                      //     child: Center(
-                      //       child: Row(
-                      //         mainAxisSize: MainAxisSize.min,
-                      //         children: [
-                      //           SvgPicture.string(
-                      //             '<svg xmlns="http://www.w3.org/2000/svg" width="19.6" height="20" viewBox="0 0 19.6 20"><defs></defs><path class="a" d="M3.064,7.51A10,10,0,0,1,12,2a9.6,9.6,0,0,1,6.69,2.6L15.823,7.473A5.4,5.4,0,0,0,12,5.977,6.007,6.007,0,0,0,6.405,13.9a6.031,6.031,0,0,0,8.981,3.168,4.6,4.6,0,0,0,2-3.018H12V10.182h9.418a11.5,11.5,0,0,1,.182,2.045,9.747,9.747,0,0,1-2.982,7.35A9.542,9.542,0,0,1,12,22,10,10,0,0,1,3.064,7.51Z" transform="translate(-2 -2)"/></svg>',
-                      //             color: almostWhite,
-                      //           ),
-                      //           Text("  Continue with google",
-                      //               style: button),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       _space(5),
                       Center(
                         child: Image.asset(
@@ -337,26 +308,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           width: 200,
                         ),
                       ),
-                      // RichText(
-                      //   text: TextSpan(
-                      //     style: bodyText2White,
-                      //     children: <TextSpan>[
-                      //       TextSpan(
-                      //           text: 'Already a user ? ',
-                      //           style: bodyText1white.copyWith(color: black)),
-                      //       TextSpan(
-                      //           text: ' SignIn here',
-                      //           recognizer: TapGestureRecognizer()
-                      //             ..onTap = (() => Navigator.push(
-                      //                 context,
-                      //                 MaterialPageRoute(
-                      //                   builder: (context) =>
-                      //                       const SignInPage(),
-                      //                 ))),
-                      //           style: bodyText2White.copyWith(color: blue))
-                      //     ],
-                      //   ),
-                      // ),
                       _space(38),
                     ],
                   ),
@@ -410,17 +361,13 @@ class _RegisterPageState extends State<RegisterPage> {
               .then((value) {
             if (value == true) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('Registration Successfull Please Sign In'),
+                content: const Text('Registration Successfull Please Sign In'),
                 backgroundColor: blue,
               ));
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginRegister()),
+                MaterialPageRoute(builder: (context) => const LoginRegister()),
               );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const HomePage()),
-              // );
             } else {
               Navigator.pop(context);
               //     authService.firebaseauth.signOut();
@@ -507,4 +454,10 @@ class _RegisterPageState extends State<RegisterPage> {
   //     });
   //   }
   // }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
 }

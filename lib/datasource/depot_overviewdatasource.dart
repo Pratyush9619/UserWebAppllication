@@ -380,7 +380,7 @@ class DepotOverviewDatasource extends DataGridSource {
       _employees[dataRowIndex].date = newCellValue.toString();
     } else if (column.columnName == 'RiskDescription') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<dynamic>(
+          DataGridCell<String>(
               columnName: 'RiskDescription', value: newCellValue);
       _employees[dataRowIndex].riskDescription = newCellValue;
     } else if (column.columnName == 'TypeRisk') {
@@ -457,21 +457,18 @@ class DepotOverviewDatasource extends DataGridSource {
     // into the current non-modified [DataGridCell].
     newCellValue = null;
 
-    final bool isNumericType = column.columnName == 'OriginalDuration' ||
-        column.columnName == 'srNo' ||
-        column.columnName == 'ActualDuration' ||
-        column.columnName == 'Delay' ||
-        column.columnName == 'Unit' ||
-        column.columnName == 'QtyScope' ||
-        column.columnName == 'QtyExecuted' ||
-        column.columnName == 'BalancedQty' ||
-        column.columnName == 'Progress' ||
-        column.columnName == 'Weightage';
+    final bool isNumericType = column.columnName == 'srNo';
+    // column.columnName == 'ActualDuration' ||
+    // column.columnName == 'Delay' ||
+    // column.columnName == 'Unit' ||
+    // column.columnName == 'QtyScope' ||
+    // column.columnName == 'QtyExecuted' ||
+    // column.columnName == 'BalancedQty' ||
+    // column.columnName == 'Progress' ||
+    // column.columnName == 'Weightage';
 
-    final bool isDateTimeType = column.columnName == 'StartDate' ||
-        column.columnName == 'EndDate' ||
-        column.columnName == 'ActualStart' ||
-        column.columnName == 'ActualEnd';
+    final bool isDateTimeType =
+        column.columnName == 'Date' || column.columnName == 'TargetDate';
     // Holds regular expression pattern based on the column type.
     final RegExp regExp =
         _getRegExp(isNumericType, isDateTimeType, column.columnName);
@@ -523,6 +520,6 @@ class DepotOverviewDatasource extends DataGridSource {
         ? RegExp('[0-9.]')
         : isDateTimeBoard
             ? RegExp('[0-9-]')
-            : RegExp('[a-zA-Z ]');
+            : RegExp('[a-zA-Z0-9.@!#^&*(){+-}%|<>?_=+,/ )]');
   }
 }

@@ -293,10 +293,10 @@ class _SignInPageState extends State<SignInPage> {
                   builder: (context) => const HomePage(),
                 ));
           });
-          // ignore: use_build_context_synchronously
         } else {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Password is not correct')));
         }

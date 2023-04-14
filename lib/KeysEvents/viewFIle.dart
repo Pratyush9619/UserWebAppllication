@@ -152,22 +152,22 @@ class _ViewFileState extends State<ViewFile> {
   }
 }
 
-downloadFileWeb(String url, String fileName) async {
-  final httpsReference =
-      firebase_storage.FirebaseStorage.instance.refFromURL(url);
+// downloadFileWeb(String url, String fileName) async {
+//   final httpsReference =
+//       firebase_storage.FirebaseStorage.instance.refFromURL(url);
 
-  try {
-    const oneMegabyte = 1024 * 1024;
-    final Uint8List? data = await httpsReference.getData(oneMegabyte);
-    // Data for "images/island.jpg" is returned, use this as needed.
-    XFile.fromData(data!, mimeType: "application/pdf", name: fileName + ".pdf")
-        .saveTo("C:/"); // here Path is ignored
-  } on FirebaseException catch (e) {
-    // Handle any errors.
-  }
-  // for other platforms see this solution : https://firebase.google.com/docs/storage/flutter/download-files#download_to_a_local_file
-}
+//   try {
+//     const oneMegabyte = 1024 * 1024;
+//     final Uint8List? data = await httpsReference.getData(oneMegabyte);
+//     // Data for "images/island.jpg" is returned, use this as needed.
+//     XFile.fromData(data!, mimeType: "application/pdf", name: fileName + ".pdf")
+//         .saveTo("C:/"); // here Path is ignored
+//   } on FirebaseException catch (e) {
+//     // Handle any errors.
+//   }
+//   // for other platforms see this solution : https://firebase.google.com/docs/storage/flutter/download-files#download_to_a_local_file
+// }
 
-previewPDFFile(url) {
-  html.window.open(url, "_blank"); //opens pdf in new tab
-}
+// previewPDFFile(url) {
+//   html.window.open(url, "_blank"); //opens pdf in new tab
+// }

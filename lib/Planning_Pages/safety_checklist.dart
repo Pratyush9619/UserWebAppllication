@@ -1,4 +1,5 @@
 import 'package:assingment/KeysEvents/Grid_DataTable.dart';
+import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:assingment/Planning_Pages/summary.dart';
 import 'package:assingment/model/safety_checklistModel.dart';
 import 'package:assingment/widget/custom_appbar.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../Authentication/auth_service.dart';
 import '../components/loading_page.dart';
 import '../datasource/safetychecklist_datasource.dart';
 import '../widget/style.dart';
@@ -28,20 +30,29 @@ late DataGridController _dataGridController;
 List<dynamic> tabledata2 = [];
 Stream? _stream;
 var alldata;
+dynamic userId;
+bool _isloading = true;
+var depotlocation, address, contact, latitude, state, chargertype, conductedby;
 
 class _SafetyChecklistState extends State<SafetyChecklist> {
   @override
   void initState() {
-    safetylisttable = getData();
-    _safetyChecklistDataSource = SafetyChecklistDataSource(safetylisttable);
-    _dataGridController = DataGridController();
+    getUserId().whenComplete(() {
+      safetylisttable = getData();
+      _safetyChecklistDataSource = SafetyChecklistDataSource(safetylisttable);
+      _dataGridController = DataGridController();
 
-    _stream = FirebaseFirestore.instance
-        .collection('SafetyChecklistTable')
-        .doc(widget.depoName!)
-        .collection('Safety Data')
-        .doc(DateFormat.yMMMMd().format(DateTime.now()))
-        .snapshots();
+      _stream = FirebaseFirestore.instance
+          .collection('SafetyChecklistTable')
+          .doc(widget.depoName!)
+          .collection(userId)
+          .doc(DateFormat.yMMMMd().format(DateTime.now()))
+          .snapshots();
+
+      _isloading = false;
+      setState(() {});
+    });
+
     super.initState();
   }
 
@@ -52,7 +63,6 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
         child: CustomAppBar(
             text:
                 '${widget.cityName} / ${widget.depoName} / SafetyChecklist / ${DateFormat.yMMMMd().format(DateTime.now())}',
-            // icon: Icons.logout,
             haveSummary: true,
             onTap: () => Navigator.push(
                 context,
@@ -64,261 +74,867 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                 )),
             haveSynced: true,
             store: () {
+              FirebaseFirestore.instance
+                  .collection('SafetyFieldData')
+                  .doc('${widget.depoName}')
+                  .collection(userId)
+                  .doc(DateFormat.yMMMMd().format(DateTime.now()))
+                  .set({
+                'DepotLocation': depotlocation ?? 'Enter DepotNmae',
+                'Address': address ?? 'Enter Address',
+                'ContactNo': contact ?? 'Enter Vendor Name',
+                'Latitude': latitude ?? 'Enter Date',
+                'State': state ?? 'Enter Ola No',
+                'ChargerType': chargertype ?? 'Enter Panel',
+                'DepotName': depotname ?? 'Enter depot Name Name',
+                'ConductedBy': conductedby ?? 'Enter Customer Name'
+              });
               store();
             }),
-        preferredSize: Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(50),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: StreamBuilder(
-            stream: _stream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return LoadingPage();
-              }
-              if (!snapshot.hasData || snapshot.data.exists == false) {
-                return SfDataGridTheme(
-                  data: SfDataGridThemeData(headerColor: blue),
-                  child: SfDataGrid(
-                    source: _safetyChecklistDataSource,
-                    allowEditing: true,
-                    frozenColumnsCount: 2,
-                    gridLinesVisibility: GridLinesVisibility.both,
-                    headerGridLinesVisibility: GridLinesVisibility.both,
-                    selectionMode: SelectionMode.single,
-                    navigationMode: GridNavigationMode.cell,
-                    columnWidthMode: ColumnWidthMode.auto,
-                    editingGestureType: EditingGestureType.tap,
-                    controller: _dataGridController,
-                    columns: [
-                      GridColumn(
-                        columnName: 'srNo',
-                        autoFitPadding:
-                            const EdgeInsets.symmetric(horizontal: 16),
-                        allowEditing: false,
-                        width: 80,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Sr No',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
+      body: _isloading
+          ? LoadingPage()
+          : StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('SafetyFieldData')
+                  .doc(widget.depoName!)
+                  .collection(userId)
+                  .doc(DateFormat.yMMMMd().format(DateTime.now()))
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: [
+                      Container(
+                        height: 310,
+                        color: lightblue,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            color: blue,
+                          )),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        const Text(
+                                          "CHECK LIST FOR SITE SAFETY",
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        const Divider(
+                                          color: Colors.red,
+                                          thickness: 2,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: 250,
+                                              height: 30,
+                                              child: TextFormField(
+                                                initialValue:
+                                                    "TP/Ev/QS/Ev-BUS-05-2022",
+                                                textAlign: TextAlign.center,
+                                                onChanged: (value) {},
+                                                // decoration: InputDecoration(
+                                                //     hintText:
+                                                //         "TP/Ev/QS/Ev-BUS-05-2022",
+                                                //     border: OutlineInputBorder(
+                                                //         borderRadius:
+                                                //             BorderRadius.circular(
+                                                //                 10))),
+                                                autofillHints: Characters.empty,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 30,
+                                            ),
+                                            SizedBox(
+                                              width: 250,
+                                              height: 30,
+                                              child: TextFormField(
+                                                textAlign: TextAlign.center,
+                                                initialValue:
+                                                    "Rev:0 Date: 29.11.2022",
+                                                // decoration: InputDecoration(
+                                                //     hintText:
+                                                //         "Rev:0 Date: 29.11.2022",
+                                                //     border: OutlineInputBorder(
+                                                //         borderRadius:
+                                                //             BorderRadius.circular(
+                                                //                 10))),
+                                                autofillHints: Characters.empty,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Installation Date:",
+                                            ),
+                                            Container(
+                                              width: 250,
+                                              height: 30,
+                                              child: TextFormField(
+                                                initialValue: 'Date',
+                                                textAlign: TextAlign.center,
+                                                // decoration: InputDecoration(
+                                                //     hintText: "contact no",
+                                                //     border: OutlineInputBorder(
+                                                //         borderRadius:
+                                                //             BorderRadius.circular(
+                                                //                 10))),
+                                                autofillHints: Characters.empty,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("Enegization Date:"),
+                                            Container(
+                                              width: 250,
+                                              height: 30,
+                                              child: TextFormField(
+                                                initialValue: 'Date',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("On Doarding Date:"),
+                                            Container(
+                                                width: 250,
+                                                height: 30,
+                                                child: TextFormField(
+                                                  initialValue: 'Date',
+                                                  textAlign: TextAlign.center,
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(color: lightblue),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Container(
+                                              color: lightblue,
+                                              width: 625,
+                                              padding: const EdgeInsets.all(3),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Container(
+                                                      width: 150,
+                                                      child: Text(
+                                                        ' Bus Depot Location',
+                                                      )),
+                                                  SizedBox(width: 5),
+                                                  Expanded(
+                                                      child: Container(
+                                                          height: 30,
+                                                          child: TextFormField(
+                                                            decoration: const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top: 0,
+                                                                        bottom:
+                                                                            0,
+                                                                        left:
+                                                                            5)),
+                                                            initialValue: snapshot
+                                                                    .data!
+                                                                    .data()
+                                                                    .toString()
+                                                                    .contains(
+                                                                        'DepotLocation')
+                                                                ? snapshot.data!
+                                                                        .get(
+                                                                            'DepotLocation') ??
+                                                                    ''
+                                                                : 'DepotLocation',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            onChanged: (value) {
+                                                              depotlocation =
+                                                                  value;
+                                                            },
+                                                            onSaved:
+                                                                (newValue) {
+                                                              // empName = newValue.toString();
+                                                            },
+                                                          ))),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              color: lightblue,
+                                              width: 625,
+                                              padding: const EdgeInsets.all(3),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Container(
+                                                      width: 150,
+                                                      child: Text(
+                                                        'Address',
+                                                      )),
+                                                  const SizedBox(width: 5),
+                                                  Expanded(
+                                                      child: Container(
+                                                          height: 30,
+                                                          child: TextFormField(
+                                                            decoration: const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top: 0,
+                                                                        bottom:
+                                                                            0,
+                                                                        left:
+                                                                            5)),
+                                                            initialValue: snapshot
+                                                                    .data!
+                                                                    .data()
+                                                                    .toString()
+                                                                    .contains(
+                                                                        'Address')
+                                                                ? snapshot.data!
+                                                                        .get(
+                                                                            'Address') ??
+                                                                    ''
+                                                                : 'address',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            onChanged: (value) {
+                                                              address = value;
+                                                            },
+                                                            onSaved:
+                                                                (newValue) {
+                                                              // distev = newValue.toString();
+                                                            },
+                                                          ))),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              color: lightblue,
+                                              width: 625,
+                                              padding: const EdgeInsets.all(3),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Container(
+                                                      width: 150,
+                                                      child: Text(
+                                                        ' Contact no / Mail Id',
+                                                      )),
+                                                  SizedBox(width: 5),
+                                                  Expanded(
+                                                      child: Container(
+                                                          height: 30,
+                                                          child: TextFormField(
+                                                            decoration: const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top: 0,
+                                                                        bottom:
+                                                                            0,
+                                                                        left:
+                                                                            5)),
+                                                            initialValue: snapshot
+                                                                    .data!
+                                                                    .data()
+                                                                    .toString()
+                                                                    .contains(
+                                                                        'ContactNo')
+                                                                ? snapshot.data!
+                                                                        .get(
+                                                                            'ContactNo') ??
+                                                                    ''
+                                                                : 'ContactNo',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            onChanged: (value) {
+                                                              contact = value;
+                                                            },
+                                                            onSaved:
+                                                                (newValue) {
+                                                              // vendorname =
+                                                              //     newValue.toString();
+                                                            },
+                                                          ))),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              color: lightblue,
+                                              width: 625,
+                                              padding: const EdgeInsets.all(3),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Container(
+                                                      width: 150,
+                                                      child: Text(
+                                                        ' Latitude & Longitude',
+                                                      )),
+                                                  SizedBox(width: 5),
+                                                  Expanded(
+                                                      child: Container(
+                                                          height: 30,
+                                                          child: TextFormField(
+                                                            decoration: const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top: 0,
+                                                                        bottom:
+                                                                            0,
+                                                                        left:
+                                                                            5)),
+                                                            initialValue: snapshot
+                                                                    .data!
+                                                                    .data()
+                                                                    .toString()
+                                                                    .contains(
+                                                                        'Latitude')
+                                                                ? snapshot.data!
+                                                                        .get(
+                                                                            'Latitude') ??
+                                                                    ''
+                                                                : 'Latitude & Longitude',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            onChanged: (value) {
+                                                              latitude = value;
+                                                            },
+                                                            onSaved:
+                                                                (newValue) {
+                                                              // vendorname =
+                                                              //     newValue.toString();
+                                                            },
+                                                          ))),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Container(
+                                              color: lightblue,
+                                              width: 625,
+                                              padding: const EdgeInsets.all(3),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Container(
+                                                      width: 150,
+                                                      child: Text(
+                                                        ' State',
+                                                      )),
+                                                  Expanded(
+                                                      child: Container(
+                                                          height: 30,
+                                                          child: TextFormField(
+                                                            decoration: const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top: 0,
+                                                                        bottom:
+                                                                            0,
+                                                                        left:
+                                                                            5)),
+                                                            initialValue: snapshot
+                                                                    .data!
+                                                                    .data()
+                                                                    .toString()
+                                                                    .contains(
+                                                                        'State')
+                                                                ? snapshot.data!
+                                                                        .get(
+                                                                            'State') ??
+                                                                    ''
+                                                                : 'State',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            onChanged: (value) {
+                                                              state = value;
+                                                            },
+                                                            onSaved:
+                                                                (newValue) {
+                                                              // olano = newValue.toString();
+                                                            },
+                                                          ))),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              color: lightblue,
+                                              width: 625,
+                                              padding: const EdgeInsets.all(3),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Container(
+                                                      width: 150,
+                                                      child: Text(
+                                                        ' Charger Type',
+                                                      )),
+                                                  SizedBox(width: 5),
+                                                  Expanded(
+                                                      child: Container(
+                                                          height: 30,
+                                                          child: TextFormField(
+                                                            decoration: const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top: 0,
+                                                                        bottom:
+                                                                            0,
+                                                                        left:
+                                                                            5)),
+                                                            initialValue: snapshot
+                                                                    .data!
+                                                                    .data()
+                                                                    .toString()
+                                                                    .contains(
+                                                                        'ChargerType')
+                                                                ? snapshot.data!
+                                                                        .get(
+                                                                            'ChargerType') ??
+                                                                    ''
+                                                                : 'charger',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            onChanged: (value) {
+                                                              // buses = int.parse(value);
+                                                            },
+                                                            onSaved:
+                                                                (newValue) {
+                                                              // panel = newValue.toString();
+                                                            },
+                                                          ))),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              color: lightblue,
+                                              width: 625,
+                                              padding: const EdgeInsets.all(3),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Container(
+                                                      width: 150,
+                                                      child: const Text(
+                                                        ' Conducted by',
+                                                      )),
+                                                  SizedBox(width: 5),
+                                                  Expanded(
+                                                      child: Container(
+                                                          height: 30,
+                                                          child: TextFormField(
+                                                            decoration: const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top: 0,
+                                                                        bottom:
+                                                                            0,
+                                                                        left:
+                                                                            5)),
+                                                            initialValue: snapshot
+                                                                    .data!
+                                                                    .data()
+                                                                    .toString()
+                                                                    .contains(
+                                                                        'ConductedBy')
+                                                                ? snapshot.data!
+                                                                        .get(
+                                                                            'ConductedBy') ??
+                                                                    ''
+                                                                : 'LOA No',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        15),
+                                                            onChanged: (value) {
+                                                              // loa = value;
+                                                            },
+                                                            onSaved:
+                                                                (newValue) {
+                                                              // depotname =
+                                                              //     newValue.toString();
+                                                            },
+                                                          ))),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                      GridColumn(
-                        width: 450,
-                        columnName: 'Details',
-                        allowEditing: false,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Details of Enclosure ',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'Status',
-                        allowEditing: false,
-                        width: 150,
-                        label: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                              'Status of Submission of information/ documents ',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: white,
-                              )),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'Remark',
-                        allowEditing: true,
-                        width: 150,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Remarks',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'Photo',
-                        allowEditing: false,
-                        width: 180,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Upload Photo',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'ViewPhoto',
-                        allowEditing: false,
-                        width: 180,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('View Photo',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
+                      Expanded(
+                        child: Container(
+                          height: MediaQuery.of(context).size.height,
+                          child: StreamBuilder(
+                            stream: _stream,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return LoadingPage();
+                              }
+                              if (!snapshot.hasData ||
+                                  snapshot.data.exists == false) {
+                                return SfDataGridTheme(
+                                  data: SfDataGridThemeData(headerColor: blue),
+                                  child: SfDataGrid(
+                                    source: _safetyChecklistDataSource,
+                                    allowEditing: true,
+                                    frozenColumnsCount: 2,
+                                    gridLinesVisibility:
+                                        GridLinesVisibility.both,
+                                    headerGridLinesVisibility:
+                                        GridLinesVisibility.both,
+                                    selectionMode: SelectionMode.single,
+                                    navigationMode: GridNavigationMode.cell,
+                                    columnWidthMode: ColumnWidthMode.auto,
+                                    editingGestureType: EditingGestureType.tap,
+                                    controller: _dataGridController,
+                                    columns: [
+                                      GridColumn(
+                                        columnName: 'srNo',
+                                        autoFitPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                        allowEditing: false,
+                                        width: 80,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('Sr No',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        width: 450,
+                                        columnName: 'Details',
+                                        allowEditing: false,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('Details of Enclosure ',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Status',
+                                        allowEditing: false,
+                                        width: 150,
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                              'Status of Submission of information/ documents ',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                color: white,
+                                              )),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Remark',
+                                        allowEditing: true,
+                                        width: 250,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('Remarks',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Photo',
+                                        allowEditing: false,
+                                        width: 180,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('Upload Photo',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'ViewPhoto',
+                                        allowEditing: false,
+                                        width: 180,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('View Photo',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                alldata = '';
+                                alldata =
+                                    snapshot.data['data'] as List<dynamic>;
+                                safetylisttable.clear();
+                                alldata.forEach((element) {
+                                  safetylisttable.add(
+                                      SafetyChecklistModel.fromJson(element));
+                                  _safetyChecklistDataSource =
+                                      SafetyChecklistDataSource(
+                                          safetylisttable);
+                                  _dataGridController = DataGridController();
+                                });
+                                return SfDataGridTheme(
+                                  data: SfDataGridThemeData(headerColor: blue),
+                                  child: SfDataGrid(
+                                    source: _safetyChecklistDataSource,
+                                    //key: key,
+
+                                    allowEditing: true,
+                                    frozenColumnsCount: 2,
+                                    gridLinesVisibility:
+                                        GridLinesVisibility.both,
+                                    headerGridLinesVisibility:
+                                        GridLinesVisibility.both,
+                                    selectionMode: SelectionMode.single,
+                                    navigationMode: GridNavigationMode.cell,
+                                    columnWidthMode: ColumnWidthMode.auto,
+                                    editingGestureType: EditingGestureType.tap,
+                                    controller: _dataGridController,
+
+                                    columns: [
+                                      GridColumn(
+                                        columnName: 'srNo',
+                                        autoFitPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                        allowEditing: false,
+                                        width: 80,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('Sr No',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        width: 450,
+                                        columnName: 'Details',
+                                        allowEditing: false,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('Details of Enclosure ',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Status',
+                                        allowEditing: false,
+                                        width: 150,
+                                        label: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                              'Status of Submission of information/ documents ',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                color: white,
+                                              )),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Remark',
+                                        allowEditing: true,
+                                        width: 150,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('Remarks',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Photo',
+                                        allowEditing: false,
+                                        width: 180,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('Upload Photo',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'ViewPhoto',
+                                        allowEditing: false,
+                                        width: 180,
+                                        label: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          alignment: Alignment.center,
+                                          child: Text('View Photo',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white)),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ],
-                  ),
-                );
-              } else {
-                alldata = '';
-                alldata = snapshot.data['data'] as List<dynamic>;
-                safetylisttable.clear();
-                alldata.forEach((element) {
-                  safetylisttable.add(SafetyChecklistModel.fromJson(element));
-                  _safetyChecklistDataSource =
-                      SafetyChecklistDataSource(safetylisttable);
-                  _dataGridController = DataGridController();
-                });
-                return SfDataGridTheme(
-                  data: SfDataGridThemeData(headerColor: blue),
-                  child: SfDataGrid(
-                    source: _safetyChecklistDataSource,
-                    //key: key,
-
-                    allowEditing: true,
-                    frozenColumnsCount: 2,
-                    gridLinesVisibility: GridLinesVisibility.both,
-                    headerGridLinesVisibility: GridLinesVisibility.both,
-                    selectionMode: SelectionMode.single,
-                    navigationMode: GridNavigationMode.cell,
-                    columnWidthMode: ColumnWidthMode.auto,
-                    editingGestureType: EditingGestureType.tap,
-                    controller: _dataGridController,
-
-                    columns: [
-                      GridColumn(
-                        columnName: 'srNo',
-                        autoFitPadding:
-                            const EdgeInsets.symmetric(horizontal: 16),
-                        allowEditing: false,
-                        width: 80,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Sr No',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
-                      GridColumn(
-                        width: 450,
-                        columnName: 'Details',
-                        allowEditing: false,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Details of Enclosure ',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'Status',
-                        allowEditing: false,
-                        width: 150,
-                        label: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                              'Status of Submission of information/ documents ',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: white,
-                              )),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'Remark',
-                        allowEditing: true,
-                        width: 150,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Remarks',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'Photo',
-                        allowEditing: false,
-                        width: 180,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('Upload Photo',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
-                      GridColumn(
-                        columnName: 'ViewPhoto',
-                        allowEditing: false,
-                        width: 180,
-                        label: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          alignment: Alignment.center,
-                          child: Text('View Photo',
-                              overflow: TextOverflow.values.first,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: white)),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            },
-          ),
-        ),
-      ),
+                  );
+                } else {
+                  return LoadingPage();
+                }
+              }),
     );
+  }
+
+  Future<void> getUserId() async {
+    await AuthService().getCurrentUserId().then((value) {
+      userId = value;
+    });
   }
 
   void store() {
@@ -337,7 +953,7 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
     FirebaseFirestore.instance
         .collection('SafetyChecklistTable')
         .doc(widget.depoName!)
-        .collection('Safety Data')
+        .collection(userId)
         .doc(DateFormat.yMMMMd().format(DateTime.now()))
         .set(
       {'data': tabledata2},

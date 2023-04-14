@@ -6,10 +6,12 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import '../Authentication/auth_service.dart';
 import '../KeysEvents/upload.dart';
 import '../components/loading_page.dart';
 import '../datasource/key_datasource.dart';
 import '../model/employee.dart';
+import '../widget/custom_appbar.dart';
 import '../widget/style.dart';
 
 void main() {
@@ -157,13 +159,21 @@ class _KeyEventsState extends State<KeyEvents> {
       actualstartdate9,
       actualenddate9;
 
+  dynamic userId;
+  bool _isloading = true;
   @override
   void initState() {
-    yourstream = FirebaseFirestore.instance
-        .collection('KeyEventsTable')
-        .doc(widget.depoName!)
-        .collection('AllKeyEventsTable')
-        .snapshots();
+    getUserId().whenComplete(() {
+      yourstream = FirebaseFirestore.instance
+          .collection('KeyEventsTable')
+          .doc(widget.depoName!)
+          .collection(userId)
+          // .doc('${widget.depoName}')
+          .snapshots();
+
+      _isLoading = false;
+      setState(() {});
+    });
 
     super.initState();
   }
@@ -228,11 +238,19 @@ class _KeyEventsState extends State<KeyEvents> {
     return _isLoading
         ? LoadingPage()
         : Scaffold(
-            appBar: AppBar(
-              title: Text(
-                  '${widget.cityName} / ${widget.depoName} / Key Events  '),
-              backgroundColor: blue,
-            ),
+            appBar: PreferredSize(
+                child: CustomAppBar(
+                  text:
+                      '${widget.cityName} / ${widget.depoName} / Key Events  ',
+                  haveSynced: false,
+                ),
+                preferredSize: Size.fromHeight(50)),
+
+            //  AppBar(
+            //   title: Text(
+            //       '${widget.cityName} / ${widget.depoName} / Key Events  '),
+            //   backgroundColor: blue,
+            // ),
             body: StreamBuilder(
                 stream: yourstream,
                 builder: (context, snapshot) {
@@ -1098,6 +1116,12 @@ class _KeyEventsState extends State<KeyEvents> {
 
     //     ? LoadingPage()
     //     :
+  }
+
+  Future<void> getUserId() async {
+    await AuthService().getCurrentUserId().then((value) {
+      userId = value;
+    });
   }
 
   List<Employee> getDefaultEmployeeData() {

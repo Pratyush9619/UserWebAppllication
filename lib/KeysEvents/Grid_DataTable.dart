@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import '../Authentication/auth_service.dart';
 import '../datasource/employee_datasouce.dart';
 import '../widget/custom_appbar.dart';
 import '../widget/nodata_available.dart';
@@ -40,15 +41,18 @@ class _KeyDataTableState extends State<KeyDataTable> {
   Stream? _stream;
   var alldata;
   List<dynamic> tabledata2 = [];
+  dynamic userId;
 
   @override
   void initState() {
-    _stream = FirebaseFirestore.instance
-        .collection('KeyEventsTable')
-        .doc(widget.depoName!)
-        .collection('AllKeyEventsTable')
-        .doc('${widget.depoName}${widget.keyEvents}')
-        .snapshots();
+    getUserId().then((value) {
+      _stream = FirebaseFirestore.instance
+          .collection('KeyEventsTable')
+          .doc(widget.depoName!)
+          .collection(userId)
+          .doc('${widget.depoName}${widget.keyEvents}')
+          .snapshots();
+    });
 
     super.initState();
 
@@ -146,21 +150,6 @@ class _KeyDataTableState extends State<KeyDataTable> {
                             alignment: Alignment.center,
                             child: Text('Activity',
                                 overflow: TextOverflow.values.first,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: white)),
-                          ),
-                        ),
-                        GridColumn(
-                          columnName: 'button',
-                          width: 130,
-                          allowEditing: false,
-                          label: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.center,
-                            child: Text('Upload Checklist ',
-                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -393,6 +382,12 @@ class _KeyDataTableState extends State<KeyDataTable> {
       DeviceOrientation.portraitUp,
     ]);
     super.dispose();
+  }
+
+  Future<void> getUserId() async {
+    await AuthService().getCurrentUserId().then((value) {
+      userId = value;
+    });
   }
 
   Future<void> getFirestoreData() async {

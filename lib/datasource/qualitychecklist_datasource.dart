@@ -7,11 +7,15 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../KeysEvents/viewFIle.dart';
 import '../widget/style.dart';
 
 class QualityChecklistDataSource extends DataGridSource {
-  // BuildContext mainContext;
-  QualityChecklistDataSource(this._checklistModel) {
+  BuildContext mainContext;
+  String cityName;
+  String depoName;
+  QualityChecklistDataSource(
+      this._checklistModel, this.mainContext, this.cityName, this.depoName) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
@@ -60,8 +64,7 @@ class QualityChecklistDataSource extends DataGridSource {
               Alignment.center,
           // : Alignment.center,
           padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child:
-              // dataGridCell.columnName == 'button'
+          child: // dataGridCell.columnName == 'button'
               //     ? LayoutBuilder(
               //         builder: (BuildContext context, BoxConstraints constraints) {
               //         return ElevatedButton(
@@ -439,15 +442,16 @@ class QualityChecklistDataSource extends DataGridSource {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<dynamic>(columnName: 'Reference', value: newCellValue);
       _checklistModel[dataRowIndex].reference = newCellValue;
-    } else if (column.columnName == 'observation') {
+    } else {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'observation', value: newCellValue);
       _checklistModel[dataRowIndex].observation = newCellValue;
-    } else {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<double>(columnName: 'photoNo', value: newCellValue);
-      _checklistModel[dataRowIndex].photoNo = newCellValue;
     }
+    //  else {
+    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+    //       DataGridCell<double>(columnName: 'photoNo', value: newCellValue);
+    //   _checklistModel[dataRowIndex].photoNo = newCellValue;
+    // }
   }
 
   @override
@@ -534,6 +538,6 @@ class QualityChecklistDataSource extends DataGridSource {
         ? RegExp('[0-9]')
         : isDateTimeBoard
             ? RegExp('[0-9/]')
-            : RegExp('[a-zA-Z ]');
+            : RegExp('[a-zA-Z0-9.@!#^&*(){+-}%|<>?_=+,/ )]');
   }
 }

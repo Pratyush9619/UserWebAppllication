@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import '../Authentication/auth_service.dart';
 import '../datasource/jmr_datasource.dart';
 import '../widget/custom_appbar.dart';
 import '../widget/nodata_available.dart';
@@ -37,14 +38,21 @@ class _JMRPageState extends State<JMRPage> {
   List<dynamic> tabledata2 = [];
   Stream? _stream;
   var alldata;
+  dynamic userId;
 
   @override
   void initState() {
-    _isloading = false;
-    _stream = FirebaseFirestore.instance
-        .collection('JMRCollection')
-        .doc('${widget.depoName}${widget.title1}')
-        .snapshots();
+    getUserId().whenComplete(() {
+      _stream = FirebaseFirestore.instance
+          .collection('JMRCollection')
+          .doc(widget.depoName)
+          .collection('${widget.depoName}${widget.title1}')
+          .doc(userId)
+          .snapshots();
+
+      _isloading = false;
+      setState(() {});
+    });
 
     super.initState();
   }
@@ -62,7 +70,7 @@ class _JMRPageState extends State<JMRPage> {
             store: () {
               StoreData();
             }),
-        preferredSize: Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(50),
       ),
       body: _isloading
           ? LoadingPage()
@@ -86,19 +94,20 @@ class _JMRPageState extends State<JMRPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                    width: 110, child: Text('Working Dates')),
+                                    width: 110,
+                                    child: const Text('Working Dates')),
                                 Expanded(
                                     child: TextFormField(
-                                  scrollPadding: EdgeInsets.all(0),
-                                  decoration: InputDecoration(
+                                  scrollPadding: const EdgeInsets.all(0),
+                                  decoration: const InputDecoration(
                                       contentPadding:
                                           EdgeInsets.only(top: 0, bottom: 0)),
                                 )),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Expanded(
                                     child: TextFormField(
-                                  scrollPadding: EdgeInsets.all(0),
-                                  decoration: InputDecoration(
+                                  scrollPadding: const EdgeInsets.all(0),
+                                  decoration: const InputDecoration(
                                       contentPadding:
                                           EdgeInsets.only(top: 0, bottom: 0)),
                                 )),
@@ -634,6 +643,12 @@ class _JMRPageState extends State<JMRPage> {
     );
   }
 
+  Future<void> getUserId() async {
+    await AuthService().getCurrentUserId().then((value) {
+      userId = value;
+    });
+  }
+
   void StoreData() {
     Map<String, dynamic> table_data = Map();
     for (var i in _jmrDataSource.dataGridRows) {
@@ -649,7 +664,9 @@ class _JMRPageState extends State<JMRPage> {
 
     FirebaseFirestore.instance
         .collection('JMRCollection')
-        .doc('${widget.depoName}${widget.title1}')
+        .doc(widget.depoName)
+        .collection('${widget.depoName}${widget.title1}')
+        .doc(userId)
         .set({
       'data': tabledata2,
     }).whenComplete(() {

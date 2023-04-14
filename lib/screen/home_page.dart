@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:assingment/screen/cities_page.dart';
 import 'package:assingment/widget/style.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +22,10 @@ class _HomePageState extends State<HomePage> {
     'assets/home/Picture1.png',
     'assets/home/Picture2.png',
   ];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

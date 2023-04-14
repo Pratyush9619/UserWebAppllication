@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../Authentication/auth_service.dart';
 import '../components/loading_page.dart';
 import '../datasource/dailyproject_datasource.dart';
 import '../datasource/monthlyproject_datasource.dart';
@@ -24,11 +25,13 @@ class ViewSummary extends StatefulWidget {
   String? selectedtab;
   bool isHeader;
   String? currentDate;
+  dynamic userId;
   ViewSummary(
       {super.key,
       required this.depoName,
       required this.cityName,
       required this.id,
+      this.userId,
       this.selectedtab,
       this.currentDate,
       this.isHeader = false});
@@ -52,18 +55,20 @@ class _ViewSummaryState extends State<ViewSummary> {
   Stream? _stream;
   var alldata;
   bool _isloading = false;
+  dynamic userId;
 
   @override
   void initState() {
     super.initState();
-
+    getUserId().then((value) {
+      _isloading = false;
+    });
     // _stream = FirebaseFirestore.instance
     //     .collection('MonthlyProjectReport')
     //     .doc('${widget.depoName}')
     //     .collection('Monthly Data')
     //     .doc(DateFormat('MMMM').format(startdate!))
     //     .snapshots();
-    _isloading = false;
   }
 
   @override
@@ -384,7 +389,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                         stream: FirebaseFirestore.instance
                             .collection('DailyProjectReport')
                             .doc('${widget.depoName}')
-                            .collection('Daily Data')
+                            .collection(widget.userId)
                             .doc(DateFormat.yMMMMd().format(startdate!))
                             .snapshots(),
                         builder: (context, snapshot) {
@@ -725,5 +730,11 @@ class _ViewSummaryState extends State<ViewSummary> {
                           )
           ],
         ));
+  }
+
+  Future<void> getUserId() async {
+    await AuthService().getCurrentUserId().then((value) {
+      userId = value;
+    });
   }
 }

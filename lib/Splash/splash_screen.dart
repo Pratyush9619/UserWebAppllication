@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:assingment/Authentication/auth_service.dart';
 import 'package:assingment/Authentication/login_register.dart';
 import 'package:assingment/screen/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,14 +21,13 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // _getCurrentUser();
+    _getCurrentUser();
     // user = FirebaseAuth.instance.currentUser == null;
     Timer(
         const Duration(milliseconds: 2000),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) =>
-                //  const LoginRegister()
-                HomePage())));
+                user ? const HomePage() : const LoginRegister())));
     // user ? const LoginRegister() : const HomePage())));
   }
 
@@ -72,11 +72,11 @@ class SplashScreenState extends State<SplashScreen> {
     } catch (e) {
       user = false;
     }
-    Timer(
-        const Duration(milliseconds: 1000),
-        () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (BuildContext context) => LoginRegister()
-                // user ? const HomePage() : const LoginRegister()
-                )));
+    // Timer(
+    //     const Duration(milliseconds: 1000),
+    //     () => Navigator.of(context).pushReplacement(
+    //         MaterialPageRoute(builder: (BuildContext context) => LoginRegister()
+    //             // user ? const HomePage() : const LoginRegister()
+    //             )));
   }
 }

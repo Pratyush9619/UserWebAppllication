@@ -5,6 +5,8 @@ import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
 
+import '../widget/custom_appbar.dart';
+
 class ResourceAllocation extends StatefulWidget {
   String? cityName;
   String? depoName;
@@ -20,20 +22,24 @@ class _ResourceAllocationState extends State<ResourceAllocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: blue,
-        title: Text(
-            '${widget.cityName} / ${widget.depoName} / Resource Allocation '),
-        actions: [
-          ElevatedButton(
-              onPressed: () {
-                PdfPreview(
-                  build: (format) => _generatePdf(format, 'title'),
-                );
-              },
-              child: Text('print'))
-        ],
-      ),
+      appBar: PreferredSize(
+          child: CustomAppBar(
+            text:
+                '${widget.cityName} / ${widget.depoName} / Resource Allocation ',
+            haveSynced: false,
+          ),
+          preferredSize: Size.fromHeight(50)
+
+          // actions: [
+          //   ElevatedButton(
+          //       onPressed: () {
+          //         PdfPreview(
+          //           build: (format) => _generatePdf(format, 'title'),
+          //         );
+          //       },
+          //       child: const Text('print'))
+          // ],
+          ),
       body: const Center(
         child: Text(
           'Hierarchy & Designation flow \n Under Process',

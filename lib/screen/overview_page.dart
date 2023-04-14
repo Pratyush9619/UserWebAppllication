@@ -1,16 +1,18 @@
-import 'package:assingment/Planning_Pages/depot_overview.dart';
 import 'package:assingment/Planning_Pages/jmr.dart';
 import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:assingment/Planning_Pages/resource_allocation.dart';
 import 'package:assingment/Planning_Pages/safety_checklist.dart';
+import 'package:assingment/overview/closure_report.dart';
 import 'package:assingment/overview/daily_project.dart';
 import 'package:assingment/overview/detailed_Eng.dart';
 import 'package:assingment/overview/key_events.dart';
 import 'package:assingment/overview/testing_report.dart';
 
 import 'package:assingment/widget/style.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../Planning_Pages/depot_overview.dart';
 import '../overview/monthly_project.dart';
 import '../widget/custom_appbar.dart';
 
@@ -126,9 +128,9 @@ class _OverviewPageState extends State<OverviewPage> {
         cityName: widget.cityName,
         depoName: widget.depoName,
       ),
-      KeyEvents(
+      ClosureReport(
+        cityName: widget.cityName,
         depoName: widget.depoName,
-        cityName: widget.depoName,
       ),
       KeyEvents(
         depoName: widget.depoName,

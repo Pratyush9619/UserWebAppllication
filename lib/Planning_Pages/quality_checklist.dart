@@ -1,11 +1,11 @@
 import 'package:assingment/Planning_Pages/summary.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import '../Authentication/auth_service.dart';
 import '../KeysEvents/Grid_DataTable.dart';
 import '../QualityDatasource/quality_EP.dart';
 import '../QualityDatasource/quality_acdb.dart';
@@ -98,6 +98,7 @@ var empName,
 
 var alldata;
 int? _selectedIndex = 0;
+dynamic userId;
 List<String> title = [
   'CHECKLIST FOR INSTALLATION OF PSS',
   'CHECKLIST FOR INSTALLATION OF RMU',
@@ -187,45 +188,60 @@ class _QualityChecklistState extends State<QualityChecklist> {
     //       .doc(widget.currentDate)
     //       .snapshots();
 
-    qualitylisttable1 = getData();
-    _qualityPSSDataSource = QualityPSSDataSource(qualitylisttable1);
-    _dataGridController = DataGridController();
+    getUserId().whenComplete(() {
+      qualitylisttable1 = getData();
+      _qualityPSSDataSource = QualityPSSDataSource(
+          qualitylisttable1, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable2 = getData();
-    _qualityrmuDataSource = QualityrmuDataSource(qualitylisttable2);
-    _dataGridController = DataGridController();
+      qualitylisttable2 = getData();
+      _qualityrmuDataSource = QualityrmuDataSource(
+          qualitylisttable2, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable3 = getData();
-    _qualityctDataSource = QualityctDataSource(qualitylisttable2);
-    _dataGridController = DataGridController();
+      qualitylisttable3 = getData();
+      _qualityctDataSource = QualityctDataSource(
+          qualitylisttable2, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable4 = getData();
-    _qualitycmuDataSource = QualitycmuDataSource(qualitylisttable4);
-    _dataGridController = DataGridController();
+      qualitylisttable4 = getData();
+      _qualitycmuDataSource = QualitycmuDataSource(
+          qualitylisttable4, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable5 = getData();
-    _qualityacdDataSource = QualityacdDataSource(qualitylisttable5);
-    _dataGridController = DataGridController();
+      qualitylisttable5 = getData();
+      _qualityacdDataSource = QualityacdDataSource(
+          qualitylisttable5, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable6 = getData();
-    _qualityCIDataSource = QualityCIDataSource(qualitylisttable6);
-    _dataGridController = DataGridController();
+      qualitylisttable6 = getData();
+      _qualityCIDataSource = QualityCIDataSource(
+          qualitylisttable6, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable7 = getData();
-    _qualityCDIDataSource = QualityCDIDataSource(qualitylisttable7);
-    _dataGridController = DataGridController();
+      qualitylisttable7 = getData();
+      _qualityCDIDataSource = QualityCDIDataSource(
+          qualitylisttable7, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable8 = getData();
-    _qualityMSPDataSource = QualityMSPDataSource(qualitylisttable8);
-    _dataGridController = DataGridController();
+      qualitylisttable8 = getData();
+      _qualityMSPDataSource = QualityMSPDataSource(
+          qualitylisttable8, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable9 = getData();
-    _qualityChargerDataSource = QualityChargerDataSource(qualitylisttable9);
-    _dataGridController = DataGridController();
+      qualitylisttable9 = getData();
+      _qualityChargerDataSource = QualityChargerDataSource(
+          qualitylisttable9, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
 
-    qualitylisttable10 = getData();
-    _qualityEPDataSource = QualityEPDataSource(qualitylisttable10);
-    _dataGridController = DataGridController();
+      qualitylisttable10 = getData();
+      _qualityEPDataSource = QualityEPDataSource(
+          qualitylisttable10, widget.depoName!, widget.cityName!);
+      _dataGridController = DataGridController();
+
+      _isloading = false;
+      setState(() {});
+    });
 
     super.initState();
   }
@@ -240,6 +256,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('PSS TABLE DATA')
+        .doc('PSS')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -247,6 +265,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('RMU TABLE DATA')
+        .doc('RMU')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -254,6 +274,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('CONVENTIONAL TRANSFORMER TABLE DATA')
+        .doc('CONVENTIONAL TRANSFORMER')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -261,6 +283,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('CTPT METERING UNIT TABLE DATA')
+        .doc('CTPT METERING UNIT')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -268,6 +292,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('ACDB TABLE DATA')
+        .doc('ACDB DATA')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -275,6 +301,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('CABLE INSTALLATION TABLE DATA')
+        .doc('CABLE INSTALLATION')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -282,6 +310,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('CDI TABLE DATA')
+        .doc('CDI DATA')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -289,6 +319,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('MSP TABLE DATA')
+        .doc('MSP DATA')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -296,6 +328,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('CHARGER TABLE DATA')
+        .doc('CHARGER DATA')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -303,6 +337,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('EARTH TABLE DATA')
+        .doc('EARTH DATA')
+        .collection(userId)
         .doc(widget.currentDate)
         .snapshots();
 
@@ -529,6 +565,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
         .collection('QualityChecklist')
         .doc('${widget.depoName}')
         .collection('PSS TABLE DATA')
+        .doc('PSS')
+        .collection(userId)
         .doc(widget.currentDate)
         .set({
       'data': psstabledatalist,
@@ -548,6 +586,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
           .collection('QualityChecklist')
           .doc('${widget.depoName}')
           .collection('RMU TABLE DATA')
+          .doc('RMU')
+          .collection(userId)
           .doc(widget.currentDate)
           .set({
         'data': rmutabledatalist,
@@ -568,6 +608,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
             .collection('QualityChecklist')
             .doc('${widget.depoName}')
             .collection('CONVENTIONAL TRANSFORMER TABLE DATA')
+            .doc('CONVENTIONAL TRANSFORMER')
+            .collection(userId)
             .doc(widget.currentDate)
             .set({
           'data': cttabledatalist,
@@ -587,6 +629,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
               .collection('QualityChecklist')
               .doc('${widget.depoName}')
               .collection('CTPT METERING UNIT TABLE DATA')
+              .doc('CTPT METERING UNIT')
+              .collection(userId)
               .doc(widget.currentDate)
               .set({
             'data': cmutabledatalist,
@@ -607,6 +651,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
                 .collection('QualityChecklist')
                 .doc('${widget.depoName}')
                 .collection('ACDB TABLE DATA')
+                .doc('ACDB DATA')
+                .collection(userId)
                 .doc(widget.currentDate)
                 .set({
               'data': acdbtabledatalist,
@@ -627,6 +673,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
                   .collection('QualityChecklist')
                   .doc('${widget.depoName}')
                   .collection('CABLE INSTALLATION TABLE DATA')
+                  .doc('CABLE INSTALLATION')
+                  .collection(userId)
                   .doc(widget.currentDate)
                   .set({
                 'data': citabledatalist,
@@ -647,6 +695,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
                     .collection('QualityChecklist')
                     .doc('${widget.depoName}')
                     .collection('CDI TABLE DATA')
+                    .doc('CDI DATA')
+                    .collection(userId)
                     .doc(widget.currentDate)
                     .set({
                   'data': cditabledatalist,
@@ -667,6 +717,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
                       .collection('QualityChecklist')
                       .doc('${widget.depoName}')
                       .collection('MSP TABLE DATA')
+                      .doc('MSP DATA')
+                      .collection(userId)
                       .doc(widget.currentDate)
                       .set({
                     'data': msptabledatalist,
@@ -687,6 +739,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
                         .collection('QualityChecklist')
                         .doc('${widget.depoName}')
                         .collection('CHARGER TABLE DATA')
+                        .doc('CHARGER DATA')
+                        .collection(userId)
                         .doc(widget.currentDate)
                         .set({
                       'data': chargertabledatalist,
@@ -707,6 +761,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
                           .collection('QualityChecklist')
                           .doc('${widget.depoName}')
                           .collection('EARTH TABLE DATA')
+                          .doc('EARTH DATA')
+                          .collection(userId)
                           .doc(widget.currentDate)
                           .set({
                         'data': eptabledatalist,
@@ -726,1117 +782,1278 @@ class _QualityChecklistState extends State<QualityChecklist> {
         });
       });
     });
-    // tabledata2.clear();
-    // Navigator.pop(context);
+  }
+
+  Future<void> getUserId() async {
+    await AuthService().getCurrentUserId().then((value) {
+      userId = value;
+    });
   }
 
   upperScreen() {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('QualityChecklistCollection')
-          .doc('${widget.depoName}')
-          .collection('ChecklistData')
-          .doc(widget.currentDate)
-          .snapshots(),
-      builder: (context, snapshot) {
-        return Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              height: 80,
-              decoration: BoxDecoration(color: lightblue),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset('assets/Tata-Power.jpeg',
-                          height: 50, width: 100),
-                      const Text('TATA POWER'),
-                    ],
-                  ),
-                  Text(
-                    title[int.parse(_selectedIndex.toString())],
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const Text('TPCL /DIST/EV/CHECKLIST ')
-                ],
-              ),
-            ),
-            Container(
-                decoration: BoxDecoration(color: lightblue),
-                child: Row(
+    return _isloading
+        ? LoadingPage()
+        : StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('QualityChecklistCollection')
+                .doc('${widget.depoName}')
+                .collection(userId)
+                .doc(widget.currentDate)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
                   children: [
-                    Column(
-                      children: [
-                        Container(
-                          color: lightblue,
-                          width: 625,
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      height: 80,
+                      decoration: BoxDecoration(color: lightblue),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              Container(
-                                  width: 150,
-                                  child: Text(
-                                    ' Employee Name',
-                                  )),
-                              SizedBox(width: 5),
-                              Expanded(
-                                  child: Container(
-                                      height: 30,
-                                      child: widget.isHeader!
-                                          ? TextFormField(
-                                              decoration: const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 5)),
-                                              initialValue: snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('EmployeeName')
-                                                  ? snapshot.data!
-                                                      .get('EmployeeName')
-                                                  : 'Employee Name',
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                              onChanged: (value) {
-                                                empName = value;
-                                              },
-                                              onSaved: (newValue) {
-                                                empName = newValue.toString();
-                                              },
-                                            )
-                                          : Container(
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border:
-                                                      Border.all(color: blue)),
-                                              child: Text(
-                                                snapshot.data!
-                                                        .data()
-                                                        .toString()
-                                                        .contains(
-                                                            'EmployeeName')
-                                                    ? snapshot.data!
-                                                        .get('EmployeeName')
-                                                    : 'Employee Name',
-                                              )))),
+                              Image.asset('assets/Tata-Power.jpeg',
+                                  height: 50, width: 100),
+                              const Text('TATA POWER'),
                             ],
                           ),
-                        ),
-                        Container(
-                          color: lightblue,
-                          width: 625,
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  width: 150,
-                                  child: Text(
-                                    'Doc No.:TPCL/ DIST-EV',
-                                  )),
-                              SizedBox(width: 5),
-                              Expanded(
-                                  child: Container(
-                                      height: 30,
-                                      child: widget.isHeader!
-                                          ? TextFormField(
-                                              decoration: const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 5)),
-                                              initialValue: snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('Dist EV')
-                                                  ? snapshot.data!
-                                                      .get('Dist EV')
-                                                  : 'Dist EV',
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                              onChanged: (value) {
-                                                distev = value;
-                                              },
-                                              onSaved: (newValue) {
-                                                distev = newValue.toString();
-                                              },
-                                            )
-                                          : Container(
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border:
-                                                      Border.all(color: blue)),
-                                              child: Text(snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('Dist EV')
-                                                  ? snapshot.data!
-                                                      .get('Dist EV')
-                                                  : 'Dist EV')))),
-                            ],
+                          Text(
+                            title[int.parse(_selectedIndex.toString())],
+                            style: const TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
                           ),
-                        ),
-                        Container(
-                          color: lightblue,
-                          width: 625,
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  width: 150,
-                                  child: Text(
-                                    ' VENDOR NAME',
-                                  )),
-                              SizedBox(width: 5),
-                              Expanded(
-                                  child: Container(
-                                      height: 30,
-                                      child: widget.isHeader!
-                                          ? TextFormField(
-                                              decoration: const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 5)),
-                                              initialValue: snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('VendorName')
-                                                  ? snapshot.data!
-                                                      .get('VendorName')
-                                                  : 'VendorName',
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                              onChanged: (value) {
-                                                vendorname = value;
-                                              },
-                                              onSaved: (newValue) {
-                                                vendorname =
-                                                    newValue.toString();
-                                              },
-                                            )
-                                          : Container(
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border:
-                                                      Border.all(color: blue)),
-                                              child: Text(snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('VendorName')
-                                                  ? snapshot.data!
-                                                      .get('VendorName')
-                                                  : 'VendorName')))),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          color: lightblue,
-                          width: 625,
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  width: 150,
-                                  child: Text(
-                                    ' DATE',
-                                  )),
-                              SizedBox(width: 5),
-                              Expanded(
-                                  child: Container(
-                                      height: 30,
-                                      child: widget.isHeader!
-                                          ? TextFormField(
-                                              decoration: const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 5)),
-                                              initialValue: snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('Date')
-                                                  ? snapshot.data!.get('Date')
-                                                  : 'Date',
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                              onChanged: (value) {
-                                                date = value;
-                                              },
-                                              onSaved: (newValue) {
-                                                date = newValue.toString();
-                                              },
-                                            )
-                                          : Container(
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border:
-                                                      Border.all(color: blue)),
-                                              child: Text(
-                                                snapshot.data!
-                                                        .data()
-                                                        .toString()
-                                                        .contains('Date')
-                                                    ? snapshot.data!.get('Date')
-                                                    : 'Date',
-                                              )))),
-                            ],
-                          ),
-                        )
-                      ],
-                      //   children: [
-                      //     HeaderValue('Employee Name', '', empName ?? ''),
-                      //     HeaderValue('Doc No.:TPCL/ DIST-EV', '', distev ?? ''),
-                      //     HeaderValue('VENDOR NAME', '', vendorname ?? ''),
-                      //     HeaderValue('DATE', '', date ?? ''),
-                      //   ],
-                      // ),
-                      // Column(
-                      //   children: [
-                      //     HeaderValue('OLA NUMBER', '', olano ?? ''),
-                      //     HeaderValue('PANEL SR NO.', '', panel ?? ''),
-                      //     HeaderValue('DepotName', '', depotname ?? ''),
-                      //     HeaderValue('CUSTOMER NAME', '', customername ?? ''),
-                      //   ],
+                          const Text('TPCL /DIST/EV/CHECKLIST ')
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          color: lightblue,
-                          width: 625,
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  width: 150,
-                                  child: Text(
-                                    ' OLA NUMBER',
-                                  )),
-                              SizedBox(width: 5),
-                              Expanded(
-                                  child: Container(
-                                      height: 30,
-                                      child: widget.isHeader!
-                                          ? TextFormField(
-                                              decoration: const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 5)),
-                                              initialValue: snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('OlaNo')
-                                                  ? snapshot.data!.get('OlaNo')
-                                                  : 'OlaNo',
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                              onChanged: (value) {
-                                                olano = value;
-                                              },
-                                              onSaved: (newValue) {
-                                                olano = newValue.toString();
-                                              },
-                                            )
-                                          : Container(
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border:
-                                                      Border.all(color: blue)),
-                                              child: Text(snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('OlaNo')
-                                                  ? snapshot.data!.get('OlaNo')
-                                                  : 'OlaNo')))),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          color: lightblue,
-                          width: 625,
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  width: 150,
-                                  child: Text(
-                                    ' PANEL SR NO.',
-                                  )),
-                              SizedBox(width: 5),
-                              Expanded(
-                                  child: Container(
-                                      height: 30,
-                                      child: widget.isHeader!
-                                          ? TextFormField(
-                                              decoration: const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 5)),
-                                              initialValue: snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('PanelNo')
-                                                  ? snapshot.data!
-                                                      .get('PanelNo')
-                                                  : 'PanelNo',
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                              onChanged: (value) {
-                                                panel = value;
-                                              },
-                                              onSaved: (newValue) {
-                                                panel = newValue.toString();
-                                              },
-                                            )
-                                          : Container(
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border:
-                                                      Border.all(color: blue)),
-                                              child: Text(
-                                                snapshot.data!
-                                                        .data()
-                                                        .toString()
-                                                        .contains('PanelNo')
-                                                    ? snapshot.data!
-                                                        .get('PanelNo')
-                                                    : 'PanelNo',
-                                              )))),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          color: lightblue,
-                          width: 625,
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  width: 150,
-                                  child: Text(
-                                    ' Depot Name',
-                                  )),
-                              SizedBox(width: 5),
-                              Expanded(
-                                  child: Container(
-                                      height: 30,
-                                      child: widget.isHeader!
-                                          ? TextFormField(
-                                              decoration: const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 5)),
-                                              initialValue: snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('DepotName')
-                                                  ? snapshot.data!
-                                                      .get('DepotName')
-                                                  : 'DepotName',
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                              onChanged: (value) {
-                                                depotname = value;
-                                              },
-                                              onSaved: (newValue) {
-                                                depotname = newValue.toString();
-                                              },
-                                            )
-                                          : Container(
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border:
-                                                      Border.all(color: blue)),
-                                              child: Text(
-                                                snapshot.data!
-                                                        .data()
-                                                        .toString()
-                                                        .contains('DepotName')
-                                                    ? snapshot.data!
-                                                        .get('DepotName')
-                                                    : 'DepotName',
-                                              )))),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          color: lightblue,
-                          width: 625,
-                          padding: const EdgeInsets.all(3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  width: 150,
-                                  child: Text(
-                                    'CustomerName',
-                                  )),
-                              SizedBox(width: 5),
-                              Expanded(
-                                  child: Container(
-                                      height: 30,
-                                      child: widget.isHeader!
-                                          ? TextFormField(
-                                              decoration: const InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                          top: 0,
-                                                          bottom: 0,
-                                                          left: 5)),
-                                              initialValue: snapshot.data!
-                                                      .data()
-                                                      .toString()
-                                                      .contains('CustomerName')
-                                                  ? snapshot.data!
-                                                      .get('CustomerName')
-                                                  : 'CustomerName',
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                              onChanged: (value) {
-                                                customername = value;
-                                              },
-                                              onSaved: (newValue) {
-                                                customername =
-                                                    newValue.toString();
-                                              },
-                                            )
-                                          : Container(
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border:
-                                                      Border.all(color: blue)),
-                                              child: Text(
-                                                snapshot.data!
-                                                        .data()
-                                                        .toString()
-                                                        .contains(
-                                                            'CustomerName')
-                                                    ? snapshot.data!
-                                                        .get('CustomerName')
-                                                    : 'CustomerName',
-                                              )))),
-                            ],
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                )),
-            Expanded(
-              child: StreamBuilder(
-                stream: _selectedIndex == 0
-                    ? _stream
-                    : _selectedIndex == 1
-                        ? _stream1
-                        : _selectedIndex == 2
-                            ? _stream2
-                            : _selectedIndex == 3
-                                ? _stream3
-                                : _selectedIndex == 4
-                                    ? _stream4
-                                    : _selectedIndex == 5
-                                        ? _stream5
-                                        : _selectedIndex == 6
-                                            ? _stream6
-                                            : _selectedIndex == 7
-                                                ? _stream7
-                                                : _selectedIndex == 8
-                                                    ? _stream8
-                                                    : _stream9,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return LoadingPage();
-                  }
-                  if (!snapshot.hasData || snapshot.data.exists == false) {
-                    return widget.isHeader!
-                        ? SfDataGridTheme(
-                            data: SfDataGridThemeData(headerColor: blue),
-                            child: SfDataGrid(
-                              source: _selectedIndex == 0
-                                  ? _qualityPSSDataSource
-                                  : _selectedIndex == 1
-                                      ? _qualityrmuDataSource
-                                      : _selectedIndex == 2
-                                          ? _qualityctDataSource
-                                          : _selectedIndex == 3
-                                              ? _qualitycmuDataSource
-                                              : _selectedIndex == 4
-                                                  ? _qualityacdDataSource
-                                                  : _selectedIndex == 5
-                                                      ? _qualityCIDataSource
-                                                      : _selectedIndex == 6
-                                                          ? _qualityCDIDataSource
-                                                          : _selectedIndex == 7
-                                                              ? _qualityMSPDataSource
-                                                              : _selectedIndex ==
-                                                                      8
-                                                                  ? _qualityChargerDataSource
-                                                                  : _qualityEPDataSource,
-
-                              //key: key,
-                              allowEditing: widget.isHeader!,
-                              frozenColumnsCount: 2,
-                              gridLinesVisibility: GridLinesVisibility.both,
-                              headerGridLinesVisibility:
-                                  GridLinesVisibility.both,
-                              selectionMode: SelectionMode.single,
-                              navigationMode: GridNavigationMode.cell,
-                              columnWidthMode: ColumnWidthMode.auto,
-                              editingGestureType: EditingGestureType.tap,
-                              controller: _dataGridController,
-
-                              // onQueryRowHeight: (details) {
-                              //   return details.rowIndex == 0 ? 60.0 : 49.0;
-                              // },
-                              columns: [
-                                GridColumn(
-                                  columnName: 'srNo',
-                                  width: 80,
-                                  autoFitPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  allowEditing: widget.isHeader!,
-                                  label: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    alignment: Alignment.center,
-                                    child: Text('Sr No',
-                                        overflow: TextOverflow.values.first,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: white)),
+                    Container(
+                        decoration: BoxDecoration(color: lightblue),
+                        child: Row(
+                          children: [
+                            Column(
+                              children: [
+                                Container(
+                                  color: lightblue,
+                                  width: 625,
+                                  padding: const EdgeInsets.all(3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          width: 150,
+                                          child: Text(
+                                            ' Employee Name',
+                                          )),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                          child: Container(
+                                              height: 30,
+                                              child: widget.isHeader!
+                                                  ? TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0,
+                                                                      bottom: 0,
+                                                                      left: 5)),
+                                                      initialValue: snapshot
+                                                              .data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains(
+                                                                  'EmployeeName')
+                                                          ? snapshot.data!.get(
+                                                              'EmployeeName')
+                                                          : 'Employee Name',
+                                                      style: const TextStyle(
+                                                          fontSize: 15),
+                                                      onChanged: (value) {
+                                                        empName = value;
+                                                      },
+                                                      onSaved: (newValue) {
+                                                        empName =
+                                                            newValue.toString();
+                                                      },
+                                                    )
+                                                  : Container(
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                              color: blue)),
+                                                      child: Text(
+                                                        snapshot.data!
+                                                                .data()
+                                                                .toString()
+                                                                .contains(
+                                                                    'EmployeeName')
+                                                            ? snapshot.data!.get(
+                                                                    'EmployeeName') ??
+                                                                ''
+                                                            : 'Employee Name',
+                                                      )))),
+                                    ],
                                   ),
                                 ),
-                                GridColumn(
-                                  width: 350,
-                                  columnName: 'checklist',
-                                  allowEditing: widget.isHeader!,
-                                  label: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    alignment: Alignment.center,
-                                    child: Text('ACTIVITY',
-                                        overflow: TextOverflow.values.first,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: white)),
+                                Container(
+                                  color: lightblue,
+                                  width: 625,
+                                  padding: const EdgeInsets.all(3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          width: 150,
+                                          child: Text(
+                                            'Doc No.:TPCL/ DIST-EV',
+                                          )),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                          child: Container(
+                                              height: 30,
+                                              child: widget.isHeader!
+                                                  ? TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0,
+                                                                      bottom: 0,
+                                                                      left: 5)),
+                                                      initialValue: snapshot
+                                                              .data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains(
+                                                                  'Dist EV')
+                                                          ? snapshot.data!.get(
+                                                                  'Dist EV') ??
+                                                              ''
+                                                          : 'Dist EV',
+                                                      style: const TextStyle(
+                                                          fontSize: 15),
+                                                      onChanged: (value) {
+                                                        distev = value;
+                                                      },
+                                                      onSaved: (newValue) {
+                                                        distev =
+                                                            newValue.toString();
+                                                      },
+                                                    )
+                                                  : Container(
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                              color: blue)),
+                                                      child: Text(snapshot.data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains(
+                                                                  'Dist EV')
+                                                          ? snapshot.data!.get(
+                                                                  'Dist EV') ??
+                                                              ''
+                                                          : 'Dist EV')))),
+                                    ],
                                   ),
                                 ),
-                                GridColumn(
-                                  columnName: 'responsibility',
-                                  width: 250,
-                                  allowEditing: widget.isHeader!,
-                                  label: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    alignment: Alignment.center,
-                                    child: Text('RESPONSIBILITY',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: white,
-                                        )),
+                                Container(
+                                  color: lightblue,
+                                  width: 625,
+                                  padding: const EdgeInsets.all(3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          width: 150,
+                                          child: Text(
+                                            ' VENDOR NAME',
+                                          )),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                          child: Container(
+                                              height: 30,
+                                              child: widget.isHeader!
+                                                  ? TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0,
+                                                                      bottom: 0,
+                                                                      left: 5)),
+                                                      initialValue: snapshot
+                                                              .data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains(
+                                                                  'VendorName')
+                                                          ? snapshot.data!.get(
+                                                                  'VendorName') ??
+                                                              ''
+                                                          : 'VendorName',
+                                                      style: const TextStyle(
+                                                          fontSize: 15),
+                                                      onChanged: (value) {
+                                                        vendorname = value;
+                                                      },
+                                                      onSaved: (newValue) {
+                                                        vendorname =
+                                                            newValue.toString();
+                                                      },
+                                                    )
+                                                  : Container(
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                              color: blue)),
+                                                      child: Text(snapshot.data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains(
+                                                                  'VendorName')
+                                                          ? snapshot.data!.get(
+                                                                  'VendorName') ??
+                                                              ''
+                                                          : 'VendorName')))),
+                                    ],
                                   ),
                                 ),
-                                GridColumn(
-                                  columnName: 'Reference',
-                                  allowEditing: widget.isHeader!,
-                                  width: 250,
-                                  label: Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8.0),
-                                    alignment: Alignment.center,
-                                    child: Text('DOCUMENT REFERENCE',
-                                        overflow: TextOverflow.values.first,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: white)),
+                                Container(
+                                  color: lightblue,
+                                  width: 625,
+                                  padding: const EdgeInsets.all(3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          width: 150,
+                                          child: Text(
+                                            ' DATE',
+                                          )),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                          child: Container(
+                                              height: 30,
+                                              child: widget.isHeader!
+                                                  ? TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0,
+                                                                      bottom: 0,
+                                                                      left: 5)),
+                                                      initialValue: snapshot
+                                                              .data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains('Date')
+                                                          ? snapshot.data!.get(
+                                                                  'Date') ??
+                                                              ''
+                                                          : 'Date',
+                                                      style: const TextStyle(
+                                                          fontSize: 15),
+                                                      onChanged: (value) {
+                                                        date = value;
+                                                      },
+                                                      onSaved: (newValue) {
+                                                        date =
+                                                            newValue.toString();
+                                                      },
+                                                    )
+                                                  : Container(
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                              color: blue)),
+                                                      child: Text(
+                                                        snapshot.data!
+                                                                .data()
+                                                                .toString()
+                                                                .contains(
+                                                                    'Date')
+                                                            ? snapshot.data!.get(
+                                                                    'Date') ??
+                                                                ''
+                                                            : 'Date',
+                                                      )))),
+                                    ],
                                   ),
-                                ),
-                                GridColumn(
-                                  columnName: 'observation',
-                                  allowEditing: widget.isHeader!,
-                                  width: 200,
-                                  label: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    alignment: Alignment.center,
-                                    child: Text('OBSERVATION',
-                                        overflow: TextOverflow.values.first,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: white)),
-                                  ),
-                                ),
-                                GridColumn(
-                                  columnName: 'photoNo',
-                                  allowEditing: widget.isHeader!,
-                                  width: 150,
-                                  label: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    alignment: Alignment.center,
-                                    child: Text('PHOTO NO.',
-                                        overflow: TextOverflow.values.first,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: white)),
-                                  ),
-                                ),
-                                GridColumn(
-                                  columnName: 'Delete',
-                                  autoFitPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  allowEditing: false,
-                                  visible: widget.isHeader!,
-                                  width: 120,
-                                  label: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    alignment: Alignment.center,
-                                    child: Text('Delete Row',
-                                        overflow: TextOverflow.values.first,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: white)
-                                        //    textAlign: TextAlign.center,
-                                        ),
-                                  ),
-                                ),
+                                )
                               ],
+                              //   children: [
+                              //     HeaderValue('Employee Name', '', empName ?? ''),
+                              //     HeaderValue('Doc No.:TPCL/ DIST-EV', '', distev ?? ''),
+                              //     HeaderValue('VENDOR NAME', '', vendorname ?? ''),
+                              //     HeaderValue('DATE', '', date ?? ''),
+                              //   ],
+                              // ),
+                              // Column(
+                              //   children: [
+                              //     HeaderValue('OLA NUMBER', '', olano ?? ''),
+                              //     HeaderValue('PANEL SR NO.', '', panel ?? ''),
+                              //     HeaderValue('DepotName', '', depotname ?? ''),
+                              //     HeaderValue('CUSTOMER NAME', '', customername ?? ''),
+                              //   ],
+                            ),
+                            Column(
+                              children: [
+                                Container(
+                                  color: lightblue,
+                                  width: 625,
+                                  padding: const EdgeInsets.all(3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          width: 150,
+                                          child: Text(
+                                            ' OLA NUMBER',
+                                          )),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                          child: Container(
+                                              height: 30,
+                                              child: widget.isHeader!
+                                                  ? TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0,
+                                                                      bottom: 0,
+                                                                      left: 5)),
+                                                      initialValue: snapshot
+                                                              .data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains('OlaNo')
+                                                          ? snapshot.data!.get(
+                                                                  'OlaNo') ??
+                                                              ''
+                                                          : 'OlaNo',
+                                                      style: const TextStyle(
+                                                          fontSize: 15),
+                                                      onChanged: (value) {
+                                                        olano = value;
+                                                      },
+                                                      onSaved: (newValue) {
+                                                        olano =
+                                                            newValue.toString();
+                                                      },
+                                                    )
+                                                  : Container(
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                              color: blue)),
+                                                      child: Text(snapshot.data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains('OlaNo')
+                                                          ? snapshot.data!.get(
+                                                                  'OlaNo') ??
+                                                              ''
+                                                          : 'OlaNo')))),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  color: lightblue,
+                                  width: 625,
+                                  padding: const EdgeInsets.all(3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          width: 150,
+                                          child: Text(
+                                            ' PANEL SR NO.',
+                                          )),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                          child: Container(
+                                              height: 30,
+                                              child: widget.isHeader!
+                                                  ? TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0,
+                                                                      bottom: 0,
+                                                                      left: 5)),
+                                                      initialValue: snapshot
+                                                              .data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains(
+                                                                  'PanelNo')
+                                                          ? snapshot.data!.get(
+                                                                  'PanelNo') ??
+                                                              ''
+                                                          : 'PanelNo',
+                                                      style: const TextStyle(
+                                                          fontSize: 15),
+                                                      onChanged: (value) {
+                                                        panel = value;
+                                                      },
+                                                      onSaved: (newValue) {
+                                                        panel =
+                                                            newValue.toString();
+                                                      },
+                                                    )
+                                                  : Container(
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                              color: blue)),
+                                                      child: Text(
+                                                        snapshot.data!
+                                                                .data()
+                                                                .toString()
+                                                                .contains(
+                                                                    'PanelNo')
+                                                            ? snapshot.data!.get(
+                                                                    'PanelNo') ??
+                                                                ''
+                                                            : 'PanelNo',
+                                                      )))),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  color: lightblue,
+                                  width: 625,
+                                  padding: const EdgeInsets.all(3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          width: 150,
+                                          child: Text(
+                                            ' Depot Name',
+                                          )),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                          child: Container(
+                                              height: 30,
+                                              child: widget.isHeader!
+                                                  ? TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0,
+                                                                      bottom: 0,
+                                                                      left: 5)),
+                                                      initialValue: snapshot
+                                                              .data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains(
+                                                                  'DepotName')
+                                                          ? snapshot.data!.get(
+                                                                  'DepotName') ??
+                                                              ''
+                                                          : 'DepotName',
+                                                      style: const TextStyle(
+                                                          fontSize: 15),
+                                                      onChanged: (value) {
+                                                        depotname = value;
+                                                      },
+                                                      onSaved: (newValue) {
+                                                        depotname =
+                                                            newValue.toString();
+                                                      },
+                                                    )
+                                                  : Container(
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                              color: blue)),
+                                                      child: Text(
+                                                        snapshot.data!
+                                                                .data()
+                                                                .toString()
+                                                                .contains(
+                                                                    'DepotName')
+                                                            ? snapshot.data!.get(
+                                                                    'DepotName') ??
+                                                                ''
+                                                            : 'DepotName',
+                                                      )))),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  color: lightblue,
+                                  width: 625,
+                                  padding: const EdgeInsets.all(3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          width: 150,
+                                          child: Text(
+                                            'CustomerName',
+                                          )),
+                                      SizedBox(width: 5),
+                                      Expanded(
+                                          child: Container(
+                                              height: 30,
+                                              child: widget.isHeader!
+                                                  ? TextFormField(
+                                                      decoration:
+                                                          const InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(
+                                                                      top: 0,
+                                                                      bottom: 0,
+                                                                      left: 5)),
+                                                      initialValue: snapshot
+                                                              .data!
+                                                              .data()
+                                                              .toString()
+                                                              .contains(
+                                                                  'CustomerName')
+                                                          ? snapshot.data!.get(
+                                                                  'CustomerName') ??
+                                                              ''
+                                                          : 'CustomerName',
+                                                      style: const TextStyle(
+                                                          fontSize: 15),
+                                                      onChanged: (value) {
+                                                        customername = value;
+                                                      },
+                                                      onSaved: (newValue) {
+                                                        customername =
+                                                            newValue.toString();
+                                                      },
+                                                    )
+                                                  : Container(
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                          border: Border.all(
+                                                              color: blue)),
+                                                      child: Text(
+                                                        snapshot.data!
+                                                                .data()
+                                                                .toString()
+                                                                .contains(
+                                                                    'CustomerName')
+                                                            ? snapshot.data!.get(
+                                                                    'CustomerName') ??
+                                                                ''
+                                                            : 'CustomerName',
+                                                      )))),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        )),
+                    Expanded(
+                      child: StreamBuilder(
+                        stream: _selectedIndex == 0
+                            ? _stream
+                            : _selectedIndex == 1
+                                ? _stream1
+                                : _selectedIndex == 2
+                                    ? _stream2
+                                    : _selectedIndex == 3
+                                        ? _stream3
+                                        : _selectedIndex == 4
+                                            ? _stream4
+                                            : _selectedIndex == 5
+                                                ? _stream5
+                                                : _selectedIndex == 6
+                                                    ? _stream6
+                                                    : _selectedIndex == 7
+                                                        ? _stream7
+                                                        : _selectedIndex == 8
+                                                            ? _stream8
+                                                            : _stream9,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return LoadingPage();
+                          }
+                          if (!snapshot.hasData ||
+                              snapshot.data.exists == false) {
+                            return widget.isHeader!
+                                ? SfDataGridTheme(
+                                    data:
+                                        SfDataGridThemeData(headerColor: blue),
+                                    child: SfDataGrid(
+                                      source: _selectedIndex == 0
+                                          ? _qualityPSSDataSource
+                                          : _selectedIndex == 1
+                                              ? _qualityrmuDataSource
+                                              : _selectedIndex == 2
+                                                  ? _qualityctDataSource
+                                                  : _selectedIndex == 3
+                                                      ? _qualitycmuDataSource
+                                                      : _selectedIndex == 4
+                                                          ? _qualityacdDataSource
+                                                          : _selectedIndex == 5
+                                                              ? _qualityCIDataSource
+                                                              : _selectedIndex ==
+                                                                      6
+                                                                  ? _qualityCDIDataSource
+                                                                  : _selectedIndex ==
+                                                                          7
+                                                                      ? _qualityMSPDataSource
+                                                                      : _selectedIndex ==
+                                                                              8
+                                                                          ? _qualityChargerDataSource
+                                                                          : _qualityEPDataSource,
 
-                              // stackedHeaderRows: [
-                              //   StackedHeaderRow(cells: [
-                              //     StackedHeaderCell(
-                              //         columnNames: ['SrNo'],
-                              //         child: Container(child: Text('Project')))
-                              //   ])
-                              // ],
+                                      //key: key,
+                                      allowEditing: widget.isHeader!,
+                                      frozenColumnsCount: 2,
+                                      gridLinesVisibility:
+                                          GridLinesVisibility.both,
+                                      headerGridLinesVisibility:
+                                          GridLinesVisibility.both,
+                                      selectionMode: SelectionMode.single,
+                                      navigationMode: GridNavigationMode.cell,
+                                      columnWidthMode: ColumnWidthMode.auto,
+                                      editingGestureType:
+                                          EditingGestureType.tap,
+                                      controller: _dataGridController,
+
+                                      // onQueryRowHeight: (details) {
+                                      //   return details.rowIndex == 0 ? 60.0 : 49.0;
+                                      // },
+                                      columns: [
+                                        GridColumn(
+                                          columnName: 'srNo',
+                                          width: 80,
+                                          autoFitPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16),
+                                          allowEditing: widget.isHeader!,
+                                          label: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            alignment: Alignment.center,
+                                            child: Text('Sr No',
+                                                overflow:
+                                                    TextOverflow.values.first,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: white)),
+                                          ),
+                                        ),
+                                        GridColumn(
+                                          width: 350,
+                                          columnName: 'checklist',
+                                          allowEditing: widget.isHeader!,
+                                          label: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            alignment: Alignment.center,
+                                            child: Text('ACTIVITY',
+                                                overflow:
+                                                    TextOverflow.values.first,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: white)),
+                                          ),
+                                        ),
+                                        GridColumn(
+                                          columnName: 'responsibility',
+                                          width: 250,
+                                          allowEditing: widget.isHeader!,
+                                          label: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            alignment: Alignment.center,
+                                            child: Text('RESPONSIBILITY',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white,
+                                                )),
+                                          ),
+                                        ),
+                                        GridColumn(
+                                          columnName: 'Reference',
+                                          allowEditing: widget.isHeader!,
+                                          width: 250,
+                                          label: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            alignment: Alignment.center,
+                                            child: Text('DOCUMENT REFERENCE',
+                                                overflow:
+                                                    TextOverflow.values.first,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: white)),
+                                          ),
+                                        ),
+                                        GridColumn(
+                                          columnName: 'observation',
+                                          allowEditing: widget.isHeader!,
+                                          width: 200,
+                                          label: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            alignment: Alignment.center,
+                                            child: Text('OBSERVATION',
+                                                overflow:
+                                                    TextOverflow.values.first,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: white)),
+                                          ),
+                                        ),
+                                        GridColumn(
+                                          columnName: 'Upload',
+                                          allowEditing: widget.isHeader!,
+                                          visible: widget.isHeader!,
+                                          width: 150,
+                                          label: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            alignment: Alignment.center,
+                                            child: Text('Upload',
+                                                overflow:
+                                                    TextOverflow.values.first,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: white)),
+                                          ),
+                                        ),
+                                        GridColumn(
+                                          columnName: 'View',
+                                          allowEditing: widget.isHeader!,
+                                          width: 150,
+                                          label: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            alignment: Alignment.center,
+                                            child: Text('View',
+                                                overflow:
+                                                    TextOverflow.values.first,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: white)),
+                                          ),
+                                        ),
+                                        GridColumn(
+                                          columnName: 'Delete',
+                                          autoFitPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16),
+                                          allowEditing: false,
+                                          visible: widget.isHeader!,
+                                          width: 120,
+                                          label: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            alignment: Alignment.center,
+                                            child: Text('Delete Row',
+                                                overflow:
+                                                    TextOverflow.values.first,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: white)
+                                                //    textAlign: TextAlign.center,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+
+                                      // stackedHeaderRows: [
+                                      //   StackedHeaderRow(cells: [
+                                      //     StackedHeaderCell(
+                                      //         columnNames: ['SrNo'],
+                                      //         child: Container(child: Text('Project')))
+                                      //   ])
+                                      // ],
+                                    ),
+                                  )
+                                : Center(
+                                    child: Container(
+                                      padding: EdgeInsets.all(25),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border: Border.all(color: blue)),
+                                      child: const Text(
+                                        '     No data available yet \n Please wait for admin process',
+                                        style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  );
+                          } else if (snapshot.hasData) {
+                            alldata = '';
+                            alldata = snapshot.data['data'] as List<dynamic>;
+                            qualitylisttable1.clear();
+                            alldata.forEach((element) {
+                              qualitylisttable1
+                                  .add(QualitychecklistModel.fromJson(element));
+                              if (_selectedIndex == 0) {
+                                _qualityPSSDataSource = QualityPSSDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 1) {
+                                _qualityrmuDataSource = QualityrmuDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 2) {
+                                _qualityctDataSource = QualityctDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 3) {
+                                _qualitycmuDataSource = QualitycmuDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 4) {
+                                _qualityacdDataSource = QualityacdDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 5) {
+                                _qualityCIDataSource = QualityCIDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 6) {
+                                _qualityCDIDataSource = QualityCDIDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 7) {
+                                _qualityMSPDataSource = QualityMSPDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 8) {
+                                _qualityChargerDataSource =
+                                    QualityChargerDataSource(qualitylisttable1,
+                                        widget.depoName!, widget.cityName!);
+                                _dataGridController = DataGridController();
+                              } else if (_selectedIndex == 9) {
+                                _qualityEPDataSource = QualityEPDataSource(
+                                    qualitylisttable1,
+                                    widget.depoName!,
+                                    widget.cityName!);
+                                _dataGridController = DataGridController();
+                              }
+                            });
+                            return SfDataGridTheme(
+                              data: SfDataGridThemeData(headerColor: blue),
+                              child: SfDataGrid(
+                                source: _selectedIndex == 0
+                                    ? _qualityPSSDataSource
+                                    : _selectedIndex == 1
+                                        ? _qualityrmuDataSource
+                                        : _selectedIndex == 2
+                                            ? _qualityctDataSource
+                                            : _selectedIndex == 3
+                                                ? _qualitycmuDataSource
+                                                : _selectedIndex == 4
+                                                    ? _qualityacdDataSource
+                                                    : _selectedIndex == 5
+                                                        ? _qualityCIDataSource
+                                                        : _selectedIndex == 6
+                                                            ? _qualityCDIDataSource
+                                                            : _selectedIndex ==
+                                                                    7
+                                                                ? _qualityMSPDataSource
+                                                                : _selectedIndex ==
+                                                                        8
+                                                                    ? _qualityChargerDataSource
+                                                                    : _qualityEPDataSource,
+
+                                //key: key,
+                                allowEditing: widget.isHeader!,
+                                frozenColumnsCount: 2,
+                                gridLinesVisibility: GridLinesVisibility.both,
+                                headerGridLinesVisibility:
+                                    GridLinesVisibility.both,
+                                selectionMode: SelectionMode.single,
+                                navigationMode: GridNavigationMode.cell,
+                                columnWidthMode: ColumnWidthMode.auto,
+                                editingGestureType: EditingGestureType.tap,
+                                controller: _dataGridController,
+
+                                // onQueryRowHeight: (details) {
+                                //   return details.rowIndex == 0 ? 60.0 : 49.0;
+                                // },
+                                columns: [
+                                  GridColumn(
+                                    columnName: 'srNo',
+                                    width: 80,
+                                    autoFitPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    allowEditing: widget.isHeader!,
+                                    label: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      alignment: Alignment.center,
+                                      child: Text('Sr No',
+                                          overflow: TextOverflow.values.first,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              color: white)),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    width: 350,
+                                    columnName: 'checklist',
+                                    allowEditing: widget.isHeader!,
+                                    label: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      alignment: Alignment.center,
+                                      child: Text('ACTIVITY',
+                                          overflow: TextOverflow.values.first,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              color: white)),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'responsibility',
+                                    width: 250,
+                                    allowEditing: widget.isHeader!,
+                                    label: Container(
+                                      padding: const EdgeInsets.all(8.0),
+                                      alignment: Alignment.center,
+                                      child: Text('RESPONSIBILITY',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: white,
+                                          )),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'Reference',
+                                    allowEditing: widget.isHeader!,
+                                    width: 250,
+                                    label: Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8.0),
+                                      alignment: Alignment.center,
+                                      child: Text('DOCUMENT REFERENCE',
+                                          overflow: TextOverflow.values.first,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              color: white)),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'observation',
+                                    allowEditing: widget.isHeader!,
+                                    width: 200,
+                                    label: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      alignment: Alignment.center,
+                                      child: Text('OBSERVATION',
+                                          overflow: TextOverflow.values.first,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              color: white)),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'Upload',
+                                    allowEditing: widget.isHeader!,
+                                    visible: widget.isHeader!,
+                                    width: 150,
+                                    label: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      alignment: Alignment.center,
+                                      child: Text('Upload.',
+                                          overflow: TextOverflow.values.first,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              color: white)),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'View',
+                                    allowEditing: widget.isHeader!,
+                                    width: 150,
+                                    label: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      alignment: Alignment.center,
+                                      child: Text('View',
+                                          overflow: TextOverflow.values.first,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              color: white)),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'Delete',
+                                    autoFitPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    allowEditing: false,
+                                    width: 120,
+                                    visible: widget.isHeader!,
+                                    label: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      alignment: Alignment.center,
+                                      child: Text('Delete Row',
+                                          overflow: TextOverflow.values.first,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              color: white)
+                                          //    textAlign: TextAlign.center,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+
+                                // stackedHeaderRows: [
+                                //   StackedHeaderRow(cells: [
+                                //     StackedHeaderCell(
+                                //         columnNames: ['SrNo'],
+                                //         child: Container(child: Text('Project')))
+                                //   ])
+                                // ],
+                              ),
+                            );
+                          } else {
+                            // here w3e have to put Nodata page
+                            return LoadingPage();
+                          }
+                        },
+                      ),
+                    ),
+                    widget.isHeader!
+                        ? Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: FloatingActionButton(
+                                child: Icon(Icons.add),
+                                onPressed: (() {
+                                  if (_selectedIndex == 0) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityPSSDataSource.buildDataGridRows();
+                                    _qualityPSSDataSource
+                                        .updateDatagridSource();
+                                  } else if (_selectedIndex == 1) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityrmuDataSource.buildDataGridRows();
+                                    _qualityrmuDataSource
+                                        .updateDatagridSource();
+                                  } else if (_selectedIndex == 2) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityctDataSource.buildDataGridRows();
+                                    _qualityctDataSource.updateDatagridSource();
+                                  } else if (_selectedIndex == 3) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualitycmuDataSource.buildDataGridRows();
+                                    _qualitycmuDataSource
+                                        .updateDatagridSource();
+                                  } else if (_selectedIndex == 4) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityacdDataSource.buildDataGridRows();
+                                    _qualityacdDataSource
+                                        .updateDatagridSource();
+                                  } else if (_selectedIndex == 5) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityCIDataSource.buildDataGridRows();
+                                    _qualityCIDataSource.updateDatagridSource();
+                                  } else if (_selectedIndex == 6) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityCDIDataSource.buildDataGridRows();
+                                    _qualityCDIDataSource
+                                        .updateDatagridSource();
+                                  } else if (_selectedIndex == 7) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityMSPDataSource.buildDataGridRows();
+                                    _qualityMSPDataSource
+                                        .updateDatagridSource();
+                                  } else if (_selectedIndex == 8) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityChargerDataSource
+                                        .buildDataGridRows();
+                                    _qualityChargerDataSource
+                                        .updateDatagridSource();
+                                  } else if (_selectedIndex == 9) {
+                                    qualitylisttable1.add(
+                                      QualitychecklistModel(
+                                        srNo: 1,
+                                        checklist: 'checklist',
+                                        responsibility: 'responsibility',
+                                        reference: 'reference',
+                                        observation: 'observation',
+                                        // photoNo: 12345,
+                                      ),
+                                    );
+                                    _qualityEPDataSource.buildDataGridRows();
+                                    _qualityEPDataSource.updateDatagridSource();
+                                  }
+                                }),
+                              ),
                             ),
                           )
-                        : Center(
-                            child: Container(
-                              padding: EdgeInsets.all(25),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: blue)),
-                              child: const Text(
-                                '     No data available yet \n Please wait for admin process',
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          );
-                  } else if (snapshot.hasData) {
-                    alldata = '';
-                    alldata = snapshot.data['data'] as List<dynamic>;
-                    qualitylisttable1.clear();
-                    alldata.forEach((element) {
-                      qualitylisttable1
-                          .add(QualitychecklistModel.fromJson(element));
-                      if (_selectedIndex == 0) {
-                        _qualityPSSDataSource =
-                            QualityPSSDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 1) {
-                        _qualityrmuDataSource =
-                            QualityrmuDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 2) {
-                        _qualityctDataSource =
-                            QualityctDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 3) {
-                        _qualitycmuDataSource =
-                            QualitycmuDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 4) {
-                        _qualityacdDataSource =
-                            QualityacdDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 5) {
-                        _qualityCIDataSource =
-                            QualityCIDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 6) {
-                        _qualityCDIDataSource =
-                            QualityCDIDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 7) {
-                        _qualityMSPDataSource =
-                            QualityMSPDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 8) {
-                        _qualityChargerDataSource =
-                            QualityChargerDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      } else if (_selectedIndex == 9) {
-                        _qualityEPDataSource =
-                            QualityEPDataSource(qualitylisttable1);
-                        _dataGridController = DataGridController();
-                      }
-                    });
-                    return SfDataGridTheme(
-                      data: SfDataGridThemeData(headerColor: blue),
-                      child: SfDataGrid(
-                        source: _selectedIndex == 0
-                            ? _qualityPSSDataSource
-                            : _selectedIndex == 1
-                                ? _qualityrmuDataSource
-                                : _selectedIndex == 2
-                                    ? _qualityctDataSource
-                                    : _selectedIndex == 3
-                                        ? _qualitycmuDataSource
-                                        : _selectedIndex == 4
-                                            ? _qualityacdDataSource
-                                            : _selectedIndex == 5
-                                                ? _qualityCIDataSource
-                                                : _selectedIndex == 6
-                                                    ? _qualityCDIDataSource
-                                                    : _selectedIndex == 7
-                                                        ? _qualityMSPDataSource
-                                                        : _selectedIndex == 8
-                                                            ? _qualityChargerDataSource
-                                                            : _qualityEPDataSource,
-
-                        //key: key,
-                        allowEditing: widget.isHeader!,
-                        frozenColumnsCount: 2,
-                        gridLinesVisibility: GridLinesVisibility.both,
-                        headerGridLinesVisibility: GridLinesVisibility.both,
-                        selectionMode: SelectionMode.single,
-                        navigationMode: GridNavigationMode.cell,
-                        columnWidthMode: ColumnWidthMode.auto,
-                        editingGestureType: EditingGestureType.tap,
-                        controller: _dataGridController,
-
-                        // onQueryRowHeight: (details) {
-                        //   return details.rowIndex == 0 ? 60.0 : 49.0;
-                        // },
-                        columns: [
-                          GridColumn(
-                            columnName: 'srNo',
-                            width: 80,
-                            autoFitPadding:
-                                const EdgeInsets.symmetric(horizontal: 16),
-                            allowEditing: widget.isHeader!,
-                            label: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              alignment: Alignment.center,
-                              child: Text('Sr No',
-                                  overflow: TextOverflow.values.first,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: white)),
-                            ),
-                          ),
-                          GridColumn(
-                            width: 350,
-                            columnName: 'checklist',
-                            allowEditing: widget.isHeader!,
-                            label: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              alignment: Alignment.center,
-                              child: Text('ACTIVITY',
-                                  overflow: TextOverflow.values.first,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: white)),
-                            ),
-                          ),
-                          GridColumn(
-                            columnName: 'responsibility',
-                            width: 250,
-                            allowEditing: widget.isHeader!,
-                            label: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              alignment: Alignment.center,
-                              child: Text('RESPONSIBILITY',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: white,
-                                  )),
-                            ),
-                          ),
-                          GridColumn(
-                            columnName: 'Reference',
-                            allowEditing: widget.isHeader!,
-                            width: 250,
-                            label: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              alignment: Alignment.center,
-                              child: Text('DOCUMENT REFERENCE',
-                                  overflow: TextOverflow.values.first,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: white)),
-                            ),
-                          ),
-                          GridColumn(
-                            columnName: 'observation',
-                            allowEditing: widget.isHeader!,
-                            width: 200,
-                            label: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              alignment: Alignment.center,
-                              child: Text('OBSERVATION',
-                                  overflow: TextOverflow.values.first,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: white)),
-                            ),
-                          ),
-                          GridColumn(
-                            columnName: 'photoNo',
-                            allowEditing: widget.isHeader!,
-                            width: 150,
-                            label: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              alignment: Alignment.center,
-                              child: Text('PHOTO NO.',
-                                  overflow: TextOverflow.values.first,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: white)),
-                            ),
-                          ),
-                          GridColumn(
-                            columnName: 'Delete',
-                            autoFitPadding:
-                                const EdgeInsets.symmetric(horizontal: 16),
-                            allowEditing: false,
-                            width: 120,
-                            visible: widget.isHeader!,
-                            label: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              alignment: Alignment.center,
-                              child: Text('Delete Row',
-                                  overflow: TextOverflow.values.first,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: white)
-                                  //    textAlign: TextAlign.center,
-                                  ),
-                            ),
-                          ),
-                        ],
-
-                        // stackedHeaderRows: [
-                        //   StackedHeaderRow(cells: [
-                        //     StackedHeaderCell(
-                        //         columnNames: ['SrNo'],
-                        //         child: Container(child: Text('Project')))
-                        //   ])
-                        // ],
-                      ),
-                    );
-                  } else {
-                    // here w3e have to put Nodata page
-                    return LoadingPage();
-                  }
-                },
-              ),
-            ),
-            widget.isHeader!
-                ? Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: FloatingActionButton(
-                        child: Icon(Icons.add),
-                        onPressed: (() {
-                          if (_selectedIndex == 0) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityPSSDataSource.buildDataGridRows();
-                            _qualityPSSDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 1) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityrmuDataSource.buildDataGridRows();
-                            _qualityrmuDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 2) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityctDataSource.buildDataGridRows();
-                            _qualityctDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 3) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualitycmuDataSource.buildDataGridRows();
-                            _qualitycmuDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 4) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityacdDataSource.buildDataGridRows();
-                            _qualityacdDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 5) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityCIDataSource.buildDataGridRows();
-                            _qualityCIDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 6) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityCDIDataSource.buildDataGridRows();
-                            _qualityCDIDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 7) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityMSPDataSource.buildDataGridRows();
-                            _qualityMSPDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 8) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityChargerDataSource.buildDataGridRows();
-                            _qualityChargerDataSource.updateDatagridSource();
-                          } else if (_selectedIndex == 9) {
-                            qualitylisttable1.add(
-                              QualitychecklistModel(
-                                srNo: 1,
-                                checklist: 'checklist',
-                                responsibility: 'responsibility',
-                                reference: 'reference',
-                                observation: 'observation',
-                                photoNo: 12345,
-                              ),
-                            );
-                            _qualityEPDataSource.buildDataGridRows();
-                            _qualityEPDataSource.updateDatagridSource();
-                          }
-                        }),
-                      ),
-                    ),
-                  )
-                : Container()
-          ],
-        );
-      },
-    );
+                        : Container()
+                  ],
+                );
+              } else {
+                return LoadingPage();
+              }
+            },
+          );
   }
 
   HeaderValue(String title, String hintValue, String changeValue) {
@@ -1889,7 +2106,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
         responsibility: 'responsibility',
         reference: 'reference',
         observation: 'observation',
-        photoNo: 12345,
+        // // photoNo: 12345,
       ),
     ];
   }

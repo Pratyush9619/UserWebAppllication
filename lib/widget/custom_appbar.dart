@@ -2,9 +2,10 @@ import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
+import '../Authentication/auth_service.dart';
 import '../Authentication/login_register.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatefulWidget {
   final String? text;
   // final IconData? icon;
   final bool haveSynced;
@@ -27,15 +28,29 @@ class CustomAppBar extends StatelessWidget {
       this.tabBar});
 
   @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  dynamic userId;
+  @override
+  void initState() {
+    getUserId().whenComplete(() {
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: blue,
             title: Text(
-              text.toString(),
+              widget.text.toString(),
             ),
             actions: [
-              haveSummary
+              widget.haveSummary
                   ? Padding(
                       padding:
                           const EdgeInsets.only(right: 40, top: 10, bottom: 10),
@@ -45,7 +60,7 @@ class CustomAppBar extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.blue),
                         child: TextButton(
-                            onPressed: onTap,
+                            onPressed: widget.onTap,
                             child: Text(
                               'View Summary',
                               style: TextStyle(color: white, fontSize: 20),
@@ -53,7 +68,7 @@ class CustomAppBar extends StatelessWidget {
                       ),
                     )
                   : Container(),
-              haveSynced
+              widget.haveSynced
                   ? Padding(
                       padding:
                           const EdgeInsets.only(right: 20, top: 10, bottom: 10),
@@ -64,7 +79,7 @@ class CustomAppBar extends StatelessWidget {
                             color: Colors.blue),
                         child: TextButton(
                             onPressed: () {
-                              store!();
+                              widget.store!();
                             },
                             child: Text(
                               'Sync Data',
@@ -79,10 +94,19 @@ class CustomAppBar extends StatelessWidget {
                       onTap: () {
                         onWillPop(context);
                       },
-                      child: Image.asset(
-                        'assets/logout.png',
-                        height: 20,
-                        width: 20,
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/logout.png',
+                            height: 20,
+                            width: 20,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            userId ?? '',
+                            style: const TextStyle(fontSize: 18),
+                          )
+                        ],
                       ))
                   //  IconButton(
                   //   icon: Icon(
@@ -96,7 +120,7 @@ class CustomAppBar extends StatelessWidget {
                   // )
                   ),
             ],
-            bottom: havebottom
+            bottom: widget.havebottom
                 ? TabBar(
                     labelColor: Colors.yellow,
                     labelStyle: buttonWhite,
@@ -123,7 +147,7 @@ class CustomAppBar extends StatelessWidget {
                       Tab(text: "PSS"),
                     ],
                   )
-                : isdetailedTab
+                : widget.isdetailedTab
                     ? TabBar(
                         labelColor: Colors.yellow,
                         labelStyle: buttonWhite,
@@ -146,7 +170,7 @@ class CustomAppBar extends StatelessWidget {
                           Tab(text: "Shed Lighting Drawings & Specification"),
                         ],
                       )
-                    : tabBar));
+                    : widget.tabBar));
   }
 
   Future<bool> onWillPop(BuildContext context) async {
@@ -224,5 +248,11 @@ class CustomAppBar extends StatelessWidget {
               ),
             ));
     return a;
+  }
+
+  Future<void> getUserId() async {
+    await AuthService().getCurrentUserId().then((value) {
+      userId = value;
+    });
   }
 }
