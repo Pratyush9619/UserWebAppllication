@@ -51,7 +51,7 @@ class _ViewFileState extends State<ViewFile> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Syncfusion Flutter PDF Viewer'),
+          title: const Text(' PDF Viewer'),
           backgroundColor: blue,
         ),
         body: child
@@ -96,12 +96,12 @@ class _ViewFileState extends State<ViewFile> {
     }
   }
 
-  NodataAvailable() {
+  nodataAvailable() {
     return Center(
         child: Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         height: 1000,
         width: 1000,
         decoration: BoxDecoration(
@@ -111,7 +111,7 @@ class _ViewFileState extends State<ViewFile> {
           Image.asset(
             'assets/Tata-Power.jpeg',
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

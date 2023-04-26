@@ -1,4 +1,3 @@
-import 'package:assingment/KeysEvents/Grid_DataTable.dart';
 import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
 import '../Authentication/auth_service.dart';
 import '../components/loading_page.dart';
 import '../datasource/dailyproject_datasource.dart';
@@ -63,12 +61,6 @@ class _ViewSummaryState extends State<ViewSummary> {
     getUserId().then((value) {
       _isloading = false;
     });
-    // _stream = FirebaseFirestore.instance
-    //     .collection('MonthlyProjectReport')
-    //     .doc('${widget.depoName}')
-    //     .collection('Monthly Data')
-    //     .doc(DateFormat('MMMM').format(startdate!))
-    //     .snapshots();
   }
 
   @override
@@ -171,7 +163,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       headerColor: lightblue),
                                   child: SfDataGrid(
                                       source: monthlyDataSource,
-                                      allowEditing: false,
+                                      allowEditing: true,
                                       frozenColumnsCount: 2,
                                       gridLinesVisibility:
                                           GridLinesVisibility.both,
@@ -189,23 +181,22 @@ class _ViewSummaryState extends State<ViewSummary> {
                                           autoFitPadding:
                                               const EdgeInsets.symmetric(
                                                   horizontal: 16),
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           width: 160,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),
                                             alignment: Alignment.center,
                                             child: Text(
-                                                'Activities SI. No as per Gant Chart',
-                                                overflow:
-                                                    TextOverflow.values.first,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                    color: white)
-                                                //    textAlign: TextAlign.center,
-                                                ),
+                                              'Activities SI. No as per Gant Chart',
+                                              overflow:
+                                                  TextOverflow.values.first,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16,
+                                                  color: white),
+                                            ),
                                           ),
                                         ),
                                         GridColumn(
@@ -213,7 +204,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                           autoFitPadding:
                                               const EdgeInsets.symmetric(
                                                   horizontal: 16),
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           width: 240,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -314,7 +305,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                           autoFitPadding:
                                               const EdgeInsets.symmetric(
                                                   horizontal: 16),
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           width: 250,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -336,7 +327,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                           autoFitPadding:
                                               const EdgeInsets.symmetric(
                                                   horizontal: 16),
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           width: 250,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -358,7 +349,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                           autoFitPadding:
                                               const EdgeInsets.symmetric(
                                                   horizontal: 16),
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           width: 250,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -398,7 +389,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                             return LoadingPage();
                           } else if (!snapshot.hasData ||
                               snapshot.data!.exists == false) {
-                            return NodataAvailable();
+                            return const NodataAvailable();
                           } else {
                             alldata = '';
                             alldata = snapshot.data!['data'] as List<dynamic>;
@@ -414,7 +405,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                               data: SfDataGridThemeData(headerColor: lightblue),
                               child: SfDataGrid(
                                   source: _dailyDataSource,
-                                  allowEditing: false,
+                                  allowEditing: true,
                                   frozenColumnsCount: 2,
                                   gridLinesVisibility: GridLinesVisibility.both,
                                   headerGridLinesVisibility:
@@ -430,7 +421,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       autoFitPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 16),
-                                      allowEditing: false,
+                                      allowEditing: true,
                                       width: 70,
                                       label: Container(
                                         padding: const EdgeInsets.symmetric(
@@ -452,7 +443,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       autoFitPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 16),
-                                      allowEditing: false,
+                                      allowEditing: true,
                                       width: 200,
                                       label: Container(
                                         padding: const EdgeInsets.symmetric(
@@ -473,7 +464,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       autoFitPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 16),
-                                      allowEditing: false,
+                                      allowEditing: true,
                                       width: 220,
                                       label: Container(
                                         padding: const EdgeInsets.symmetric(
@@ -494,7 +485,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       autoFitPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 16),
-                                      allowEditing: false,
+                                      allowEditing: true,
                                       width: 320,
                                       label: Container(
                                         padding: const EdgeInsets.symmetric(
@@ -515,7 +506,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       autoFitPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 16),
-                                      allowEditing: false,
+                                      allowEditing: true,
                                       width: 320,
                                       label: Container(
                                         padding: const EdgeInsets.symmetric(
@@ -536,7 +527,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       autoFitPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 16),
-                                      allowEditing: false,
+                                      allowEditing: true,
                                       visible: false,
                                       width: 120,
                                       label: Container(
@@ -581,7 +572,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                 }
                                 if (!snapshot.hasData ||
                                     snapshot.data!.exists == false) {
-                                  return NodataAvailable();
+                                  return const NodataAvailable();
                                 } else {
                                   alldata = '';
                                   alldata =
@@ -602,7 +593,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       source: _safetyChecklistDataSource,
                                       //key: key,
 
-                                      allowEditing: false,
+                                      allowEditing: true,
                                       frozenColumnsCount: 2,
                                       gridLinesVisibility:
                                           GridLinesVisibility.both,
@@ -621,7 +612,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                           autoFitPadding:
                                               const EdgeInsets.symmetric(
                                                   horizontal: 16),
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           width: 80,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -639,7 +630,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                         GridColumn(
                                           width: 450,
                                           columnName: 'Details',
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),
@@ -655,7 +646,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                         ),
                                         GridColumn(
                                           columnName: 'Status',
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           width: 150,
                                           label: Container(
                                             padding: const EdgeInsets.all(8.0),
@@ -672,7 +663,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                         ),
                                         GridColumn(
                                           columnName: 'Remark',
-                                          allowEditing: false,
+                                          allowEditing: true,
                                           width: 150,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(

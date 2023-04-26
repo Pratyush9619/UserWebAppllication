@@ -1,6 +1,5 @@
 import 'package:assingment/Authentication/login.dart';
 import 'package:assingment/Authentication/register.dart';
-import 'package:assingment/appbar_with_back_and_search.dart';
 import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';

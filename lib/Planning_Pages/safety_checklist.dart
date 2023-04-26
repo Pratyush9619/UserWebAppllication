@@ -1,4 +1,3 @@
-import 'package:assingment/KeysEvents/Grid_DataTable.dart';
 import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:assingment/Planning_Pages/summary.dart';
 import 'package:assingment/model/safety_checklistModel.dart';
@@ -8,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../Authentication/auth_service.dart';
 import '../components/loading_page.dart';
 import '../datasource/safetychecklist_datasource.dart';
@@ -29,14 +28,28 @@ late SafetyChecklistDataSource _safetyChecklistDataSource;
 late DataGridController _dataGridController;
 List<dynamic> tabledata2 = [];
 Stream? _stream;
-var alldata;
+dynamic alldata;
 dynamic userId;
 bool _isloading = true;
-var depotlocation, address, contact, latitude, state, chargertype, conductedby;
+// ignore: prefer_typing_uninitialized_variables
+dynamic depotlocation,
+    depotname,
+    address,
+    contact,
+    latitude,
+    state,
+    chargertype,
+    conductedby,
+    tpNo,
+    rev;
+DateTime? date = DateTime.now();
+DateTime? date1 = DateTime.now();
+DateTime? date2 = DateTime.now();
 
 class _SafetyChecklistState extends State<SafetyChecklist> {
   @override
   void initState() {
+    // _fetchSafetyField();
     getUserId().whenComplete(() {
       safetylisttable = getData();
       _safetyChecklistDataSource = SafetyChecklistDataSource(safetylisttable);
@@ -80,6 +93,8 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                   .collection(userId)
                   .doc(DateFormat.yMMMMd().format(DateTime.now()))
                   .set({
+                'TPNo': tpNo ?? 'TP/Ev/QS/Ev-BUS-05-2022',
+                'Rev': rev ?? 'Rev:0 Date: 29.11.2022',
                 'DepotLocation': depotlocation ?? 'Enter DepotNmae',
                 'Address': address ?? 'Enter Address',
                 'ContactNo': contact ?? 'Enter Vendor Name',
@@ -87,7 +102,10 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                 'State': state ?? 'Enter Ola No',
                 'ChargerType': chargertype ?? 'Enter Panel',
                 'DepotName': depotname ?? 'Enter depot Name Name',
-                'ConductedBy': conductedby ?? 'Enter Customer Name'
+                'ConductedBy': conductedby ?? 'Enter Customer Name',
+                'InstallationDate': date,
+                'EnegizationDate': date1,
+                'BoardingDate': date2,
               });
               store();
             }),
@@ -145,17 +163,18 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                                               width: 250,
                                               height: 30,
                                               child: TextFormField(
-                                                initialValue:
-                                                    "TP/Ev/QS/Ev-BUS-05-2022",
+                                                initialValue: snapshot.data!
+                                                        .data()
+                                                        .toString()
+                                                        .contains('TPNo')
+                                                    ? snapshot.data!
+                                                            .get('TPNo') ??
+                                                        ''
+                                                    : 'TPNo',
                                                 textAlign: TextAlign.center,
-                                                onChanged: (value) {},
-                                                // decoration: InputDecoration(
-                                                //     hintText:
-                                                //         "TP/Ev/QS/Ev-BUS-05-2022",
-                                                //     border: OutlineInputBorder(
-                                                //         borderRadius:
-                                                //             BorderRadius.circular(
-                                                //                 10))),
+                                                onChanged: (value) {
+                                                  tpNo = value;
+                                                },
                                                 autofillHints: Characters.empty,
                                               ),
                                             ),
@@ -167,15 +186,17 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                                               height: 30,
                                               child: TextFormField(
                                                 textAlign: TextAlign.center,
-                                                initialValue:
-                                                    "Rev:0 Date: 29.11.2022",
-                                                // decoration: InputDecoration(
-                                                //     hintText:
-                                                //         "Rev:0 Date: 29.11.2022",
-                                                //     border: OutlineInputBorder(
-                                                //         borderRadius:
-                                                //             BorderRadius.circular(
-                                                //                 10))),
+                                                initialValue: snapshot.data!
+                                                        .data()
+                                                        .toString()
+                                                        .contains('Rev')
+                                                    ? snapshot.data!
+                                                            .get('Rev') ??
+                                                        ''
+                                                    : "Rev:0 Date: 29.11.2022",
+                                                onChanged: (value) {
+                                                  rev = value;
+                                                },
                                                 autofillHints: Characters.empty,
                                               ),
                                             ),
@@ -189,23 +210,99 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
+                                            const Text(
                                               "Installation Date:",
                                             ),
                                             Container(
                                               width: 250,
                                               height: 30,
-                                              child: TextFormField(
-                                                initialValue: 'Date',
-                                                textAlign: TextAlign.center,
-                                                // decoration: InputDecoration(
-                                                //     hintText: "contact no",
-                                                //     border: OutlineInputBorder(
-                                                //         borderRadius:
-                                                //             BorderRadius.circular(
-                                                //                 10))),
-                                                autofillHints: Characters.empty,
+
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border:
+                                                      Border.all(color: blue)),
+                                              child: Row(
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                          ''),
+                                                                  content:
+                                                                      Container(
+                                                                    height: 400,
+                                                                    width: 500,
+                                                                    child:
+                                                                        SfDateRangePicker(
+                                                                      view: DateRangePickerView
+                                                                          .month,
+                                                                      showTodayButton:
+                                                                          true,
+                                                                      onSelectionChanged:
+                                                                          (DateRangePickerSelectionChangedArgs
+                                                                              args) {
+                                                                        if (args.value
+                                                                            is PickerDateRange) {
+                                                                          date = args
+                                                                              .value
+                                                                              .startDate;
+                                                                        } else {
+                                                                          // final List<PickerDateRange>
+                                                                          //     selectedRanges =
+                                                                          //     args.value;
+                                                                        }
+                                                                      },
+                                                                      selectionMode:
+                                                                          DateRangePickerSelectionMode
+                                                                              .single,
+                                                                      showActionButtons:
+                                                                          true,
+                                                                      onCancel: () =>
+                                                                          Navigator.pop(
+                                                                              context),
+                                                                      onSubmit:
+                                                                          (value) {
+                                                                        date = DateTime.parse(
+                                                                            value.toString());
+
+                                                                        print(
+                                                                            date);
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                    ),
+                                                                  )),
+                                                        );
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.calendar_month,
+                                                      )),
+                                                  Text(
+                                                    DateFormat('dd-MM-yyyy')
+                                                        .format(date!),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
                                               ),
+
+                                              // child: TextFormField(
+                                              //   initialValue: 'Date',
+                                              //   textAlign: TextAlign.center,
+                                              //   // decoration: InputDecoration(
+                                              //   //     hintText: "contact no",
+                                              //   //     border: OutlineInputBorder(
+                                              //   //         borderRadius:
+                                              //   //             BorderRadius.circular(
+                                              //   //                 10))),
+                                              //   autofillHints: Characters.empty,
+                                              // ),
                                             ),
                                           ],
                                         ),
@@ -220,28 +317,182 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                                             Container(
                                               width: 250,
                                               height: 30,
-                                              child: TextFormField(
-                                                initialValue: 'Date',
-                                                textAlign: TextAlign.center,
+
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border:
+                                                      Border.all(color: blue)),
+                                              child: Row(
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                          ''),
+                                                                  content:
+                                                                      Container(
+                                                                    height: 400,
+                                                                    width: 500,
+                                                                    child:
+                                                                        SfDateRangePicker(
+                                                                      view: DateRangePickerView
+                                                                          .month,
+                                                                      showTodayButton:
+                                                                          true,
+                                                                      onSelectionChanged:
+                                                                          (DateRangePickerSelectionChangedArgs
+                                                                              args) {
+                                                                        if (args.value
+                                                                            is PickerDateRange) {
+                                                                          date = args
+                                                                              .value
+                                                                              .startDate;
+                                                                        } else {
+                                                                          // final List<PickerDateRange>
+                                                                          //     selectedRanges =
+                                                                          //     args.value;
+                                                                        }
+                                                                      },
+                                                                      selectionMode:
+                                                                          DateRangePickerSelectionMode
+                                                                              .single,
+                                                                      showActionButtons:
+                                                                          true,
+                                                                      onCancel: () =>
+                                                                          Navigator.pop(
+                                                                              context),
+                                                                      onSubmit:
+                                                                          (value) {
+                                                                        date1 =
+                                                                            DateTime.parse(value.toString());
+
+                                                                        print(
+                                                                            date1);
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                    ),
+                                                                  )),
+                                                        );
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.calendar_month,
+                                                      )),
+                                                  Text(
+                                                    DateFormat('dd-MM-yyyy')
+                                                        .format(date1!),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
                                               ),
+
+                                              // child: TextFormField(
+                                              //   initialValue: 'Date',
+                                              //   textAlign: TextAlign.center,
+                                              //   // decoration: InputDecoration(
+                                              //   //     hintText: "contact no",
+                                              //   //     border: OutlineInputBorder(
+                                              //   //         borderRadius:
+                                              //   //             BorderRadius.circular(
+                                              //   //                 10))),
+                                              //   autofillHints: Characters.empty,
+                                              // ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text("On Doarding Date:"),
+                                            Text("On Boarding Date:"),
                                             Container(
-                                                width: 250,
-                                                height: 30,
-                                                child: TextFormField(
-                                                  initialValue: 'Date',
-                                                  textAlign: TextAlign.center,
-                                                )),
+                                              width: 250,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border:
+                                                      Border.all(color: blue)),
+                                              child: Row(
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                          ''),
+                                                                  content:
+                                                                      Container(
+                                                                    height: 400,
+                                                                    width: 500,
+                                                                    child:
+                                                                        SfDateRangePicker(
+                                                                      view: DateRangePickerView
+                                                                          .month,
+                                                                      showTodayButton:
+                                                                          true,
+                                                                      onSelectionChanged:
+                                                                          (DateRangePickerSelectionChangedArgs
+                                                                              args) {
+                                                                        if (args.value
+                                                                            is PickerDateRange) {
+                                                                          date = args
+                                                                              .value
+                                                                              .startDate;
+                                                                        } else {
+                                                                          // final List<PickerDateRange>
+                                                                          //     selectedRanges =
+                                                                          //     args.value;
+                                                                        }
+                                                                      },
+                                                                      selectionMode:
+                                                                          DateRangePickerSelectionMode
+                                                                              .single,
+                                                                      showActionButtons:
+                                                                          true,
+                                                                      onCancel: () =>
+                                                                          Navigator.pop(
+                                                                              context),
+                                                                      onSubmit:
+                                                                          (value) {
+                                                                        date2 =
+                                                                            DateTime.parse(value.toString());
+
+                                                                        print(
+                                                                            date2);
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                    ),
+                                                                  )),
+                                                        );
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.calendar_month,
+                                                      )),
+                                                  Text(
+                                                    DateFormat('dd-MM-yyyy')
+                                                        .format(date2!),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ],
@@ -568,7 +819,8 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                                                                     fontSize:
                                                                         15),
                                                             onChanged: (value) {
-                                                              // buses = int.parse(value);
+                                                              chargertype =
+                                                                  value;
                                                             },
                                                             onSaved:
                                                                 (newValue) {
@@ -615,12 +867,14 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
                                                                         .get(
                                                                             'ConductedBy') ??
                                                                     ''
-                                                                : 'LOA No',
+                                                                : 'Conducted By',
                                                             style:
                                                                 const TextStyle(
                                                                     fontSize:
                                                                         15),
                                                             onChanged: (value) {
+                                                              conductedby =
+                                                                  value;
                                                               // loa = value;
                                                             },
                                                             onSaved:
@@ -1284,4 +1538,28 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
       ),
     ];
   }
+
+  // void _fetchSafetyField() async {
+  //   await FirebaseFirestore.instance
+  //       .collection('SafetyFieldData')
+  //       .doc('${widget.depoName}')
+  //       .collection(userId)
+  //       .doc(DateFormat.yMMMMd().format(DateTime.now()))
+  //       .get()
+  //       .then((ds) {
+  //     setState(() {
+  //       tpNo = ds.data()!['TPNo'] ?? '';
+  //       rev = ds.data()!['Rev'] ?? '';
+  //       date = ds.data()!['InstallationDate'] ?? '';
+  //       date1 = ds.data()!['EnegizationDate'] ?? '';
+  //       date2 = ds.data()!['BoardingDate'] ?? '';
+  //       depotname = ds.data()!['DepotName'] ?? '';
+  //       address = ds.data()!['address'] ?? '';
+  //       latitude = ds.data()!['Latitude'] ?? '';
+  //       state = ds.data()!['State'] ?? '';
+  //       chargertype = ds.data()!['ChargerType'] ?? '';
+  //       conductedby = ds.data()!['ConductedBy'] ?? '';
+  //     });
+  //   });
+  // }
 }

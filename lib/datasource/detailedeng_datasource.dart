@@ -141,8 +141,7 @@ class DetailedEngSource extends DataGridSource {
                                 title: 'DetailedEngRFC',
                                 cityName: cityName,
                                 depoName: depoName,
-                                activity:
-                                    '${row.getCells()[3].value.toString()}'),
+                                activity: row.getCells()[3].value.toString()),
                           ));
                           // showDialog(
                           //     context: context,

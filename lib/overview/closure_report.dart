@@ -3,6 +3,7 @@ import 'package:assingment/widget/custom_appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -27,24 +28,29 @@ class _ClosureReportState extends State<ClosureReport> {
   Stream? _stream;
   var alldata;
   String? depotname, state;
-  int? buses;
+  var buses;
   var longitude, latitude, loa;
   dynamic userId;
   bool _isUserId = false;
+  bool _isloading = true;
 
   @override
   void initState() {
-    getUserId().then((value) {
+    // _fetchClosureField();
+    getUserId().whenComplete(() {
       closereport = getcloseReport();
       _closeReportDataSource = CloseReportDataSource(
           closereport, context, widget.depoName!, widget.cityName!);
       _dataGridController = DataGridController();
       _stream = FirebaseFirestore.instance
-          .collection('DailyProjectReport')
+          .collection('ClosureProjectReport')
           .doc('${widget.depoName}')
           .collection('ClosureReport')
           .doc(userId)
           .snapshots();
+
+      _isloading = false;
+      setState(() {});
     });
 
     super.initState();
@@ -71,13 +77,17 @@ class _ClosureReportState extends State<ClosureReport> {
                     'Latitude': latitude ?? 'Enter Latitude',
                     'State': state ?? 'Enter State',
                     'Buses': buses ?? 'Enter Buse',
-                    'LAO No': loa ?? 'Enter LOA No.',
+                    'LaoNo': loa ?? 'Enter LOA No.',
                   },
                 );
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: const Text('Data are synced'),
+                  backgroundColor: blue,
+                ));
               },
             ),
             preferredSize: const Size.fromHeight(50)),
-        body: upperScreen());
+        body: _isloading ? LoadingPage() : upperScreen());
   }
 
   Future<void> getUserId() async {
@@ -91,6 +101,8 @@ class _ClosureReportState extends State<ClosureReport> {
       stream: FirebaseFirestore.instance
           .collection('ClosureReport')
           .doc('${widget.depoName}')
+          .collection("ClosureData")
+          .doc(userId)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -134,7 +146,7 @@ class _ClosureReportState extends State<ClosureReport> {
                               children: [
                                 Container(
                                     width: 150,
-                                    child: Text(
+                                    child: const Text(
                                       ' Depot Name',
                                     )),
                                 SizedBox(width: 5),
@@ -149,7 +161,9 @@ class _ClosureReportState extends State<ClosureReport> {
                                                   .data()
                                                   .toString()
                                                   .contains('DepotName')
-                                              ? snapshot.data!.get('DepotName')
+                                              ? snapshot.data!
+                                                      .get('DepotName') ??
+                                                  ''
                                               : 'Depot Name',
                                           style: const TextStyle(fontSize: 15),
                                           onChanged: (value) {
@@ -185,7 +199,7 @@ class _ClosureReportState extends State<ClosureReport> {
                                           initialValue: snapshot.data!
                                                   .data()
                                                   .toString()
-                                                  .contains('Logitude')
+                                                  .contains('Longitude')
                                               ? snapshot.data!
                                                       .get('Longitude') ??
                                                   'Longitude'
@@ -312,7 +326,7 @@ class _ClosureReportState extends State<ClosureReport> {
                                               : 'Buses',
                                           style: const TextStyle(fontSize: 15),
                                           onChanged: (value) {
-                                            buses = int.parse(value);
+                                            buses = value.toString();
                                           },
                                           onSaved: (newValue) {
                                             // panel = newValue.toString();
@@ -344,8 +358,8 @@ class _ClosureReportState extends State<ClosureReport> {
                                           initialValue: snapshot.data!
                                                   .data()
                                                   .toString()
-                                                  .contains('LAO No')
-                                              ? snapshot.data!.get('LOA No') ??
+                                                  .contains('LaoNo')
+                                              ? snapshot.data!.get('LaoNo') ??
                                                   ''
                                               : 'LOA No',
                                           style: const TextStyle(fontSize: 15),
@@ -738,6 +752,25 @@ class _ClosureReportState extends State<ClosureReport> {
       },
     );
   }
+
+  // void _fetchClosureField() async {
+  //   await FirebaseFirestore.instance
+  //       .collection('ClosureReport')
+  //       .doc('${widget.depoName}')
+  //       .collection("ClosureData")
+  //       .doc(userId)
+  //       .get()
+  //       .then((ds) {
+  //     setState(() {
+  //       depotname = ds.data()!['DepotName'];
+  //       longitude = ds.data()!['Longitude'];
+  //       latitude = ds.data()!['Latitude'];
+  //       state = ds.data()!['State'];
+  //       buses = ds.data()!['Buses'];
+  //       loa = ds.data()!['LaoNo'];
+  //     });
+  //   });
+  // }
 
   List<CloseReportModel> getcloseReport() {
     return [

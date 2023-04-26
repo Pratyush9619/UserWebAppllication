@@ -850,7 +850,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                       Expanded(
                                           child: Container(
                                               height: 30,
-                                              child: widget.isHeader!
+                                              child: true
                                                   ? TextFormField(
                                                       decoration:
                                                           const InputDecoration(
@@ -917,7 +917,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                       Expanded(
                                           child: Container(
                                               height: 30,
-                                              child: widget.isHeader!
+                                              child: true
                                                   ? TextFormField(
                                                       decoration:
                                                           const InputDecoration(
@@ -983,7 +983,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                       Expanded(
                                           child: Container(
                                               height: 30,
-                                              child: widget.isHeader!
+                                              child: true
                                                   ? TextFormField(
                                                       decoration:
                                                           const InputDecoration(
@@ -1049,7 +1049,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                       Expanded(
                                           child: Container(
                                               height: 30,
-                                              child: widget.isHeader!
+                                              child: true
                                                   ? TextFormField(
                                                       decoration:
                                                           const InputDecoration(
@@ -1134,7 +1134,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                       Expanded(
                                           child: Container(
                                               height: 30,
-                                              child: widget.isHeader!
+                                              child: true
                                                   ? TextFormField(
                                                       decoration:
                                                           const InputDecoration(
@@ -1198,7 +1198,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                       Expanded(
                                           child: Container(
                                               height: 30,
-                                              child: widget.isHeader!
+                                              child: true
                                                   ? TextFormField(
                                                       decoration:
                                                           const InputDecoration(
@@ -1266,7 +1266,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                       Expanded(
                                           child: Container(
                                               height: 30,
-                                              child: widget.isHeader!
+                                              child: true
                                                   ? TextFormField(
                                                       decoration:
                                                           const InputDecoration(
@@ -1334,7 +1334,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                       Expanded(
                                           child: Container(
                                               height: 30,
-                                              child: widget.isHeader!
+                                              child: true
                                                   ? TextFormField(
                                                       decoration:
                                                           const InputDecoration(
@@ -1417,7 +1417,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                           }
                           if (!snapshot.hasData ||
                               snapshot.data.exists == false) {
-                            return widget.isHeader!
+                            return true
                                 ? SfDataGridTheme(
                                     data:
                                         SfDataGridThemeData(headerColor: blue),
@@ -1446,7 +1446,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                                                           : _qualityEPDataSource,
 
                                       //key: key,
-                                      allowEditing: widget.isHeader!,
+                                      allowEditing: true,
                                       frozenColumnsCount: 2,
                                       gridLinesVisibility:
                                           GridLinesVisibility.both,
@@ -1469,7 +1469,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                           autoFitPadding:
                                               const EdgeInsets.symmetric(
                                                   horizontal: 16),
-                                          allowEditing: widget.isHeader!,
+                                          allowEditing: true,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),
@@ -1486,7 +1486,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                         GridColumn(
                                           width: 350,
                                           columnName: 'checklist',
-                                          allowEditing: widget.isHeader!,
+                                          allowEditing: true,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),
@@ -1503,7 +1503,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                         GridColumn(
                                           columnName: 'responsibility',
                                           width: 250,
-                                          allowEditing: widget.isHeader!,
+                                          allowEditing: true,
                                           label: Container(
                                             padding: const EdgeInsets.all(8.0),
                                             alignment: Alignment.center,
@@ -1517,7 +1517,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                         ),
                                         GridColumn(
                                           columnName: 'Reference',
-                                          allowEditing: widget.isHeader!,
+                                          allowEditing: true,
                                           width: 250,
                                           label: Container(
                                             padding: EdgeInsets.symmetric(
@@ -1534,7 +1534,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                         ),
                                         GridColumn(
                                           columnName: 'observation',
-                                          allowEditing: widget.isHeader!,
+                                          allowEditing: true,
                                           width: 200,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -1551,8 +1551,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                         ),
                                         GridColumn(
                                           columnName: 'Upload',
-                                          allowEditing: widget.isHeader!,
-                                          visible: widget.isHeader!,
+                                          allowEditing: true,
+                                          visible: true,
                                           width: 150,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -1569,7 +1569,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                         ),
                                         GridColumn(
                                           columnName: 'View',
-                                          allowEditing: widget.isHeader!,
+                                          allowEditing: true,
                                           width: 150,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -1590,7 +1590,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                               const EdgeInsets.symmetric(
                                                   horizontal: 16),
                                           allowEditing: false,
-                                          visible: widget.isHeader!,
+                                          visible: true,
                                           width: 120,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
@@ -1727,7 +1727,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                                                     : _qualityEPDataSource,
 
                                 //key: key,
-                                allowEditing: widget.isHeader!,
+                                allowEditing: true,
                                 frozenColumnsCount: 2,
                                 gridLinesVisibility: GridLinesVisibility.both,
                                 headerGridLinesVisibility:
@@ -1747,7 +1747,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                     width: 80,
                                     autoFitPadding: const EdgeInsets.symmetric(
                                         horizontal: 16),
-                                    allowEditing: widget.isHeader!,
+                                    allowEditing: true,
                                     label: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
@@ -1763,7 +1763,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                   GridColumn(
                                     width: 350,
                                     columnName: 'checklist',
-                                    allowEditing: widget.isHeader!,
+                                    allowEditing: true,
                                     label: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
@@ -1779,7 +1779,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                   GridColumn(
                                     columnName: 'responsibility',
                                     width: 250,
-                                    allowEditing: widget.isHeader!,
+                                    allowEditing: true,
                                     label: Container(
                                       padding: const EdgeInsets.all(8.0),
                                       alignment: Alignment.center,
@@ -1793,7 +1793,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                   ),
                                   GridColumn(
                                     columnName: 'Reference',
-                                    allowEditing: widget.isHeader!,
+                                    allowEditing: true,
                                     width: 250,
                                     label: Container(
                                       padding:
@@ -1809,7 +1809,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                   ),
                                   GridColumn(
                                     columnName: 'observation',
-                                    allowEditing: widget.isHeader!,
+                                    allowEditing: true,
                                     width: 200,
                                     label: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -1825,8 +1825,8 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                   ),
                                   GridColumn(
                                     columnName: 'Upload',
-                                    allowEditing: widget.isHeader!,
-                                    visible: widget.isHeader!,
+                                    allowEditing: true,
+                                    visible: true,
                                     width: 150,
                                     label: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -1842,7 +1842,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                   ),
                                   GridColumn(
                                     columnName: 'View',
-                                    allowEditing: widget.isHeader!,
+                                    allowEditing: true,
                                     width: 150,
                                     label: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -1862,7 +1862,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                         horizontal: 16),
                                     allowEditing: false,
                                     width: 120,
-                                    visible: widget.isHeader!,
+                                    visible: true,
                                     label: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
