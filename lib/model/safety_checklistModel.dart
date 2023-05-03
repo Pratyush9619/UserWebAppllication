@@ -6,7 +6,7 @@ class SafetyChecklistModel {
     required this.details,
     required this.status,
     required this.remark,
-    required this.photo,
+    // required this.photo,
 
     // required this.weightage,
   });
@@ -15,7 +15,7 @@ class SafetyChecklistModel {
   String details;
   String status;
   String remark;
-  String photo;
+  // String photo;
 
   factory SafetyChecklistModel.fromJson(Map<String, dynamic> json) {
     return SafetyChecklistModel(
@@ -23,7 +23,7 @@ class SafetyChecklistModel {
       details: json['Details'],
       remark: json['Remark'],
       status: json['Status'],
-      photo: json['Photo'],
+      // photo: json['Photo'],
     );
     // weightage: json['Weightage']);
   }
@@ -34,7 +34,7 @@ class SafetyChecklistModel {
       DataGridCell<String>(columnName: 'Details', value: details),
       DataGridCell<String>(columnName: 'Status', value: status),
       DataGridCell<String>(columnName: 'Remark', value: remark),
-      DataGridCell<String>(columnName: 'Photo', value: photo),
+      DataGridCell<String>(columnName: 'Photo', value: null),
       DataGridCell<String>(columnName: 'ViewPhoto', value: null),
 
       // DataGridCell<double>(columnName: 'Weightage', value: weightage),

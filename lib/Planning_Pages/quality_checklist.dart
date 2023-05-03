@@ -86,7 +86,7 @@ Stream? _stream8;
 Stream? _stream9;
 
 TextEditingController ename = TextEditingController();
-var empName,
+dynamic empName,
     distev,
     vendorname,
     date,
@@ -96,7 +96,7 @@ var empName,
     depotname,
     customername;
 
-var alldata;
+dynamic alldata;
 int? _selectedIndex = 0;
 dynamic userId;
 List<String> title = [
@@ -805,7 +805,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                 return Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       height: 80,
                       decoration: BoxDecoration(color: lightblue),
                       child: Row(
@@ -846,7 +846,7 @@ class _QualityChecklistState extends State<QualityChecklist> {
                                           child: Text(
                                             ' Employee Name',
                                           )),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       Expanded(
                                           child: Container(
                                               height: 30,

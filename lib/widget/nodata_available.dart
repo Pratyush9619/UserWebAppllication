@@ -16,7 +16,7 @@ class _NodataAvailableState extends State<NodataAvailable> {
             child: Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         height: 1000,
         width: 1000,
         decoration: BoxDecoration(

@@ -15,15 +15,12 @@ import '../model/daily_projectModel.dart';
 class CloseReportDataSource extends DataGridSource {
   String cityName;
   String depoName;
+  dynamic userId;
   BuildContext mainContext;
 
   List data = [];
-  CloseReportDataSource(
-    this._montlyproject,
-    this.mainContext,
-    this.depoName,
-    this.cityName,
-  ) {
+  CloseReportDataSource(this._montlyproject, this.mainContext, this.depoName,
+      this.cityName, this.userId) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
@@ -50,15 +47,6 @@ class CloseReportDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
-    DateTime? rangeEndDate = DateTime.now();
-    DateTime? date;
-    DateTime? endDate;
-    DateTime? rangeStartDate1 = DateTime.now();
-    DateTime? rangeEndDate1 = DateTime.now();
-    DateTime? date1;
-    DateTime? endDate1;
-    final int dataRowIndex = dataGridRows.indexOf(row);
-
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
@@ -72,10 +60,12 @@ class CloseReportDataSource extends DataGridSource {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UploadDocument(
-                              title: 'DetailedEngRFC',
-                              cityName: cityName,
-                              depoName: depoName,
-                              activity: row.getCells()[3].value.toString()),
+                            title: 'DetailedEngRFC',
+                            cityName: cityName,
+                            depoName: depoName,
+                            activity: row.getCells()[3].value.toString(),
+                            userId: userId,
+                          ),
                         ));
                         // showDialog(
                         //     context: context,

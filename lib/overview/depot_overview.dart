@@ -50,7 +50,13 @@ class _DepotOverviewState extends State<DepotOverview> {
       powerSource,
       boqElectrical,
       boqCivil,
-      managername;
+      managername,
+      electmanagername,
+      elecEng,
+      elecVendor,
+      civilmanagername,
+      civilEng,
+      civilVendor;
 
   Stream? _stream, _stream1;
   var alldata;
@@ -110,13 +116,19 @@ class _DepotOverviewState extends State<DepotOverview> {
                     .collection("OverviewFieldData")
                     .doc(userId)
                     .set({
-                  'address': address ?? 'Enter Address',
-                  'scope': scope ?? 'Enter Scope',
-                  'required': required ?? 'Enter Required',
-                  'charger': charger ?? 'Enter Charger',
-                  'load': load ?? 'Enter Load',
-                  'powerSource': powerSource ?? 'Enter PowerSource',
-                  'ManagerName': managername ?? 'Enter Manager Name',
+                  'address': address ?? '',
+                  'scope': scope ?? '',
+                  'required': required ?? '',
+                  'charger': charger ?? '',
+                  'load': load ?? '',
+                  'powerSource': powerSource ?? '',
+                  'ManagerName': managername ?? '',
+                  'CivilManagerName': civilmanagername ?? '',
+                  'CivilEng': civilEng ?? '',
+                  'CivilVendor': civilVendor ?? '',
+                  'ElectricalManagerName': electmanagername ?? '',
+                  'ElectricalEng': elecEng ?? '',
+                  'ElectricalVendor': elecVendor ?? '',
                 });
 
                 storeData();
@@ -156,7 +168,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                       child: Row(
                         children: [
                           Container(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             width: 500,
                             child: Column(
                               children: [
@@ -225,7 +237,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               ),
                                             );
                                           } else {
-                                            return Text('data');
+                                            return const Text('data');
                                           }
                                         },
                                       ),
@@ -235,7 +247,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Container(
-                                    padding: EdgeInsets.all(3),
+                                    padding: const EdgeInsets.all(3),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color: blue),
@@ -543,7 +555,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Delete Row',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16,
                                                   )
@@ -856,7 +868,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Delete Row',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16,
                                                   )
@@ -1065,14 +1077,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 15),
                               onChanged: (value) {
                                 charger = value;
                               }),
                         ),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1109,7 +1121,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1145,7 +1157,263 @@ class _DepotOverviewState extends State<DepotOverview> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: blue),
+                          child: Text('Electrical',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: white)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 280,
+                          child: const Text(
+                            'Project Manager ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          height: 35,
+                          child: TextFormField(
+                              initialValue: snapshot.data!
+                                      .data()
+                                      .toString()
+                                      .contains('ElectricalManagerName')
+                                  ? snapshot.data!
+                                          .get('ElectricalManagerName') ??
+                                      ''
+                                  : '',
+                              textInputAction: TextInputAction.done,
+                              minLines: 1,
+                              autofocus: false,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 15),
+                              onChanged: (value) {
+                                electmanagername = value;
+                              }),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 280,
+                          child: const Text(
+                            'Electrical Engineer ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          height: 35,
+                          child: TextFormField(
+                              initialValue: snapshot.data!
+                                      .data()
+                                      .toString()
+                                      .contains('ElectricalEng')
+                                  ? snapshot.data!.get('ElectricalEng') ?? ''
+                                  : '',
+                              textInputAction: TextInputAction.done,
+                              minLines: 1,
+                              autofocus: false,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 15),
+                              onChanged: (value) {
+                                elecEng = value;
+                              }),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 280,
+                          child: const Text(
+                            'Electrical Vendor',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          height: 35,
+                          child: TextFormField(
+                              initialValue: snapshot.data!
+                                      .data()
+                                      .toString()
+                                      .contains('ElectricalVendor')
+                                  ? snapshot.data!.get('ElectricalVendor') ?? ''
+                                  : '',
+                              textInputAction: TextInputAction.done,
+                              minLines: 1,
+                              autofocus: false,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 15),
+                              onChanged: (value) {
+                                elecVendor = value;
+                              }),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: blue),
+                          child: Text('Civil',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: white)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 280,
+                          child: const Text(
+                            'Project Manager ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          height: 35,
+                          child: TextFormField(
+                              initialValue: snapshot.data!
+                                      .data()
+                                      .toString()
+                                      .contains('CivilManagerName')
+                                  ? snapshot.data!.get('CivilManagerName') ?? ''
+                                  : '',
+                              textInputAction: TextInputAction.done,
+                              minLines: 1,
+                              autofocus: false,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 15),
+                              onChanged: (value) {
+                                civilmanagername = value;
+                              }),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 280,
+                          child: const Text(
+                            'Civil Engineer ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          height: 35,
+                          child: TextFormField(
+                              initialValue: snapshot.data!
+                                      .data()
+                                      .toString()
+                                      .contains('CivilEng')
+                                  ? snapshot.data!.get('CivilEng') ?? ''
+                                  : '',
+                              textInputAction: TextInputAction.done,
+                              minLines: 1,
+                              autofocus: false,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 15),
+                              onChanged: (value) {
+                                civilEng = value;
+                              }),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 280,
+                          child: const Text(
+                            'Civil Vendor',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 200,
+                          height: 35,
+                          child: TextFormField(
+                              initialValue: snapshot.data!
+                                      .data()
+                                      .toString()
+                                      .contains('CivilVendor')
+                                  ? snapshot.data!.get('CivilVendor') ?? ''
+                                  : '',
+                              textInputAction: TextInputAction.done,
+                              minLines: 1,
+                              autofocus: false,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 15),
+                              onChanged: (value) {
+                                civilVendor = value;
+                              }),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 5),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1213,119 +1481,15 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 )),
                             IconButton(
                                 alignment: Alignment.bottomRight,
-                                padding: EdgeInsets.only(bottom: 5),
+                                padding: const EdgeInsets.only(bottom: 5),
                                 onPressed: () {},
                                 icon: Icon(Icons.delete, color: red))
                           ],
                         ),
-                        // TextFormField(
-                        //     initialValue: snapshot.data!
-                        //             .data()
-                        //             .toString()
-                        //             .contains('powerSource')
-                        //         ? snapshot.data!.get('powerSource') ??
-                        //             'Enter  PowerSource '
-                        //         : 'Enter  PowerSource ',
-                        //     textInputAction: TextInputAction.done,
-                        //     minLines: 1,
-                        //     autofocus: false,
-                        //     textAlign: TextAlign.center,
-                        //     style: TextStyle(fontSize: 15),
-                        //     onChanged: (value) {
-                        //       powerSource = value;
-                        //     }),
-
-                        // Container(
-                        //     width: 200,
-                        //     height: 100,
-                        //     child: Column(
-                        //       children: [
-                        //         Row(
-                        //           mainAxisAlignment:
-                        //               MainAxisAlignment.spaceBetween,
-                        //           children: [
-                        //             if (result != null)
-                        //               const Padding(
-                        //                 padding: const EdgeInsets.all(8.0),
-                        //               ),
-                        //             ElevatedButton(
-                        //                 onPressed: () async {
-                        //                   result = await FilePicker.platform
-                        //                       .pickFiles(
-                        //                           type: FileType.custom,
-                        //                           withData: true,
-                        //                           allowedExtensions: ['pdf']);
-                        //                   if (result == null) {
-                        //                     print("No file selected");
-                        //                   } else {
-                        //                     setState(() {});
-                        //                     result?.files.forEach((element) {
-                        //                       print(element.name);
-                        //                     });
-                        //                   }
-                        //                 },
-                        //                 child: const Text(
-                        //                   'Pick file',
-                        //                   textAlign: TextAlign.end,
-                        //                 )),
-                        //             ElevatedButton(
-                        //                 onPressed: () async {
-                        //                   result = await FilePicker.platform
-                        //                       .pickFiles(withData: true);
-                        //                   if (result == null) {
-                        //                     print("No file selected");
-                        //                   } else {
-                        //                     setState(() {});
-                        //                     result?.files.forEach((element) {
-                        //                       print(element.name);
-                        //                     });
-                        //                   }
-                        //                 },
-                        //                 child: Row(
-                        //                   children: [
-                        //                     if (result != null)
-                        //                       Container(
-                        //                         width: 65,
-                        //                         child: Text(
-                        //                           result!.files.first.name,
-                        //                           overflow:
-                        //                               TextOverflow.ellipsis,
-                        //                           textAlign: TextAlign.end,
-                        //                         ),
-                        //                       )
-                        //                   ],
-                        //                 )),
-                        //           ],
-                        //         ),
-                        //         Container(
-                        //             width: 200,
-                        //             height: 70,
-                        //             child: Row(
-                        //               mainAxisAlignment:
-                        //                   MainAxisAlignment.spaceBetween,
-                        //               children: [
-                        //                 if (result != null)
-                        //                   Padding(
-                        //                     padding: const EdgeInsets.all(8.0),
-                        //                     child: Container(
-                        //                       width: 170,
-                        //                       child: Text(
-                        //                         result!.files.first.name,
-                        //                         overflow: TextOverflow.ellipsis,
-                        //                         style: const TextStyle(
-                        //                             fontSize: 16,
-                        //                             fontWeight:
-                        //                                 FontWeight.bold),
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //               ],
-                        //             )),
-                        //       ],
-                        //     )),
                       ],
                     ),
                     const SizedBox(height: 5),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1512,7 +1676,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(right: 30),
+                          padding: const EdgeInsets.only(right: 30),
                           width: 280,
                           height: 35,
                           child: Row(
@@ -1655,21 +1819,21 @@ class _DepotOverviewState extends State<DepotOverview> {
                       ],
                     ),
                     const SizedBox(height: 5),
-                    Center(
-                        child: SfCircularChart(
-                      legend: Legend(
-                          isVisible: true, position: LegendPosition.right),
-                      series: [
-                        PieSeries<PieChartData, String>(
-                            dataLabelSettings:
-                                DataLabelSettings(isVisible: true),
-                            dataSource: chartData,
-                            pointColorMapper: (PieChartData data, _) =>
-                                data.color,
-                            xValueMapper: (PieChartData data, _) => data.x,
-                            yValueMapper: (PieChartData data, _) => data.y)
-                      ],
-                    ))
+                    // Center(
+                    //     child: SfCircularChart(
+                    //   legend: Legend(
+                    //       isVisible: true, position: LegendPosition.right),
+                    //   series: [
+                    //     PieSeries<PieChartData, String>(
+                    //         dataLabelSettings:
+                    //             const DataLabelSettings(isVisible: true),
+                    //         dataSource: chartData,
+                    //         pointColorMapper: (PieChartData data, _) =>
+                    //             data.color,
+                    //         xValueMapper: (PieChartData data, _) => data.x,
+                    //         yValueMapper: (PieChartData data, _) => data.y)
+                    //   ],
+                    // ))
                   ],
                 ),
               );
@@ -1736,19 +1900,20 @@ class _DepotOverviewState extends State<DepotOverview> {
       'data': tabledata2,
     }).whenComplete(() async {
       tabledata2.clear();
-      if (fileBytes != null && fileBytes1 != null) {
+      if (fileBytes != null || fileBytes1 != null) {
         await FirebaseStorage.instance
             .ref(
-                'BOQElectrical/${widget.cityName}/${widget.depoName}/${result!.files.first.name}')
+                'BOQElectrical/${widget.cityName}/${widget.depoName}/$userId/${result!.files.first.name}')
             .putData(
                 fileBytes!, SettableMetadata(contentType: 'application/pdf'));
         await FirebaseStorage.instance
             .ref(
-                'BOQCivil/${widget.cityName}/${widget.depoName}/${result1!.files.first.name}')
+                'BOQCivil/${widget.cityName}/${widget.depoName}/$userId/${result1!.files.first.name}')
             .putData(
                 fileBytes1!, SettableMetadata(contentType: 'application/pdf'));
       }
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('Data are synced'),
         backgroundColor: blue,
@@ -1772,6 +1937,12 @@ class _DepotOverviewState extends State<DepotOverview> {
         charger = ds.data()!['charger'];
         load = ds.data()!['load'];
         powerSource = ds.data()!['powerSource'];
+        electmanagername = ds.data()!['ElectricalManagerName'];
+        elecEng = ds.data()!['ElectricalEng'];
+        elecVendor = ds.data()!['ElectricalVendor'];
+        civilmanagername = ds.data()!['CivilManagerName'];
+        civilEng = ds.data()!['CivilEng'];
+        civilVendor = ds.data()!['CivilVendor'];
       });
     });
   }

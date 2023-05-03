@@ -135,7 +135,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                         stream: FirebaseFirestore.instance
                             .collection('MonthlyProjectReport')
                             .doc('${widget.depoName}')
-                            .collection('Monthly Data')
+                            .collection(widget.userId)
                             .doc(DateFormat.yMMM().format(startdate!))
                             .snapshots(),
                         builder: (context, snapshot) {
@@ -144,7 +144,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                             return LoadingPage();
                           } else if (!snapshot.hasData ||
                               snapshot.data!.exists == false) {
-                            return NodataAvailable();
+                            return const NodataAvailable();
                           } else {
                             alldata = snapshot.data!['data'] as List<dynamic>;
                             monthlyProject.clear();
@@ -562,7 +562,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                               stream: FirebaseFirestore.instance
                                   .collection('SafetyChecklistTable')
                                   .doc(widget.depoName!)
-                                  .collection('Safety Data')
+                                  .collection(widget.userId)
                                   .doc(DateFormat.yMMMMd().format(startdate!))
                                   .snapshots(),
                               builder: (context, snapshot) {
@@ -583,7 +583,10 @@ class _ViewSummaryState extends State<ViewSummary> {
                                         SafetyChecklistModel.fromJson(element));
                                     _safetyChecklistDataSource =
                                         SafetyChecklistDataSource(
-                                            safetylisttable);
+                                            safetylisttable,
+                                            widget.cityName!,
+                                            widget.depoName!,
+                                            userId);
                                     _dataGridController = DataGridController();
                                   });
                                   return SfDataGridTheme(
@@ -605,7 +608,10 @@ class _ViewSummaryState extends State<ViewSummary> {
                                       editingGestureType:
                                           EditingGestureType.tap,
                                       controller: _dataGridController,
-
+                                      onQueryRowHeight: (details) {
+                                        return details.getIntrinsicRowHeight(
+                                            details.rowIndex);
+                                      },
                                       columns: [
                                         GridColumn(
                                           columnName: 'srNo',
@@ -628,7 +634,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                           ),
                                         ),
                                         GridColumn(
-                                          width: 450,
+                                          width: 550,
                                           columnName: 'Details',
                                           allowEditing: true,
                                           label: Container(
@@ -647,7 +653,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                         GridColumn(
                                           columnName: 'Status',
                                           allowEditing: true,
-                                          width: 150,
+                                          width: 230,
                                           label: Container(
                                             padding: const EdgeInsets.all(8.0),
                                             alignment: Alignment.center,
@@ -664,7 +670,7 @@ class _ViewSummaryState extends State<ViewSummary> {
                                         GridColumn(
                                           columnName: 'Remark',
                                           allowEditing: true,
-                                          width: 150,
+                                          width: 230,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),
@@ -681,7 +687,8 @@ class _ViewSummaryState extends State<ViewSummary> {
                                         GridColumn(
                                           columnName: 'Photo',
                                           allowEditing: false,
-                                          width: 180,
+                                          visible: false,
+                                          width: 160,
                                           label: Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),

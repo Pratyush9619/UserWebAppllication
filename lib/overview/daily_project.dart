@@ -1,5 +1,6 @@
 import 'package:assingment/datasource/dailyproject_datasource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -77,7 +78,8 @@ class _DailyProjectState extends State<DailyProject> {
                   ),
                 )),
             store: () {
-              StoreData();
+              _showDialog(context);
+              storeData();
             },
           ),
           preferredSize: const Size.fromHeight(50)),
@@ -503,7 +505,7 @@ class _DailyProjectState extends State<DailyProject> {
           onPressed: (() {
             dailyproject.add(DailyProjectModel(
                 siNo: 1,
-                // date: DateFormat().add_yMd().format(DateTime.now()),
+                // date: DateFormat().add_yMd(storeData()).format(DateTime.now()),
                 // state: "Maharashtra",
                 // depotName: 'depotName',
                 typeOfActivity: 'Electrical Infra',
@@ -522,17 +524,17 @@ class _DailyProjectState extends State<DailyProject> {
     });
   }
 
-  void StoreData() {
-    Map<String, dynamic> table_data = Map();
+  void storeData() {
+    Map<String, dynamic> tableData = Map();
     for (var i in _dailyDataSource.dataGridRows) {
       for (var data in i.getCells()) {
         if (data.columnName != 'button' && data.columnName != 'Delete') {
-          table_data[data.columnName] = data.value;
+          tableData[data.columnName] = data.value;
         }
       }
 
-      tabledata2.add(table_data);
-      table_data = {};
+      tabledata2.add(tableData);
+      tableData = {};
     }
 
     FirebaseFirestore.instance
@@ -544,7 +546,7 @@ class _DailyProjectState extends State<DailyProject> {
       'data': tabledata2,
     }).whenComplete(() {
       tabledata2.clear();
-      // Navigator.pop(context);
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('Data are synced'),
         backgroundColor: blue,
@@ -564,5 +566,22 @@ class _DailyProjectState extends State<DailyProject> {
           progress: '',
           status: '')
     ];
+  }
+
+  void _showDialog(BuildContext context) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        content: SizedBox(
+          height: 50,
+          width: 50,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: blue,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

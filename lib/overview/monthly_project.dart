@@ -1,15 +1,10 @@
-import 'package:assingment/Jmr/jmr_home.dart';
-import 'package:assingment/KeysEvents/Grid_DataTable.dart';
 import 'package:assingment/datasource/monthlyproject_datasource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import '../Authentication/auth_service.dart';
 import '../Planning_Pages/summary.dart';
 import '../components/loading_page.dart';
@@ -33,17 +28,13 @@ class _MonthlyProjectState extends State<MonthlyProject> {
   late DataGridController _dataGridController;
   List<dynamic> tabledata2 = [];
   Stream? _stream;
-  var alldata;
+  dynamic alldata;
   bool _isloading = true;
   String title = 'Monthly Project';
   dynamic userId;
+
   @override
   void initState() {
-    // getmonthlyReport();
-    // monthlyProject = getmonthlyReport();
-    // monthlyDataSource = MonthlyDataSource(monthlyProject, context);
-    // _dataGridController = DataGridController();
-    // TODO: implement initState
     getUserId().whenComplete(() {
       _stream = FirebaseFirestore.instance
           .collection('MonthlyProjectReport')
@@ -79,7 +70,8 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                 )),
             haveSynced: true,
             store: () {
-              StoreData();
+              _showDialog(context);
+              storeData();
             },
           ),
           preferredSize: const Size.fromHeight(50)),
@@ -95,6 +87,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                   monthlyDataSource =
                       MonthlyDataSource(monthlyProject, context);
                   _dataGridController = DataGridController();
+
                   return Column(
                     children: [
                       Expanded(
@@ -323,6 +316,10 @@ class _MonthlyProjectState extends State<MonthlyProject> {
                             columnWidthMode: ColumnWidthMode.auto,
                             editingGestureType: EditingGestureType.tap,
                             controller: _dataGridController,
+                            // onQueryRowHeight: (details) {
+                            //   return details
+                            //       .getIntrinsicRowHeight(details.rowIndex);
+                            // },
                             columns: [
                               GridColumn(
                                 columnName: 'ActivityNo',
@@ -514,7 +511,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
     );
   }
 
-  void StoreData() {
+  void storeData() {
     Map<String, dynamic> table_data = Map();
     for (var i in monthlyDataSource.dataGridRows) {
       for (var data in i.getCells()) {
@@ -530,13 +527,13 @@ class _MonthlyProjectState extends State<MonthlyProject> {
     FirebaseFirestore.instance
         .collection('MonthlyProjectReport')
         .doc('${widget.depoName}')
-        .collection('Monthly Data')
+        .collection(userId)
         .doc(DateFormat.yMMM().format(DateTime.now()))
         .set({
       'data': tabledata2,
     }).whenComplete(() {
       tabledata2.clear();
-      // Navigator.pop(context);
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('Data are synced'),
         backgroundColor: blue,
@@ -656,5 +653,22 @@ class _MonthlyProjectState extends State<MonthlyProject> {
           status: '',
           action: ''),
     ];
+  }
+
+  void _showDialog(BuildContext context) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        content: SizedBox(
+          height: 50,
+          width: 50,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: blue,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

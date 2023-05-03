@@ -87,7 +87,7 @@ class _KeyDataTableState extends State<KeyDataTable> {
                   return LoadingPage();
                 }
                 if (!snapshot.hasData || snapshot.data.exists == false) {
-                  return NodataAvailable();
+                  return const NodataAvailable();
                 }
                 // if (snapshot.hasData)
                 else {

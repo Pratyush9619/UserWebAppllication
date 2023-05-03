@@ -11,7 +11,11 @@ import '../KeysEvents/viewFIle.dart';
 
 class SafetyChecklistDataSource extends DataGridSource {
   // BuildContext mainContext;
-  SafetyChecklistDataSource(this._checklistModel) {
+  String cityName;
+  String depoName;
+  dynamic userId;
+  SafetyChecklistDataSource(
+      this._checklistModel, this.cityName, this.depoName, this.userId) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
@@ -85,9 +89,12 @@ class SafetyChecklistDataSource extends DataGridSource {
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => UploadDocument(
-                                title: 'SafetyChecklist',
-                                activity:
-                                    '${row.getCells()[1].value.toString()}'),
+                              cityName: cityName,
+                              depoName: depoName,
+                              title: 'SafetyChecklist',
+                              activity: row.getCells()[1].value.toString(),
+                              userId: userId,
+                            ),
                           ));
                         },
                         child: const Text('Upload'));
@@ -191,15 +198,16 @@ class SafetyChecklistDataSource extends DataGridSource {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'Status', value: newCellValue);
       _checklistModel[dataRowIndex].status = newCellValue.toString();
-    } else if (column.columnName == 'Remark') {
+    } else {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'Remark', value: newCellValue);
       _checklistModel[dataRowIndex].remark = newCellValue as dynamic;
-    } else {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<double>(columnName: 'photoNo', value: newCellValue);
-      _checklistModel[dataRowIndex].photo = newCellValue;
     }
+    //  else {
+    //   dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+    //       DataGridCell<double>(columnName: 'photoNo', value: newCellValue);
+    //   _checklistModel[dataRowIndex].photo = newCellValue;
+    // }
   }
 
   @override

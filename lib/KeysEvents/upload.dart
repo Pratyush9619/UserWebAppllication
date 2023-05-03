@@ -16,10 +16,12 @@ class UploadDocument extends StatefulWidget {
   String? cityName;
   String? depoName;
   String? activity;
+  dynamic userId;
   UploadDocument(
       {super.key,
       required this.title,
       required this.activity,
+      this.userId,
       this.cityName,
       this.depoName});
 
@@ -110,8 +112,7 @@ class _UploadDocumentState extends State<UploadDocument> {
 
                       await FirebaseStorage.instance
                           .ref(
-                            '${widget.title}/${widget.cityName}/${widget.depoName}/' +
-                                widget.activity!,
+                            '${widget.title}/${widget.cityName}/${widget.depoName}/ ${widget.userId}/ ${widget.activity!}',
                           )
                           .putData(fileBytes!,
                               SettableMetadata(contentType: 'application/pdf'))

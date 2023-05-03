@@ -40,7 +40,7 @@ class _ClosureReportState extends State<ClosureReport> {
     getUserId().whenComplete(() {
       closereport = getcloseReport();
       _closeReportDataSource = CloseReportDataSource(
-          closereport, context, widget.depoName!, widget.cityName!);
+          closereport, context, widget.depoName!, widget.cityName!, userId);
       _dataGridController = DataGridController();
       _stream = FirebaseFirestore.instance
           .collection('ClosureProjectReport')

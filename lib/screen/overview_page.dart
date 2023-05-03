@@ -6,13 +6,13 @@ import 'package:assingment/overview/closure_report.dart';
 import 'package:assingment/overview/daily_project.dart';
 import 'package:assingment/overview/detailed_Eng.dart';
 import 'package:assingment/overview/key_events.dart';
+import 'package:assingment/overview/material_vendor.dart';
 import 'package:assingment/overview/testing_report.dart';
 
 import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import '../Planning_Pages/depot_overview.dart';
+import '../overview/depot_overview.dart';
 import '../overview/monthly_project.dart';
 import '../widget/custom_appbar.dart';
 
@@ -63,7 +63,7 @@ class _OverviewPageState extends State<OverviewPage> {
     List<String> desription = [
       'Overview of Project Progress Status of ${widget.depoName} EV Bus Charging Infra',
       'Project Planning & Scheduling Bus Depot Wise [Gant Chart] ',
-      'Resource Allocation Planning',
+      'Material Procurement & Vendor Finalization Status',
       'Submission of Daily Progress Report for Individual Project',
       'Monthly Project Monitoring & Review',
 
@@ -87,10 +87,14 @@ class _OverviewPageState extends State<OverviewPage> {
         depoName: widget.depoName,
         cityName: widget.cityName,
       ),
-      ResourceAllocation(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
+      MaterialProcurement(
+        cityName: widget.depoName,
+        depoName: widget.cityName,
       ),
+      // ResourceAllocation(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      // ),
       DailyProject(
         depoName: widget.depoName,
         cityName: widget.cityName,
