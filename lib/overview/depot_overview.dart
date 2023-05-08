@@ -75,15 +75,15 @@ class _DepotOverviewState extends State<DepotOverview> {
       _stream = FirebaseFirestore.instance
           .collection('OverviewCollectionTable')
           .doc(widget.depoName)
-          .collection("OverviewTabledData")
-          .doc(userId)
+          // .collection("OverviewTabledData")
+          // .doc(userId)
           .snapshots();
 
       _stream1 = FirebaseFirestore.instance
           .collection('OverviewCollection')
           .doc(widget.depoName)
-          .collection('OverviewFieldData')
-          .doc(userId)
+          // .collection('OverviewFieldData')
+          // .doc(userId)
           .snapshots();
 
       _fetchUserData();
@@ -139,30 +139,31 @@ class _DepotOverviewState extends State<DepotOverview> {
             ? LoadingPage()
             : Column(
                 children: [
-                  Container(
-                    height: 40,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(color: Colors.blue),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                              'Current Progress of Depot Infrastructure Work ',
-                              style: TextStyle(color: white, fontSize: 18)),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            '50 %',
-                            style: TextStyle(color: white, fontSize: 18),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   height: 40,
+                  //   width: MediaQuery.of(context).size.width,
+                  //   decoration: const BoxDecoration(color: Colors.blue),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Container(
+                  //         padding: const EdgeInsets.all(5.0),
+                  //         child: Text(
+                  //             'Current Progress of Depot Infrastructure Work ',
+                  //             style: TextStyle(color: white, fontSize: 18)),
+                  //       ),
+                  //       Container(
+                  //         padding: const EdgeInsets.all(10),
+                  //         child: Text(
+                  //           '50 %',
+                  //           style: TextStyle(color: white, fontSize: 18),
+                  //           textAlign: TextAlign.center,
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+
                   Expanded(
                     child: Container(
                       child: Row(
@@ -179,8 +180,10 @@ class _DepotOverviewState extends State<DepotOverview> {
                                         color: blue),
                                     child: Text(
                                       'Brief Overview of ${widget.depoName} E-Bus Depot',
-                                      style:
-                                          TextStyle(color: white, fontSize: 16),
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: white),
                                     )),
                                 const SizedBox(height: 25),
                                 cards(),
@@ -193,61 +196,54 @@ class _DepotOverviewState extends State<DepotOverview> {
                               children: [
                                 Text(
                                   'E-Bus Depot Name : ${widget.depoName}',
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                  style: formtext,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      'Project Manager: ',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Container(
-                                      // width: 250,
-                                      height: 35,
-                                      child: StreamBuilder(
-                                        stream: _stream1,
-                                        builder: (context, snapshot) {
-                                          // if (snapshot.connectionState ==
-                                          //     ConnectionState.waiting) {
-                                          //   return Text('');
-                                          // }
-                                          if (snapshot.hasData) {
-                                            managername = snapshot.data!
-                                                    .data()
-                                                    .toString()
-                                                    .contains('ManagerName')
-                                                ? snapshot.data!
-                                                        .get('ManagerName') ??
-                                                    ''
-                                                : 'Enter Address';
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 8),
-                                              child: Text(
-                                                managername,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: black),
-                                              ),
-                                            );
-                                          } else {
-                                            return const Text('data');
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   children: [
+                                //     Text(
+                                //       'Project Manager: ',
+                                //       style: formtext,
+                                //     ),
+                                //     Container(
+                                //       // width: 250,
+                                //       height: 35,
+                                //       child: StreamBuilder(
+                                //         stream: _stream1,
+                                //         builder: (context, snapshot) {
+                                //           // if (snapshot.connectionState ==
+                                //           //     ConnectionState.waiting) {
+                                //           //   return Text('');
+                                //           // }
+                                //           if (snapshot.hasData) {
+                                //             managername = snapshot.data!
+                                //                     .data()
+                                //                     .toString()
+                                //                     .contains('ManagerName')
+                                //                 ? snapshot.data!
+                                //                         .get('ManagerName') ??
+                                //                     ''
+                                //                 : 'Enter Address';
+                                //             return Padding(
+                                //               padding:
+                                //                   const EdgeInsets.only(top: 8),
+                                //               child: Text(
+                                //                 managername,
+                                //                 style: formtext,
+                                //               ),
+                                //             );
+                                //           } else {
+                                //             return const Text('data');
+                                //           }
+                                //         },
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: Container(
-                                    padding: const EdgeInsets.all(3),
+                                    padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color: blue),
@@ -298,15 +294,12 @@ class _DepotOverviewState extends State<DepotOverview> {
                                             allowEditing: true,
                                             label: Container(
                                               alignment: Alignment.center,
-                                              child: Text(
-                                                'Sr No',
-                                                overflow:
-                                                    TextOverflow.values.first,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
-                                                //    textAlign: TextAlign.center,
-                                              ),
+                                              child: Text('Sr No',
+                                                  overflow:
+                                                      TextOverflow.values.first,
+                                                  style: tableheader
+                                                  //    textAlign: TextAlign.center,
+                                                  ),
                                             ),
                                           ),
                                           GridColumn(
@@ -319,9 +312,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                                 'Risk On Date',
                                                 overflow:
                                                     TextOverflow.values.first,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
+                                                style: tableheader,
                                               ),
                                             ),
                                           ),
@@ -333,13 +324,9 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               alignment: Alignment.center,
-                                              child: const Text(
-                                                  'Risk Description',
+                                              child: Text('Risk Description',
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -350,11 +337,8 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               alignment: Alignment.center,
-                                              child: const Text('Type',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                              child: Text('Type',
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -366,10 +350,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Impact Risk',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -478,10 +459,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Progression Action',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -496,10 +474,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Remark',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -516,10 +491,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                                   overflow:
                                                       TextOverflow.values.first,
                                                   textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -534,10 +506,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Status',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -611,15 +580,12 @@ class _DepotOverviewState extends State<DepotOverview> {
                                             allowEditing: true,
                                             label: Container(
                                               alignment: Alignment.center,
-                                              child: Text(
-                                                'Sr No',
-                                                overflow:
-                                                    TextOverflow.values.first,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
-                                                //    textAlign: TextAlign.center,
-                                              ),
+                                              child: Text('Sr No',
+                                                  overflow:
+                                                      TextOverflow.values.first,
+                                                  style: tableheader
+                                                  //    textAlign: TextAlign.center,
+                                                  ),
                                             ),
                                           ),
                                           GridColumn(
@@ -628,14 +594,10 @@ class _DepotOverviewState extends State<DepotOverview> {
                                             allowEditing: false,
                                             label: Container(
                                               alignment: Alignment.center,
-                                              child: Text(
-                                                'Risk On Date',
-                                                overflow:
-                                                    TextOverflow.values.first,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
-                                              ),
+                                              child: Text('Risk On Date',
+                                                  overflow:
+                                                      TextOverflow.values.first,
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -646,13 +608,9 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               alignment: Alignment.center,
-                                              child: const Text(
-                                                  'Risk Description',
+                                              child: Text('Risk Description',
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -663,11 +621,8 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               alignment: Alignment.center,
-                                              child: const Text('Type',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                              child: Text('Type',
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -679,10 +634,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Impact Risk',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -791,10 +743,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Progression Action',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -809,10 +758,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Remark',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -829,10 +775,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                                   overflow:
                                                       TextOverflow.values.first,
                                                   textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -847,10 +790,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Status',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
+                                                  style: tableheader),
                                             ),
                                           ),
                                           GridColumn(
@@ -868,10 +808,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                               child: Text('Delete Row',
                                                   overflow:
                                                       TextOverflow.values.first,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                  )
+                                                  style: tableheader
                                                   //    textAlign: TextAlign.center,
                                                   ),
                                             ),
@@ -905,7 +842,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                   contigentAction: 'mlkmlk',
                   progressAction: 'pending',
                   reason: '',
-                  TargetDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+                  targetDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
                   status: 'Close',
                 ),
               );
@@ -924,8 +861,8 @@ class _DepotOverviewState extends State<DepotOverview> {
           stream: FirebaseFirestore.instance
               .collection('OverviewCollection')
               .doc(widget.depoName)
-              .collection("OverviewFieldData")
-              .doc(userId)
+              // .collection("OverviewFieldData")
+              // .doc(userId)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -937,19 +874,16 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 280,
-                          child: const Text(
-                            'Depots location and Address ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Depots location and Address ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                             width: 200,
                             height: 35,
                             child: TextFormField(
+                                decoration: const InputDecoration(
+                                  enabled: false,
+                                ),
                                 initialValue: snapshot.data!
                                         .data()
                                         .toString()
@@ -961,7 +895,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 minLines: 1,
                                 autofocus: false,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 15),
+                                style: const TextStyle(fontSize: 13),
                                 onChanged: (value) {
                                   address = value;
                                 },
@@ -976,19 +910,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 200,
-                          child: const Text(
-                            'No of Buses in Scope',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('No of Buses in Scope',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1000,7 +929,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 13),
                               onSaved: (newValue) {
                                 scope = newValue;
                               },
@@ -1016,19 +945,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 200,
-                          child: const Text(
-                            'No. of Charger Required ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('No. of Charger Required ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         SizedBox(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1040,7 +964,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 required = value;
                               }),
@@ -1053,19 +977,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 200,
-                          child: const Text(
-                            'Rating Of charger ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Rating Of charger ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1077,7 +996,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 charger = value;
                               }),
@@ -1090,19 +1009,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 200,
-                          child: const Text(
-                            'Required Sanctioned load ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Required Sanctioned load ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1114,7 +1028,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 load = value;
                               }),
@@ -1127,19 +1041,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 280,
-                          child: const Text(
-                            'Existing Utility for power source ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Existing Utility for power source ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1150,7 +1059,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 powerSource = value;
                               }),
@@ -1168,7 +1077,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               color: blue),
                           child: Text('Electrical',
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: white)),
                         ),
@@ -1180,19 +1089,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 280,
-                          child: const Text(
-                            'Project Manager ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Project Manager ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1205,7 +1109,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 electmanagername = value;
                               }),
@@ -1218,19 +1122,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 280,
-                          child: const Text(
-                            'Electrical Engineer ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Electrical Engineer ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1241,7 +1140,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 elecEng = value;
                               }),
@@ -1255,19 +1154,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 280,
-                          child: const Text(
-                            'Electrical Vendor',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Electrical Vendor',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1278,7 +1172,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 elecVendor = value;
                               }),
@@ -1296,7 +1190,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               color: blue),
                           child: Text('Civil',
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: white)),
                         ),
@@ -1308,19 +1202,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 280,
-                          child: const Text(
-                            'Project Manager ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Project Manager ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1331,7 +1220,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 civilmanagername = value;
                               }),
@@ -1344,19 +1233,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 280,
-                          child: const Text(
-                            'Civil Engineer ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Civil Engineer ',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1367,7 +1251,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 civilEng = value;
                               }),
@@ -1381,19 +1265,14 @@ class _DepotOverviewState extends State<DepotOverview> {
                       children: [
                         Container(
                           width: 280,
-                          child: const Text(
-                            'Civil Vendor',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text('Civil Vendor',
+                              textAlign: TextAlign.start, style: formtext),
                         ),
                         Container(
                           width: 200,
                           height: 35,
                           child: TextFormField(
+                              decoration: const InputDecoration(enabled: false),
                               initialValue: snapshot.data!
                                       .data()
                                       .toString()
@@ -1404,7 +1283,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                               minLines: 1,
                               autofocus: false,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15),
+                              style: const TextStyle(fontSize: 13),
                               onChanged: (value) {
                                 civilVendor = value;
                               }),
@@ -1429,7 +1308,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 'BOQ Electrical',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: black),
                               ),
@@ -1506,7 +1385,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                   'Details of Survey Report',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                       color: black),
                                 ),
@@ -1686,7 +1565,7 @@ class _DepotOverviewState extends State<DepotOverview> {
                                 'BOQ Civil',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: black),
                               ),
@@ -1894,8 +1773,8 @@ class _DepotOverviewState extends State<DepotOverview> {
     FirebaseFirestore.instance
         .collection('OverviewCollectionTable')
         .doc(widget.depoName)
-        .collection("OverviewTabledData")
-        .doc(userId)
+        // .collection("OverviewTabledData")
+        // .doc(userId)
         .set({
       'data': tabledata2,
     }).whenComplete(() async {
@@ -1925,8 +1804,8 @@ class _DepotOverviewState extends State<DepotOverview> {
     await FirebaseFirestore.instance
         .collection('OverviewCollection')
         .doc(widget.depoName)
-        .collection("OverviewFieldData")
-        .doc(userId)
+        // .collection("OverviewFieldData")
+        // .doc(userId)
         .get()
         .then((ds) {
       setState(() {
@@ -1967,7 +1846,7 @@ List<DepotOverviewModel> getEmployeeData() {
         contigentAction: '',
         progressAction: '',
         reason: '',
-        TargetDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
+        targetDate: DateFormat('dd-MM-yyyy').format(DateTime.now()),
         status: 'Close')
   ];
 }

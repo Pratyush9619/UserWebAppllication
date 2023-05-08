@@ -51,7 +51,7 @@ class _ViewFileState extends State<ViewFile> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text(' PDF Viewer'),
+          title: const Text('Letter of award received from TML '),
           backgroundColor: blue,
         ),
         body: child

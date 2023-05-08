@@ -36,6 +36,8 @@ class _DailyProjectState extends State<DailyProject> {
     // dailyproject = getmonthlyReport();
     // _dailyDataSource = DailyDataSource(dailyproject, context, widget.depoName!);
     // _dataGridController = DataGridController();
+
+    print(CustomAppBar().text);
     getUserId().whenComplete(() {
       getmonthlyReport();
       dailyproject = getmonthlyReport();
@@ -63,10 +65,11 @@ class _DailyProjectState extends State<DailyProject> {
       appBar: PreferredSize(
           // ignore: sort_child_properties_last
           child: CustomAppBar(
-            text:
-                ' ${widget.cityName}/ ${widget.depoName} / Daily Report/ ${DateFormat.yMMMMd().format(DateTime.now())}',
+            text: ' ${widget.cityName}/ ${widget.depoName} / Daily Report',
+            //  ${DateFormat.yMMMMd().format(DateTime.now())}',
             haveSynced: true,
             haveSummary: true,
+            iscalender: true,
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(

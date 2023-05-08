@@ -15,6 +15,9 @@ import '../model/daily_projectModel.dart';
 import '../model/monthly_projectModel.dart';
 import '../model/safety_checklistModel.dart';
 import '../widget/nodata_available.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class ViewSummary extends StatefulWidget {
   String? depoName;
@@ -40,7 +43,9 @@ class ViewSummary extends StatefulWidget {
 
 class _ViewSummaryState extends State<ViewSummary> {
   DateTime? startdate = DateTime.now();
+  DateTime? enddate = DateTime.now();
   DateTime? rangestartDate;
+  DateTime? rangeEndDate;
 
   List<MonthlyProjectModel> monthlyProject = <MonthlyProjectModel>[];
   List<SafetyChecklistModel> safetylisttable = <SafetyChecklistModel>[];
@@ -50,7 +55,7 @@ class _ViewSummaryState extends State<ViewSummary> {
   List<DailyProjectModel> dailyproject = <DailyProjectModel>[];
   late DailyDataSource _dailyDataSource;
   List<dynamic> tabledata2 = [];
-  Stream? _stream;
+  Stream? _dailystream;
   var alldata;
   bool _isloading = false;
   dynamic userId;
@@ -75,59 +80,168 @@ class _ViewSummaryState extends State<ViewSummary> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    width: 250,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: blue)),
-                    child: Row(
+              child: widget.id == 'Daily Report'
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text('choose Date'),
-                                  content: SizedBox(
-                                    width: 400,
-                                    height: 500,
-                                    child: SfDateRangePicker(
-                                      view: DateRangePickerView.month,
-                                      showTodayButton: false,
-                                      showActionButtons: true,
-                                      selectionMode:
-                                          DateRangePickerSelectionMode.single,
-                                      onSelectionChanged:
-                                          (DateRangePickerSelectionChangedArgs
-                                              args) {
-                                        if (args.value is PickerDateRange) {
-                                          rangestartDate = args.value.startDate;
-                                        }
-                                      },
-                                      onSubmit: (value) {
-                                        setState(() {
-                                          startdate =
-                                              DateTime.parse(value.toString());
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                      onCancel: () {},
-                                    ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              width: 250,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: blue)),
+                              child: Row(
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title:
+                                                    const Text('choose Date'),
+                                                content: SizedBox(
+                                                  width: 400,
+                                                  height: 500,
+                                                  child: SfDateRangePicker(
+                                                    view: DateRangePickerView
+                                                        .year,
+                                                    showTodayButton: false,
+                                                    showActionButtons: true,
+                                                    selectionMode:
+                                                        DateRangePickerSelectionMode
+                                                            .range,
+                                                    onSelectionChanged:
+                                                        (DateRangePickerSelectionChangedArgs
+                                                            args) {
+                                                      if (args.value
+                                                          is PickerDateRange) {
+                                                        rangestartDate = args
+                                                            .value.startDate;
+                                                        rangeEndDate =
+                                                            args.value.endDate;
+                                                      }
+                                                    },
+                                                    onSubmit: (value) {
+                                                      setState(() {
+                                                        startdate =
+                                                            DateTime.parse(
+                                                                rangestartDate
+                                                                    .toString());
+                                                        enddate = DateTime
+                                                            .parse(rangeEndDate
+                                                                .toString());
+                                                      });
+                                                      Navigator.pop(context);
+                                                    },
+                                                    onCancel: () {},
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          icon: const Icon(Icons.today)),
+                                      Text(widget.id == 'Monthly Report'
+                                          ? DateFormat.yMMMM()
+                                              .format(startdate!)
+                                          : DateFormat.yMMMMd()
+                                              .format(startdate!))
+                                    ],
                                   ),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.today)),
-                        Text(DateFormat.yMMMMd().format(startdate!))
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              width: 250,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: blue)),
+                              child: Row(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        DateFormat.yMMMMd().format(enddate!),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: 250,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: blue)),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('choose Date'),
+                                        content: SizedBox(
+                                          width: 400,
+                                          height: 500,
+                                          child: SfDateRangePicker(
+                                            view: DateRangePickerView.year,
+                                            showTodayButton: false,
+                                            showActionButtons: true,
+                                            selectionMode:
+                                                DateRangePickerSelectionMode
+                                                    .single,
+                                            onSelectionChanged:
+                                                (DateRangePickerSelectionChangedArgs
+                                                    args) {
+                                              if (args.value
+                                                  is PickerDateRange) {
+                                                rangestartDate =
+                                                    args.value.startDate;
+                                              }
+                                            },
+                                            onSubmit: (value) {
+                                              setState(() {
+                                                startdate = DateTime.parse(
+                                                    value.toString());
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                            onCancel: () {},
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.today)),
+                              Text(widget.id == 'Monthly Report'
+                                  ? DateFormat.yMMMM().format(startdate!)
+                                  : DateFormat.yMMMMd().format(startdate!))
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ],
-              ),
             ),
             widget.id == 'Monthly Report'
                 ? Expanded(

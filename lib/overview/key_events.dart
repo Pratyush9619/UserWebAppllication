@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'package:assingment/KeysEvents/Grid_DataTable.dart';
+import 'package:assingment/KeysEvents/viewFIle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -183,11 +184,12 @@ class _KeyEventsState extends State<KeyEvents> {
   @override
   Widget build(BuildContext context) {
     menuwidget = [
-      UploadDocument(
-        depoName: widget.depoName,
-        title: '',
-        activity: '',
-      ),
+      ViewFile(),
+      // UploadDocument(
+      //   depoName: widget.depoName,
+      //   title: '',
+      //   activity: '',
+      // ),
       KeyDataTable(
         depoName: widget.depoName,
         cityName: widget.cityName,

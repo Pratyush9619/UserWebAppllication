@@ -8,6 +8,15 @@ Color almostWhite = Color(0xffffffff).withOpacity(0.87);
 Color blue = Color.fromARGB(255, 9, 83, 161);
 Color lightblue = Color(0xff009eff);
 Color white = Color(0xffffffff);
+
+TextStyle formtext = const TextStyle(
+  fontSize: 13,
+  fontWeight: FontWeight.bold,
+);
+TextStyle tableheader = const TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 14,
+);
 TextStyle bodyText1 = GoogleFonts.ibmPlexSans(
     fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5);
 TextStyle bodyText1white = GoogleFonts.ibmPlexSans(

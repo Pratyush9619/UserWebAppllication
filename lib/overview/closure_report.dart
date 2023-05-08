@@ -62,7 +62,7 @@ class _ClosureReportState extends State<ClosureReport> {
         appBar: PreferredSize(
             // ignore: sort_child_properties_last
             child: CustomAppBar(
-              text: ' ${widget.cityName}/ ${widget.depoName} / Close Report',
+              text: ' ${widget.cityName}/ ${widget.depoName} / Closure Report',
               haveSynced: true,
               store: () {
                 FirebaseFirestore.instance
@@ -146,15 +146,14 @@ class _ClosureReportState extends State<ClosureReport> {
                               children: [
                                 Container(
                                     width: 150,
-                                    child: const Text(
-                                      ' Depot Name',
-                                    )),
+                                    child: Text('Depot Name', style: formtext)),
                                 SizedBox(width: 5),
                                 Expanded(
                                     child: Container(
                                         height: 30,
                                         child: TextFormField(
                                           decoration: const InputDecoration(
+                                              hintText: 'Depot Name',
                                               contentPadding: EdgeInsets.only(
                                                   top: 0, bottom: 0, left: 5)),
                                           initialValue: snapshot.data!
@@ -164,8 +163,8 @@ class _ClosureReportState extends State<ClosureReport> {
                                               ? snapshot.data!
                                                       .get('DepotName') ??
                                                   ''
-                                              : 'Depot Name',
-                                          style: const TextStyle(fontSize: 15),
+                                              : '',
+                                          style: formtext,
                                           onChanged: (value) {
                                             depotname = value;
                                           },
@@ -187,6 +186,7 @@ class _ClosureReportState extends State<ClosureReport> {
                                     width: 150,
                                     child: Text(
                                       'Longitude',
+                                      style: formtext,
                                     )),
                                 SizedBox(width: 5),
                                 Expanded(
@@ -194,6 +194,7 @@ class _ClosureReportState extends State<ClosureReport> {
                                         height: 30,
                                         child: TextFormField(
                                           decoration: const InputDecoration(
+                                              hintText: 'Longitude',
                                               contentPadding: EdgeInsets.only(
                                                   top: 0, bottom: 0, left: 5)),
                                           initialValue: snapshot.data!
@@ -202,9 +203,9 @@ class _ClosureReportState extends State<ClosureReport> {
                                                   .contains('Longitude')
                                               ? snapshot.data!
                                                       .get('Longitude') ??
-                                                  'Longitude'
+                                                  ''
                                               : '',
-                                          style: const TextStyle(fontSize: 15),
+                                          style: formtext,
                                           onChanged: (value) {
                                             longitude = value;
                                           },
@@ -224,15 +225,14 @@ class _ClosureReportState extends State<ClosureReport> {
                               children: [
                                 Container(
                                     width: 150,
-                                    child: Text(
-                                      ' Latitude',
-                                    )),
+                                    child: Text('Latitude', style: formtext)),
                                 SizedBox(width: 5),
                                 Expanded(
                                     child: Container(
                                         height: 30,
                                         child: TextFormField(
                                           decoration: const InputDecoration(
+                                              hintText: 'Latitude',
                                               contentPadding: EdgeInsets.only(
                                                   top: 0, bottom: 0, left: 5)),
                                           initialValue: snapshot.data!
@@ -242,8 +242,8 @@ class _ClosureReportState extends State<ClosureReport> {
                                               ? snapshot.data!
                                                       .get('Latitude') ??
                                                   ''
-                                              : 'Latitude',
-                                          style: const TextStyle(fontSize: 15),
+                                              : '',
+                                          style: formtext,
                                           onChanged: (value) {
                                             latitude = value;
                                           },
@@ -270,6 +270,7 @@ class _ClosureReportState extends State<ClosureReport> {
                                     width: 150,
                                     child: Text(
                                       ' State',
+                                      style: formtext,
                                     )),
                                 SizedBox(width: 5),
                                 Expanded(
@@ -277,6 +278,7 @@ class _ClosureReportState extends State<ClosureReport> {
                                         height: 30,
                                         child: TextFormField(
                                           decoration: const InputDecoration(
+                                              hintText: 'State',
                                               contentPadding: EdgeInsets.only(
                                                   top: 0, bottom: 0, left: 5)),
                                           initialValue: snapshot.data!
@@ -285,8 +287,8 @@ class _ClosureReportState extends State<ClosureReport> {
                                                   .contains('State')
                                               ? snapshot.data!.get('State') ??
                                                   ''
-                                              : 'State',
-                                          style: const TextStyle(fontSize: 15),
+                                              : '',
+                                          style: formtext,
                                           onChanged: (value) {
                                             state = value;
                                           },
@@ -308,6 +310,7 @@ class _ClosureReportState extends State<ClosureReport> {
                                     width: 150,
                                     child: Text(
                                       ' No. Of Buses',
+                                      style: formtext,
                                     )),
                                 SizedBox(width: 5),
                                 Expanded(
@@ -315,6 +318,7 @@ class _ClosureReportState extends State<ClosureReport> {
                                         height: 30,
                                         child: TextFormField(
                                           decoration: const InputDecoration(
+                                              hintText: 'Buses',
                                               contentPadding: EdgeInsets.only(
                                                   top: 0, bottom: 0, left: 5)),
                                           initialValue: snapshot.data!
@@ -323,8 +327,8 @@ class _ClosureReportState extends State<ClosureReport> {
                                                   .contains('Buses')
                                               ? snapshot.data!.get('Buses') ??
                                                   ''
-                                              : 'Buses',
-                                          style: const TextStyle(fontSize: 15),
+                                              : '',
+                                          style: formtext,
                                           onChanged: (value) {
                                             buses = value.toString();
                                           },
@@ -345,14 +349,16 @@ class _ClosureReportState extends State<ClosureReport> {
                                 Container(
                                     width: 150,
                                     child: Text(
-                                      ' LAO No.',
+                                      ' LOA No.',
+                                      style: formtext,
                                     )),
-                                SizedBox(width: 5),
+                                const SizedBox(width: 5),
                                 Expanded(
                                     child: Container(
                                         height: 30,
                                         child: TextFormField(
                                           decoration: const InputDecoration(
+                                              hintText: 'LOA No',
                                               contentPadding: EdgeInsets.only(
                                                   top: 0, bottom: 0, left: 5)),
                                           initialValue: snapshot.data!
@@ -361,8 +367,8 @@ class _ClosureReportState extends State<ClosureReport> {
                                                   .contains('LaoNo')
                                               ? snapshot.data!.get('LaoNo') ??
                                                   ''
-                                              : 'LOA No',
-                                          style: const TextStyle(fontSize: 15),
+                                              : '',
+                                          style: formtext,
                                           onChanged: (value) {
                                             loa = value;
                                           },

@@ -88,8 +88,8 @@ class _OverviewPageState extends State<OverviewPage> {
         cityName: widget.cityName,
       ),
       MaterialProcurement(
-        cityName: widget.depoName,
-        depoName: widget.cityName,
+        cityName: widget.cityName,
+        depoName: widget.depoName,
       ),
       // ResourceAllocation(
       //   depoName: widget.depoName,

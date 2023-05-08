@@ -69,7 +69,7 @@ class MaterialProcurementModel {
   DataGridRow getDataGridRow() {
     return DataGridRow(cells: <DataGridCell>[
       DataGridCell<dynamic>(columnName: 'cityName', value: cityName),
-      DataGridCell<String>(columnName: 'detail', value: details),
+      DataGridCell<String>(columnName: 'details', value: details),
       DataGridCell<String>(columnName: 'olaNo', value: olaNo),
       DataGridCell<String>(columnName: 'vendorName', value: vendorName),
       DataGridCell<String>(columnName: 'oemApproval', value: oemApproval),

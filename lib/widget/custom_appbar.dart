@@ -1,19 +1,23 @@
 import 'package:assingment/widget/style.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 import '../Authentication/auth_service.dart';
 import '../Authentication/login_register.dart';
 
 class CustomAppBar extends StatefulWidget {
-  final String? text;
+  String? text;
   // final IconData? icon;
   final bool haveSynced;
   final bool haveSummary;
   final void Function()? store;
   VoidCallback? onTap;
   bool havebottom;
+  bool havedropdown;
   bool isdetailedTab;
+  bool iscalender;
   TabBar? tabBar;
 
   CustomAppBar(
@@ -23,8 +27,10 @@ class CustomAppBar extends StatefulWidget {
       this.haveSummary = false,
       this.store,
       this.onTap,
+      this.havedropdown = false,
       this.havebottom = false,
       this.isdetailedTab = false,
+      this.iscalender = false,
       this.tabBar});
 
   @override
@@ -33,6 +39,8 @@ class CustomAppBar extends StatefulWidget {
 
 class _CustomAppBarState extends State<CustomAppBar> {
   dynamic userId;
+  String? rangeStartDate = DateFormat.yMMMMd().format(DateTime.now());
+
   @override
   void initState() {
     getUserId().whenComplete(() {
@@ -43,13 +51,78 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    widget.text = rangeStartDate;
     return Scaffold(
         appBar: AppBar(
             backgroundColor: blue,
-            title: Text(
+            title:
+                // widget.havedropdown ? Row(children: [
+                //   Text(
+                //   widget.text.toString(),),
+                //   DropdownButton(items: items, onChanged: onChanged)
+                // ],) :
+                Text(
               widget.text.toString(),
             ),
             actions: [
+              widget.iscalender
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        title: const Text('All Date'),
+                                        content: Container(
+                                            height: 400,
+                                            width: 500,
+                                            child: SfDateRangePicker(
+                                              view: DateRangePickerView.month,
+                                              showTodayButton: true,
+                                              onSelectionChanged:
+                                                  (DateRangePickerSelectionChangedArgs
+                                                      args) {
+                                                if (args.value
+                                                    is PickerDateRange) {
+                                                  rangeStartDate =
+                                                      args.value.startDate;
+                                                  // rangeEndDate = args.value.endDate;
+                                                } else {
+                                                  // final List<PickerDateRange>
+                                                  //     selectedRanges =
+                                                  //     args.value;
+                                                }
+                                              },
+                                              selectionMode:
+                                                  DateRangePickerSelectionMode
+                                                      .single,
+                                              showActionButtons: true,
+                                              onSubmit: ((value) {
+                                                rangeStartDate =
+                                                    DateFormat.yMMMMd().format(
+                                                        DateTime.parse(
+                                                            value.toString()));
+
+                                                widget.text = rangeStartDate;
+                                                Navigator.pop(context);
+                                                setState(() {});
+                                              }),
+                                            )),
+                                      ));
+                            },
+                            icon: const Icon(Icons.calendar_today),
+                          ),
+                          Text(
+                            rangeStartDate.toString(),
+                            style: const TextStyle(fontSize: 16),
+                          )
+                        ],
+                      ),
+                    )
+                  : Container(),
               widget.haveSummary
                   ? Padding(
                       padding:

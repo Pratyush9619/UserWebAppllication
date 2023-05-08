@@ -110,35 +110,18 @@ class MaterialDatasource extends DataGridSource {
                                           _material[dataRowIndex].materialSite =
                                               DateFormat('dd-MM-yyyy')
                                                   .format(date!);
+
                                           notifyListeners();
 
                                           Navigator.pop(context);
                                         }
-                                        // if (dataRowIndex != null) {
-                                        //   final int dataRowIndex =
-                                        //       dataGridRows.indexOf(row);
-                                        //   dataGridRows[dataRowIndex]
-                                        //           .getCells()[5] =
-                                        //       DataGridCell<String>(
-                                        //           columnName: 'PreparationDate',
-                                        //           value:
-                                        //               DateFormat('dd-MM-yyyy')
-                                        //                   .format(date!));
-                                        //   _detailedeng[dataRowIndex]
-                                        //           .preparationDate =
-                                        //       DateFormat('dd-MM-yyyy')
-                                        //           .format(date!);
-                                        //   notifyListeners();
-
-                                        //   Navigator.pop(context);
-                                        // }
                                       }),
                                     )),
                               ));
                     },
                     icon: const Icon(Icons.calendar_today),
                   ),
-                  Text(dataGridCell.value.toString()),
+                  Text(dataGridCell.value.toString())
                 ],
               )
             : Text(

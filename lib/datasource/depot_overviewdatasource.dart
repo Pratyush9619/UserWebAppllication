@@ -202,7 +202,7 @@ class DepotOverviewDatasource extends DataGridSource {
                                                                 'dd-MM-yyyy')
                                                             .format(date!));
                                                     _employees[dataRowIndex]
-                                                            .TargetDate =
+                                                            .targetDate =
                                                         DateFormat('dd-MM-yyyy')
                                                             .format(date!);
                                                     notifyListeners();
@@ -417,7 +417,7 @@ class DepotOverviewDatasource extends DataGridSource {
     } else if (column.columnName == 'TargetDate') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'TargetDate', value: newCellValue);
-      _employees[dataRowIndex].TargetDate = newCellValue;
+      _employees[dataRowIndex].targetDate = newCellValue;
     } else {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<dynamic>(columnName: 'Status', value: newCellValue);

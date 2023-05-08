@@ -11,8 +11,6 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import '../model/daily_projectModel.dart';
-
 class DetailedEngSource extends DataGridSource {
   String cityName;
   String depoName;
