@@ -11,7 +11,7 @@ class SafetyChecklistModel {
     // required this.weightage,
   });
 
-  double srNo;
+  dynamic srNo;
   String details;
   String status;
   String remark;
@@ -30,12 +30,12 @@ class SafetyChecklistModel {
 
   DataGridRow getDataGridRow() {
     return DataGridRow(cells: <DataGridCell>[
-      DataGridCell<double>(columnName: 'srNo', value: srNo),
+      DataGridCell<dynamic>(columnName: 'srNo', value: srNo),
       DataGridCell<String>(columnName: 'Details', value: details),
       DataGridCell<String>(columnName: 'Status', value: status),
       DataGridCell<String>(columnName: 'Remark', value: remark),
-      DataGridCell<String>(columnName: 'Photo', value: null),
-      DataGridCell<String>(columnName: 'ViewPhoto', value: null),
+      const DataGridCell<String>(columnName: 'Photo', value: null),
+      const DataGridCell<String>(columnName: 'ViewPhoto', value: null),
 
       // DataGridCell<double>(columnName: 'Weightage', value: weightage),
     ]);

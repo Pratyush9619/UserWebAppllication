@@ -17,7 +17,7 @@ class CustomAppBar extends StatefulWidget {
   bool havebottom;
   bool havedropdown;
   bool isdetailedTab;
-  bool iscalender;
+
   TabBar? tabBar;
 
   CustomAppBar(
@@ -30,7 +30,6 @@ class CustomAppBar extends StatefulWidget {
       this.havedropdown = false,
       this.havebottom = false,
       this.isdetailedTab = false,
-      this.iscalender = false,
       this.tabBar});
 
   @override
@@ -51,78 +50,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    widget.text = rangeStartDate;
     return Scaffold(
         appBar: AppBar(
             backgroundColor: blue,
-            title:
-                // widget.havedropdown ? Row(children: [
-                //   Text(
-                //   widget.text.toString(),),
-                //   DropdownButton(items: items, onChanged: onChanged)
-                // ],) :
-                Text(
+            title: Text(
               widget.text.toString(),
             ),
             actions: [
-              widget.iscalender
-                  ? Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        title: const Text('All Date'),
-                                        content: Container(
-                                            height: 400,
-                                            width: 500,
-                                            child: SfDateRangePicker(
-                                              view: DateRangePickerView.month,
-                                              showTodayButton: true,
-                                              onSelectionChanged:
-                                                  (DateRangePickerSelectionChangedArgs
-                                                      args) {
-                                                if (args.value
-                                                    is PickerDateRange) {
-                                                  rangeStartDate =
-                                                      args.value.startDate;
-                                                  // rangeEndDate = args.value.endDate;
-                                                } else {
-                                                  // final List<PickerDateRange>
-                                                  //     selectedRanges =
-                                                  //     args.value;
-                                                }
-                                              },
-                                              selectionMode:
-                                                  DateRangePickerSelectionMode
-                                                      .single,
-                                              showActionButtons: true,
-                                              onSubmit: ((value) {
-                                                rangeStartDate =
-                                                    DateFormat.yMMMMd().format(
-                                                        DateTime.parse(
-                                                            value.toString()));
-
-                                                widget.text = rangeStartDate;
-                                                Navigator.pop(context);
-                                                setState(() {});
-                                              }),
-                                            )),
-                                      ));
-                            },
-                            icon: const Icon(Icons.calendar_today),
-                          ),
-                          Text(
-                            rangeStartDate.toString(),
-                            style: const TextStyle(fontSize: 16),
-                          )
-                        ],
-                      ),
-                    )
-                  : Container(),
               widget.haveSummary
                   ? Padding(
                       padding:

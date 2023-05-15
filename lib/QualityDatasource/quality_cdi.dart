@@ -15,7 +15,9 @@ class QualityCDIDataSource extends DataGridSource {
   // BuildContext mainContext;
   String cityName;
   String depoName;
-  QualityCDIDataSource(this._checklistModel, this.cityName, this.depoName) {
+  String userId;
+  QualityCDIDataSource(
+      this._checklistModel, this.cityName, this.depoName, this.userId) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
@@ -80,6 +82,7 @@ class QualityCDIDataSource extends DataGridSource {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UploadDocument(
+                              userId: userId,
                               title: 'DetailedEngRFC',
                               cityName: cityName,
                               depoName: depoName,

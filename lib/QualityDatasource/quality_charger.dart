@@ -13,9 +13,12 @@ import '../widget/style.dart';
 
 class QualityChargerDataSource extends DataGridSource {
   // BuildContext mainContext;
+
   String cityName;
   String depoName;
-  QualityChargerDataSource(this._checklistModel, this.cityName, this.depoName) {
+  String userId;
+  QualityChargerDataSource(
+      this._checklistModel, this.cityName, this.depoName, this.userId) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
@@ -80,6 +83,7 @@ class QualityChargerDataSource extends DataGridSource {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UploadDocument(
+                              userId: userId,
                               title: 'DetailedEngRFC',
                               cityName: cityName,
                               depoName: depoName,

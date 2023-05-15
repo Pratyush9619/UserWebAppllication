@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:assingment/widget/style.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,7 +20,7 @@ class UploadDocument extends StatefulWidget {
       {super.key,
       required this.title,
       required this.activity,
-      this.userId,
+      required this.userId,
       this.cityName,
       this.depoName});
 
@@ -88,7 +87,7 @@ class _UploadDocumentState extends State<UploadDocument> {
                     }
                   },
                   child: const Text('Pick file')),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                   onPressed: () async {
                     if (result != null) {
@@ -112,12 +111,16 @@ class _UploadDocumentState extends State<UploadDocument> {
 
                       await FirebaseStorage.instance
                           .ref(
-                            '${widget.title}/${widget.cityName}/${widget.depoName}/ ${widget.userId}/ ${widget.activity!}',
+                            '${widget.title}/${widget.cityName}/${widget.depoName}/${widget.userId}/${widget.activity!}/${result!.files.first.name}',
                           )
-                          .putData(fileBytes!,
-                              SettableMetadata(contentType: 'application/pdf'))
-                          .whenComplete(() => setState(() => result == null));
-                      Navigator.pop(context);
+                          .putData(
+                            fileBytes!,
+                            // SettableMetadata(contentType: 'application/pdf')
+                          )
+                          .whenComplete(() =>
+                              // setState(() => result == null)
+                              // );
+                              Navigator.pop(context));
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Image is Uploaded')));
                     }

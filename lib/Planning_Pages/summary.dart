@@ -495,26 +495,39 @@ class _ViewSummaryState extends State<ViewSummary> {
                             .collection('DailyProjectReport')
                             .doc('${widget.depoName}')
                             .collection(widget.userId)
-                            .doc(DateFormat.yMMMMd().format(startdate!))
+                            // .doc(DateFormat.yMMMMd().format(startdate!))
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return LoadingPage();
                           } else if (!snapshot.hasData ||
-                              snapshot.data!.exists == false) {
+                              snapshot.data!.docs == null) {
                             return const NodataAvailable();
                           } else {
                             alldata = '';
-                            alldata = snapshot.data!['data'] as List<dynamic>;
-                            dailyproject.clear();
-                            alldata.forEach((element) {
-                              dailyproject
-                                  .add(DailyProjectModel.fromjson(element));
-                              _dailyDataSource = DailyDataSource(
-                                  dailyproject, context, widget.depoName!);
-                              _dataGridController = DataGridController();
-                            });
+
+                            for (int i = 0;
+                                i < snapshot.data!.docs.length;
+                                i++) {
+                              // for (DateTime date = startdate!;
+                              //     date.isBefore(
+                              //         enddate!.add(Duration(days: 1)));
+                              //     date.add(Duration(days: 1)))
+                              //   print(snapshot.data);
+                              alldata = snapshot.data!.docs[i]['data']
+                                  as List<dynamic>;
+                              // alldata = snapshot.data!.docs[i]['data']
+                              //     as List<dynamic>;
+                              alldata.forEach((element) {
+                                dailyproject
+                                    .add(DailyProjectModel.fromjson(element));
+                                _dailyDataSource = DailyDataSource(
+                                    dailyproject, context, widget.depoName!);
+                                _dataGridController = DataGridController();
+                              });
+                            }
+
                             return SfDataGridTheme(
                               data: SfDataGridThemeData(headerColor: lightblue),
                               child: SfDataGrid(

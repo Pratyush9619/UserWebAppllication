@@ -48,7 +48,20 @@
   <script type="text/javascript">
     window.flutterWebRenderer = "html";
   </script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
   <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCrSwVB12UIZ_wiLcsIqDeXb3cP6QKkMgM",
+    appId: "1:787886302853:web:13c091d145a43e42c26bec",
+    messagingSenderId: "787886302853",
+    storageBucket: "tp-zap-solz.appspot.com",
+    projectId: "tp-zap-solz",
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({

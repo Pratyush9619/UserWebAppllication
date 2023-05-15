@@ -1,3 +1,4 @@
+import 'package:assingment/KeysEvents/view_AllFiles.dart';
 import 'package:assingment/model/safety_checklistModel.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,7 @@ class SafetyChecklistDataSource extends DataGridSource {
               //         dataGridCell.columnName == 'Weightage')
               Alignment.center,
           // : Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
           child: dataGridCell.columnName == 'Photo'
               ? LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
@@ -92,7 +93,7 @@ class SafetyChecklistDataSource extends DataGridSource {
                               cityName: cityName,
                               depoName: depoName,
                               title: 'SafetyChecklist',
-                              activity: row.getCells()[1].value.toString(),
+                              activity: row.getCells()[0].value.toString(),
                               userId: userId,
                             ),
                           ));
@@ -107,12 +108,19 @@ class SafetyChecklistDataSource extends DataGridSource {
                         return ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ViewFile()
-                                  // UploadDocument(
-                                  //     title: 'SafetyChecklist',
-                                  //     activity:
-                                  //         '${row.getCells()[1].value.toString()}'),
-                                  ));
+                                  builder: (context) => ViewAllPdf(
+                                      title: 'SafetyChecklist',
+                                      cityName: cityName,
+                                      depoName: depoName,
+                                      userId: userId,
+                                      docId:
+                                          '${row.getCells()[0].value.toString()}')));
+                              //     // ViewFile()
+                              //     // UploadDocument(
+                              //     //     title: 'SafetyChecklist',
+                              //     //     activity:
+                              //     //         '${row.getCells()[1].value.toString()}'),
+                              //     ));
                             },
                             child: const Text('View'));
                       },
@@ -187,8 +195,7 @@ class SafetyChecklistDataSource extends DataGridSource {
     }
     if (column.columnName == 'srNo') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<double>(
-              columnName: 'srNo', value: newCellValue as double);
+          DataGridCell<dynamic>(columnName: 'srNo', value: newCellValue);
       _checklistModel[dataRowIndex].srNo = newCellValue;
     } else if (column.columnName == 'Details') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =

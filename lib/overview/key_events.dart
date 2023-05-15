@@ -184,12 +184,17 @@ class _KeyEventsState extends State<KeyEvents> {
   @override
   Widget build(BuildContext context) {
     menuwidget = [
-      ViewFile(),
+      // ViewFile(path,),
       // UploadDocument(
       //   depoName: widget.depoName,
       //   title: '',
       //   activity: '',
       // ),
+      KeyDataTable(
+        depoName: widget.depoName,
+        cityName: widget.cityName,
+        keyEvents: 'A2',
+      ),
       KeyDataTable(
         depoName: widget.depoName,
         cityName: widget.cityName,

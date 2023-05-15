@@ -1384,7 +1384,7 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
         // photo: ' ',
       ),
       SafetyChecklistModel(
-        srNo: 4.10,
+        srNo: 4.10.toStringAsFixed(2),
         details: 'Other PPEs, if any, as per requirement etc. ',
         status: 'Yes',
         remark: '',
@@ -1393,7 +1393,7 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
       SafetyChecklistModel(
         srNo: 5,
         details:
-            'L3st of Earthing Equipment / Earthing devices with Earthing lead conforming to IECs for earthing equipment’s are – (855, 1230, 1235 etc.) gang wise for stringing activity/as per requirement ',
+            'List of Earthing Equipment / Earthing devices with Earthing lead conforming to IECs for earthing equipment’s are – (855, 1230, 1235 etc.) gang wise for stringing activity/as per requirement ',
         status: 'Yes',
         remark: '',
         // photo: ' ',
@@ -1508,7 +1508,7 @@ class _SafetyChecklistState extends State<SafetyChecklist> {
         // photo: ' ',
       ),
       SafetyChecklistModel(
-        srNo: 10.10,
+        srNo: 10.10.toStringAsFixed(2),
         details:
             'Calibration status of instruments is displayed and up to date',
         status: 'Yes',

@@ -50,17 +50,21 @@ class _DetailedEngtState extends State<DetailedEng>
     getUserId().whenComplete(() {
       DetailedProject = getmonthlyReport();
       _detailedDataSource = DetailedEngSource(DetailedProject, context,
-          widget.cityName.toString(), widget.depoName.toString());
+          widget.cityName.toString(), widget.depoName.toString(), userId);
       _dataGridController = DataGridController();
 
       DetailedProjectev = getmonthlyReportEv();
       _detailedEngSourceev = DetailedEngSourceEV(DetailedProjectev, context,
-          widget.cityName.toString(), widget.depoName.toString());
+          widget.cityName.toString(), widget.depoName.toString(), userId);
       _dataGridController = DataGridController();
 
       DetailedProjectshed = getmonthlyReportEv();
-      _detailedEngSourceShed = DetailedEngSourceShed(DetailedProjectshed,
-          context, widget.cityName.toString(), widget.depoName.toString());
+      _detailedEngSourceShed = DetailedEngSourceShed(
+          DetailedProjectshed,
+          context,
+          widget.cityName.toString(),
+          widget.depoName.toString(),
+          userId);
       _dataGridController = DataGridController();
       _controller = TabController(length: 3, vsync: this);
 
@@ -599,7 +603,8 @@ class _DetailedEngtState extends State<DetailedEng>
                               DetailedProject,
                               context,
                               widget.cityName.toString(),
-                              widget.depoName.toString());
+                              widget.depoName.toString(),
+                              userId);
                           _dataGridController = DataGridController();
                         });
 
@@ -1061,7 +1066,8 @@ class _DetailedEngtState extends State<DetailedEng>
                             DetailedProjectev,
                             context,
                             widget.cityName.toString(),
-                            widget.depoName.toString());
+                            widget.depoName.toString(),
+                            userId);
                         _dataGridController = DataGridController();
                       });
 
@@ -1539,7 +1545,8 @@ class _DetailedEngtState extends State<DetailedEng>
                               DetailedProjectshed,
                               context,
                               widget.cityName.toString(),
-                              widget.depoName.toString());
+                              widget.depoName.toString(),
+                              userId);
                           _dataGridController = DataGridController();
                         });
 

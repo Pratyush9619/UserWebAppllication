@@ -69,7 +69,6 @@ class _DailyProjectState extends State<DailyProject> {
             //  ${DateFormat.yMMMMd().format(DateTime.now())}',
             haveSynced: true,
             haveSummary: true,
-            iscalender: true,
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(

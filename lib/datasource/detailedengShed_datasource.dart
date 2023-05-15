@@ -11,14 +11,16 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../KeysEvents/viewFIle.dart';
+import '../KeysEvents/view_AllFiles.dart';
 import '../model/daily_projectModel.dart';
 
 class DetailedEngSourceShed extends DataGridSource {
   String cityName;
   String depoName;
+  String userId;
   BuildContext mainContext;
-  DetailedEngSourceShed(
-      this._detailedengev, this.mainContext, this.cityName, this.depoName) {
+  DetailedEngSourceShed(this._detailedengev, this.mainContext, this.cityName,
+      this.depoName, this.userId) {
     buildDataGridRowsEV();
   }
   void buildDataGridRowsEV() {
@@ -138,11 +140,12 @@ class DetailedEngSourceShed extends DataGridSource {
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => UploadDocument(
+                                userId: userId,
                                 title: 'DetailedEngShed',
                                 cityName: cityName,
                                 depoName: depoName,
                                 activity:
-                                    '${row.getCells()[1].value.toString()}'),
+                                    '${row.getCells()[4].value.toString()}'),
                           ));
                           // showDialog(
                           //     context: context,
@@ -172,7 +175,13 @@ class DetailedEngSourceShed extends DataGridSource {
                                 ElevatedButton.styleFrom(backgroundColor: blue),
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ViewFile()
+                                  builder: (context) => ViewAllPdf(
+                                      title: 'DetailedEngShed',
+                                      cityName: cityName,
+                                      depoName: depoName,
+                                      userId: userId,
+                                      docId:
+                                          '${row.getCells()[4].value.toString()}')
                                   // UploadDocument(
                                   //     title: 'DetailedEngRFC',
                                   //     cityName: cityName,

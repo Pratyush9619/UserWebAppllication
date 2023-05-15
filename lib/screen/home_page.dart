@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Procceed',
+                              Text('Proceed',
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: almostWhite,

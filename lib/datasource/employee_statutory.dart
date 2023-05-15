@@ -10,13 +10,15 @@ class EmployeeStatutoryDataSource extends DataGridSource {
   String? cityName;
   String? depoName;
   BuildContext mainContext;
+  String? userId;
 
   /// Creates the employee data source class with required details.
   EmployeeStatutoryDataSource(
       {required this.employeeData,
       required this.mainContext,
       this.cityName,
-      this.depoName}) {
+      this.depoName,
+      this.userId}) {
     _employeeData = employeeData
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(columnName: 'srNo', value: e.srNo),
@@ -75,6 +77,7 @@ class EmployeeStatutoryDataSource extends DataGridSource {
                     onPressed: () {
                       Navigator.of(ctx).push(MaterialPageRoute(
                         builder: (context) => UploadDocument(
+                            userId: userId,
                             title: 'checklist',
                             cityName: cityName,
                             depoName: depoName,

@@ -1,4 +1,5 @@
 import 'package:assingment/KeysEvents/viewFIle.dart';
+import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:assingment/model/detailed_engModel.dart';
 import 'package:assingment/model/employee.dart';
 import 'package:assingment/KeysEvents/upload.dart';
@@ -11,12 +12,15 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../KeysEvents/view_AllFiles.dart';
+
 class DetailedEngSource extends DataGridSource {
   String cityName;
   String depoName;
+  String userId;
   BuildContext mainContext;
-  DetailedEngSource(
-      this._detailedeng, this.mainContext, this.cityName, this.depoName) {
+  DetailedEngSource(this._detailedeng, this.mainContext, this.cityName,
+      this.depoName, this.userId) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
@@ -136,10 +140,11 @@ class DetailedEngSource extends DataGridSource {
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => UploadDocument(
+                                userId: userId,
                                 title: 'DetailedEngRFC',
                                 cityName: cityName,
                                 depoName: depoName,
-                                activity: row.getCells()[3].value.toString()),
+                                activity: row.getCells()[4].value.toString()),
                           ));
                           // showDialog(
                           //     context: context,
@@ -169,7 +174,14 @@ class DetailedEngSource extends DataGridSource {
                                 ElevatedButton.styleFrom(backgroundColor: blue),
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ViewFile()
+                                  builder: (context) => ViewAllPdf(
+                                      title: 'DetailedEngRFC',
+                                      cityName: cityName,
+                                      depoName: depoName,
+                                      userId: userId,
+                                      docId:
+                                          '${row.getCells()[4].value.toString()}')
+                                  // ViewFile()
                                   // UploadDocument(
                                   //     title: 'DetailedEngRFC',
                                   //     cityName: cityName,

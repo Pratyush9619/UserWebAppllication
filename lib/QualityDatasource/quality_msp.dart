@@ -1,6 +1,8 @@
 import 'package:assingment/KeysEvents/upload.dart';
+import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:assingment/model/quality_checklistModel.dart';
 import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -80,6 +82,7 @@ class QualityMSPDataSource extends DataGridSource {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UploadDocument(
+                              userId: userId,
                               title: 'DetailedEngRFC',
                               cityName: cityName,
                               depoName: depoName,

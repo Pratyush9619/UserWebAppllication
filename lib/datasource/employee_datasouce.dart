@@ -91,10 +91,11 @@ class EmployeeDataSource extends DataGridSource {
                       onPressed: () {
                         Navigator.of(ctx).push(MaterialPageRoute(
                           builder: (context) => ViewFile(
-                              cityName: cityName,
-                              depoName: depoName,
-                              activity:
-                                  '${row.getCells()[1].value.toString()}'),
+                            cityName: cityName,
+                            depoName: depoName,
+                            activity: '${row.getCells()[1].value.toString()}',
+                            path: '',
+                          ),
                         ));
                         // showDialog(
                         //     context: context,
@@ -123,10 +124,12 @@ class EmployeeDataSource extends DataGridSource {
                           onPressed: () {
                             Navigator.of(ctx).push(MaterialPageRoute(
                               builder: (context) => ViewFile(
-                                  cityName: cityName,
-                                  depoName: depoName,
-                                  activity:
-                                      '${row.getCells()[1].value.toString()}'),
+                                cityName: cityName,
+                                depoName: depoName,
+                                activity:
+                                    '${row.getCells()[1].value.toString()}',
+                                path: '',
+                              ),
                             ));
                             // showDialog(
                             //     context: context,

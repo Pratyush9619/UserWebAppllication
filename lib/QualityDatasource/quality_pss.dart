@@ -1,4 +1,5 @@
 import 'package:assingment/KeysEvents/upload.dart';
+import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:assingment/model/quality_checklistModel.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../KeysEvents/viewFIle.dart';
+import '../KeysEvents/view_AllFiles.dart';
 import '../model/jmr.dart';
 import '../widget/style.dart';
 
@@ -70,7 +72,7 @@ class QualityPSSDataSource extends DataGridSource {
               //         dataGridCell.columnName == 'Weightage')
               Alignment.center,
           // : Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: dataGridCell.columnName == 'Upload'
               ? LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
@@ -79,6 +81,7 @@ class QualityPSSDataSource extends DataGridSource {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UploadDocument(
+                              userId: userId,
                               title: 'DetailedEngRFC',
                               cityName: cityName,
                               depoName: depoName,
@@ -113,7 +116,13 @@ class QualityPSSDataSource extends DataGridSource {
                               ElevatedButton.styleFrom(backgroundColor: blue),
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ViewFile()
+                                builder: (context) => ViewAllPdf(
+                                    title: '/ClosureReport',
+                                    cityName: cityName,
+                                    depoName: depoName,
+                                    userId: userId,
+                                    docId:
+                                        '${row.getCells()[0].value.toString()}')
                                 // UploadDocument(
                                 //     title: 'DetailedEngRFC',
                                 //     cityName: cityName,
