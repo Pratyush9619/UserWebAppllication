@@ -65,6 +65,8 @@ class Employee {
     return DataGridRow(cells: <DataGridCell>[
       DataGridCell<dynamic>(columnName: 'srNo', value: srNo),
       DataGridCell<String>(columnName: 'Activity', value: activity),
+      const DataGridCell<Widget>(columnName: 'viewbutton', value: null),
+      const DataGridCell<Widget>(columnName: 'uploadbutton', value: null),
       DataGridCell<int>(
           columnName: 'OriginalDuration', value: originalDuration),
       DataGridCell<String>(columnName: 'StartDate', value: startDate),

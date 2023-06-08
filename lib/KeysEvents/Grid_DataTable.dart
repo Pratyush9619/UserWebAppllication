@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../Authentication/auth_service.dart';
-import '../datasource/employee_datasouce.dart';
+import '../datasource/employee_datasource.dart';
 import '../widget/custom_appbar.dart';
 import '../widget/nodata_available.dart';
 
@@ -45,12 +45,12 @@ class _KeyDataTableState extends State<KeyDataTable> {
 
   @override
   void initState() {
-    getUserId().then((value) {
+    getUserId().whenComplete(() {
       _stream = FirebaseFirestore.instance
           .collection('KeyEventsTable')
-          .doc(widget.depoName!)
+          .doc('OC 1-Kempekowda Bus Station')
           .collection(userId)
-          .doc('${widget.depoName}${widget.keyEvents}')
+          .doc('${'OC 1-Kempekowda Bus Station'}${widget.keyEvents}')
           .snapshots();
     });
 
@@ -387,6 +387,7 @@ class _KeyDataTableState extends State<KeyDataTable> {
   Future<void> getUserId() async {
     await AuthService().getCurrentUserId().then((value) {
       userId = value;
+      setState(() {});
     });
   }
 
@@ -422,10 +423,12 @@ class _KeyDataTableState extends State<KeyDataTable> {
     }
 
     FirebaseFirestore.instance
-        .collection('KeyEventsTable')
-        .doc(widget.depoName!)
-        .collection('AllKeyEventsTable')
-        .doc('${widget.depoName}${widget.keyEvents}')
+        .collection('KeyEventsTabless')
+        .doc('${widget.depoName}')
+        .collection('KeyDataTable')
+        .doc('${widget.depoName}')
+        .collection('KeyAllEvents')
+        .doc('${widget.depoName}A2')
         .set(
       {'data': tabledata2},
       SetOptions(merge: true),

@@ -37,7 +37,7 @@ class MyHomePage2 extends StatefulWidget {
 class _MyHomePage2State extends State<MyHomePage2> {
   bool _isloading = true;
   List<EmployeeStatutory> employees = <EmployeeStatutory>[];
-  late EmployeeStatutoryDataSource employeeDataSource;
+  late EmployeeDataStatutory employeeDataSource;
   late DataGridController _dataGridController;
   Stream? _stream;
   var alldata;
@@ -55,7 +55,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
     _isloading = false;
     // getFirestoreData().whenComplete(() {
     //   setState(() {
-    //     employeeDataSource = EmployeeStatutoryDataSource(
+    //     employeeDataSource = EmployeeDataStatutory(
     //         employeeData: employees, mainContext: context);
     //     _isloading = false;
     //   });
@@ -147,17 +147,14 @@ class _MyHomePage2State extends State<MyHomePage2> {
                   employees.clear();
                   alldata.forEach((element) {
                     employees.add(EmployeeStatutory.fromJson(element));
-                    // employeeDataSource = EmployeeStatutoryDataSource(
+                    // employeeDataSource = EmployeeDataStatutory(
                     //   employees,
                     //   context,
                     //   widget.cityName,
                     //   widget.depoName,
                     // );
-                    employeeDataSource = EmployeeStatutoryDataSource(
-                        employeeData: employees,
-                        mainContext: context,
-                        cityName: widget.cityName,
-                        depoName: widget.depoName);
+                    employeeDataSource =
+                        EmployeeDataStatutory(employees, context);
                     _dataGridController = DataGridController();
                   });
 
@@ -417,10 +414,14 @@ class _MyHomePage2State extends State<MyHomePage2> {
 
   Future<void> getFirestoreData() async {
     FirebaseFirestore instance = FirebaseFirestore.instance;
-    CollectionReference tabledata =
-        instance.collection('${widget.depoName}${widget.keyEvents}');
+    CollectionReference tabledata = instance.collection('KeyEventsTable');
 
-    DocumentSnapshot snapshot = await tabledata.doc(widget.depoName).get();
+    DocumentSnapshot snapshot = await tabledata
+        .doc(widget.depoName!)
+        .collection('AllKeyEventsTable')
+        .doc('${widget.depoName}${widget.keyEvents}')
+        .get();
+
     var data = snapshot.data() as Map;
     var alldata = data['data'] as List<dynamic>;
 

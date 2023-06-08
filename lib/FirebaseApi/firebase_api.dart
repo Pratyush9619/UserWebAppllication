@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -30,6 +31,23 @@ class FirebaseApi {
     final file = File('${dir.path}/${ref.name}');
 
     await ref.writeToFile(file);
+  }
+
+  defaultKeyEventsField(String collectionName, String deponame) {
+    FirebaseFirestore.instance
+        .collection(collectionName)
+        .doc(deponame)
+        .set({'depoName': deponame});
+  }
+
+  nestedKeyEventsField(String collectionName, String deponame1,
+      String collectionName1, String userid) {
+    FirebaseFirestore.instance
+        .collection(collectionName)
+        .doc(deponame1)
+        .collection(collectionName1)
+        .doc(userid)
+        .set({'depoName': deponame1});
   }
 }
 

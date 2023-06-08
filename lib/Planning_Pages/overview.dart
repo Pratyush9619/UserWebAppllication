@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:assingment/widget/style.dart';
 
+import '../KeysEvents/ChartData.dart';
+
 class Overview extends StatefulWidget {
   const Overview({super.key});
 
@@ -25,10 +27,10 @@ class _OverviewPagesState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
     final List<ChartData> chartData = [
-      ChartData('Site Survey', 35),
-      ChartData('Detailed Engineering', 38),
-      ChartData('Site Mobilization ', 34),
-      ChartData('Approval Of Statutory', 52)
+      ChartData('Site Survey', 35, blue),
+      ChartData('Detailed Engineering', 38, blue),
+      ChartData('Site Mobilization ', 34, blue),
+      ChartData('Approval Of Statutory', 52, blue)
     ];
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +45,7 @@ class _OverviewPagesState extends State<Overview> {
             series: <CircularSeries>[
               PieSeries<ChartData, String>(
                   dataSource: chartData,
-                  dataLabelSettings:const DataLabelSettings(isVisible: true),
+                  dataLabelSettings: const DataLabelSettings(isVisible: true),
                   xValueMapper: (ChartData data, _) => data.x,
                   yValueMapper: (ChartData data, _) => data.y)
             ],
@@ -64,11 +66,4 @@ class _OverviewPagesState extends State<Overview> {
     ]);
     super.dispose();
   }
-}
-
-class ChartData {
-  ChartData(this.x, this.y, [this.color]);
-  final String x;
-  final double y;
-  final Color? color;
 }

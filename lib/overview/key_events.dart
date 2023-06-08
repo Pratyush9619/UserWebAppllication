@@ -1,5 +1,10 @@
 import 'dart:html';
 import 'package:assingment/KeysEvents/Grid_DataTable.dart';
+import 'package:assingment/KeysEvents/Grid_DataTableA2.dart';
+import 'package:assingment/KeysEvents/Grid_DataTableA3.dart';
+import 'package:assingment/KeysEvents/Grid_DataTableA4.dart';
+import 'package:assingment/KeysEvents/Grid_DataTableA5.dart';
+import 'package:assingment/KeysEvents/Grid_DataTableA6.dart';
 import 'package:assingment/KeysEvents/viewFIle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +13,10 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import '../Authentication/auth_service.dart';
+import '../KeysEvents/Grid_DataTableA10.dart';
+import '../KeysEvents/Grid_DataTableA7.dart';
+import '../KeysEvents/Grid_DataTableA8.dart';
+import '../KeysEvents/Grid_DataTableA9.dart';
 import '../KeysEvents/upload.dart';
 import '../components/loading_page.dart';
 import '../datasource/key_datasource.dart';
@@ -184,62 +193,108 @@ class _KeyEventsState extends State<KeyEvents> {
   @override
   Widget build(BuildContext context) {
     menuwidget = [
+      ViewFile(),
+      StatutoryAprovalA2(
+        userid: userId,
+        depoName: widget.depoName,
+        cityName: widget.cityName,
+      ),
+      StatutoryAprovalA3(
+        userid: userId,
+        depoName: widget.depoName,
+        cityName: widget.cityName,
+      ),
+      StatutoryAprovalA4(
+        userid: userId,
+        depoName: widget.depoName,
+        cityName: widget.cityName,
+      ),
+      StatutoryAprovalA5(
+        userid: userId,
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
+      StatutoryAprovalA6(
+        userid: userId,
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
+      StatutoryAprovalA7(
+        userid: userId,
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
+      StatutoryAprovalA8(
+        userid: userId,
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
+      StatutoryAprovalA9(
+        userid: userId,
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
+      StatutoryAprovalA10(
+        userid: userId,
+        cityName: widget.cityName,
+        depoName: widget.depoName,
+      ),
       // ViewFile(path,),
       // UploadDocument(
       //   depoName: widget.depoName,
       //   title: '',
       //   activity: '',
       // ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A2',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A2',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A3',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A4',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A5',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A6',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A7',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A8',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A9',
-      ),
-      KeyDataTable(
-        depoName: widget.depoName,
-        cityName: widget.cityName,
-        keyEvents: 'A10',
-      ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A2',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A2',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A3',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A4',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A5',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A6',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A7',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A8',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A9',
+      // ),
+      // KeyDataTable(
+      //   depoName: widget.depoName,
+      //   cityName: widget.cityName,
+      //   keyEvents: 'A10',
+      // ),
     ];
 
     return _isLoading
@@ -1128,6 +1183,7 @@ class _KeyEventsState extends State<KeyEvents> {
   Future<void> getUserId() async {
     await AuthService().getCurrentUserId().then((value) {
       userId = value;
+      setState(() {});
     });
   }
 

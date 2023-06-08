@@ -1,3 +1,5 @@
+import 'package:assingment/KeysEvents/upload.dart';
+import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -84,17 +86,19 @@ class EmployeeDataSource extends DataGridSource {
               Alignment.center,
           // : Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: dataGridCell.columnName == 'Upload'
+          child: dataGridCell.columnName == 'uploadbutton'
               ? LayoutBuilder(
                   builder: (BuildContext ctx, BoxConstraints constraints) {
                   return ElevatedButton(
                       onPressed: () {
                         Navigator.of(ctx).push(MaterialPageRoute(
-                          builder: (context) => ViewFile(
+                          builder: (context) => UploadDocument(
+                            title: '',
+                            userId: userId,
                             cityName: cityName,
                             depoName: depoName,
                             activity: '${row.getCells()[1].value.toString()}',
-                            path: '',
+                            // path: '',
                           ),
                         ));
                         // showDialog(
@@ -117,7 +121,7 @@ class EmployeeDataSource extends DataGridSource {
                       },
                       child: const Text('Upload'));
                 })
-              : dataGridCell.columnName == 'View'
+              : dataGridCell.columnName == 'viewbutton'
                   ? LayoutBuilder(
                       builder: (BuildContext ctx, BoxConstraints constraints) {
                       return ElevatedButton(
