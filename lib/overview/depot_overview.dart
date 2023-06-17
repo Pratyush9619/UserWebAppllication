@@ -111,7 +111,7 @@ class _DepotOverviewState extends State<DepotOverview> {
               child: CustomAppBar(
                 text:
                     '${widget.cityName} / ${widget.depoName} / Depot Overview',
-                haveSynced: true,
+                haveSynced: false,
                 store: () {
                   // FirebaseFirestore.instance
                   //     .collection('OverviewCollection')
@@ -142,8 +142,16 @@ class _DepotOverviewState extends State<DepotOverview> {
               ),
               preferredSize: const Size.fromHeight(50)),
           body: Center(
-            child:
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 Image.asset('assets/Depot.jpeg', alignment: Alignment.center),
+                Text(
+                  'To BE Accessed By Admin and Project Manager',
+                  style: TextStyle(color: black, fontSize: 25),
+                )
+              ],
+            ),
           )
           // _isloading
           //     ? LoadingPage()
