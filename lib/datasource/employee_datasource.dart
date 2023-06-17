@@ -1,4 +1,5 @@
 import 'package:assingment/KeysEvents/upload.dart';
+import 'package:assingment/KeysEvents/view_AllFiles.dart';
 import 'package:assingment/Planning_Pages/quality_checklist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -13,11 +14,12 @@ import '../model/employee.dart';
 
 class EmployeeDataSource extends DataGridSource {
   BuildContext mainContext;
+  String userId;
   String? cityName;
   String? depoName;
 
-  EmployeeDataSource(
-      this._employees, this.mainContext, this.cityName, this.depoName) {
+  EmployeeDataSource(this._employees, this.mainContext, this.userId,
+      this.cityName, this.depoName) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
@@ -93,7 +95,7 @@ class EmployeeDataSource extends DataGridSource {
                       onPressed: () {
                         Navigator.of(ctx).push(MaterialPageRoute(
                           builder: (context) => UploadDocument(
-                            title: '',
+                            title: 'KeyEventsImage',
                             userId: userId,
                             cityName: cityName,
                             depoName: depoName,
@@ -127,14 +129,13 @@ class EmployeeDataSource extends DataGridSource {
                       return ElevatedButton(
                           onPressed: () {
                             Navigator.of(ctx).push(MaterialPageRoute(
-                              builder: (context) => ViewFile(
-                                cityName: cityName,
-                                depoName: depoName,
-                                activity:
-                                    '${row.getCells()[1].value.toString()}',
-                                path: '',
-                              ),
-                            ));
+                                builder: (context) => ViewAllPdf(
+                                    title: 'KeyEventsImage',
+                                    cityName: cityName!,
+                                    depoName: depoName!,
+                                    userId: userId,
+                                    docId:
+                                        '${row.getCells()[1].value.toString()}')));
                             // showDialog(
                             //     context: context,
                             //     builder: (context) => AlertDialog(

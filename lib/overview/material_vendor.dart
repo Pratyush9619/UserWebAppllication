@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../Authentication/auth_service.dart';
+import '../FirebaseApi/firebase_api.dart';
 import '../datasource/materialprocurement_datasource.dart';
 import '../widget/custom_appbar.dart';
 import '../widget/style.dart';
@@ -73,6 +74,10 @@ class _MaterialProcurementState extends State<MaterialProcurement> {
               haveSynced: true,
               store: () {
                 _showDialog(context);
+                FirebaseApi().defaultKeyEventsField(
+                    'MaterialProcurement', widget.depoName!);
+                // FirebaseApi().nestedKeyEventsField('MaterialProcurement',
+                //     widget.depoName!, 'Material Data', userId);
                 storeData();
               },
             ),

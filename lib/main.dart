@@ -1,7 +1,9 @@
 import 'package:assingment/Splash/splash_screen.dart';
+import 'package:assingment/provider/summary_provider.dart';
 import 'package:assingment/widget/style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,29 +24,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'TP-EV-PMIS',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        fontFamily: 'ibmPlexSans',
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        dividerColor: const Color.fromARGB(255, 2, 42, 75),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6),
-            borderSide: BorderSide(color: blue),
-          ),
-          focusedBorder: OutlineInputBorder(
+    return ChangeNotifierProvider<SummaryProvider>(
+      create: (context) => SummaryProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'TP-EV-PMIS',
+        theme: ThemeData(
+          brightness: Brightness.light,
+          fontFamily: 'ibmPlexSans',
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: Colors.white,
+          dividerColor: const Color.fromARGB(255, 2, 42, 75),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6),
-              borderSide: BorderSide(color: blue)),
-          floatingLabelBehavior: FloatingLabelBehavior.auto,
-          focusColor: Colors.black,
-          // labelStyle: Colors.b
+              borderSide: BorderSide(color: blue),
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+                borderSide: BorderSide(color: blue)),
+            floatingLabelBehavior: FloatingLabelBehavior.auto,
+            focusColor: Colors.black,
+            // labelStyle: Colors.b
+          ),
         ),
+        home: const MyHomePage(),
       ),
-      home: const MyHomePage(),
     );
   }
 }

@@ -33,9 +33,9 @@ class _DailyProjectState extends State<DailyProject> {
 
   @override
   void initState() {
-    // dailyproject = getmonthlyReport();
-    // _dailyDataSource = DailyDataSource(dailyproject, context, widget.depoName!);
-    // _dataGridController = DataGridController();
+    dailyproject = getmonthlyReport();
+    _dailyDataSource = DailyDataSource(dailyproject, context, widget.depoName!);
+    _dataGridController = DataGridController();
 
     print(CustomAppBar().text);
     getUserId().whenComplete(() {
@@ -337,65 +337,6 @@ class _DailyProjectState extends State<DailyProject> {
                                     ),
                               ),
                             ),
-                            // GridColumn(
-                            //   columnName: 'Date',
-                            //   autoFitPadding:
-                            //       const EdgeInsets.symmetric(horizontal: 16),
-                            //   allowEditing: false,
-                            //   width: 160,
-                            //   label: Container(
-                            //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            //     alignment: Alignment.center,
-                            //     child: Text('Date',
-                            //         textAlign: TextAlign.center,
-                            //         overflow: TextOverflow.values.first,
-                            //         style: TextStyle(
-                            //             fontWeight: FontWeight.bold,
-                            //             fontSize: 16,
-                            //             color: white)),
-                            //   ),
-                            // ),
-                            // GridColumn(
-                            //   visible: false,
-                            //   columnName: 'State',
-                            //   autoFitPadding:
-                            //       const EdgeInsets.symmetric(horizontal: 16),
-                            //   allowEditing: true,
-                            //   width: 120,
-                            //   label: Container(
-                            //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            //     alignment: Alignment.center,
-                            //     child: Text('State',
-                            //         textAlign: TextAlign.center,
-                            //         overflow: TextOverflow.values.first,
-                            //         style: TextStyle(
-                            //             fontWeight: FontWeight.bold,
-                            //             fontSize: 16,
-                            //             color: white)
-                            //         //    textAlign: TextAlign.center,
-                            //         ),
-                            //   ),
-                            // ),
-                            // GridColumn(
-                            //   visible: false,
-                            //   columnName: 'DepotName',
-                            //   autoFitPadding:
-                            //       const EdgeInsets.symmetric(horizontal: 16),
-                            //   allowEditing: true,
-                            //   width: 150,
-                            //   label: Container(
-                            //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            //     alignment: Alignment.center,
-                            //     child: Text('Depot Name',
-                            //         overflow: TextOverflow.values.first,
-                            //         style: TextStyle(
-                            //             fontWeight: FontWeight.bold,
-                            //             fontSize: 16,
-                            //             color: white)
-                            //         //    textAlign: TextAlign.center,
-                            //         ),
-                            //   ),
-                            // ),
                             GridColumn(
                               columnName: 'TypeOfActivity',
                               autoFitPadding:

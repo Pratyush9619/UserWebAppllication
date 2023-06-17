@@ -1,10 +1,8 @@
 import 'package:assingment/Authentication/auth_service.dart';
 import 'package:assingment/widget/custom_appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../components/loading_page.dart';
@@ -33,6 +31,7 @@ class _ClosureReportState extends State<ClosureReport> {
   dynamic userId;
   bool _isUserId = false;
   bool _isloading = true;
+  List<dynamic> tabledata2 = [];
 
   @override
   void initState() {
@@ -80,10 +79,8 @@ class _ClosureReportState extends State<ClosureReport> {
                     'LaoNo': loa ?? 'Enter LOA No.',
                   },
                 );
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: const Text('Data are synced'),
-                  backgroundColor: blue,
-                ));
+
+                store();
               },
             ),
             preferredSize: const Size.fromHeight(50)),
@@ -809,5 +806,38 @@ class _ClosureReportState extends State<ClosureReport> {
         content: 'BOQ (Bill of Quantity)',
       ),
     ];
+  }
+
+  void store() {
+    Map<String, dynamic> table_data = Map();
+    for (var i in _closeReportDataSource.dataGridRows) {
+      for (var data in i.getCells()) {
+        if (data.columnName != 'Photo' && data.columnName != 'ViewPhoto') {
+          table_data[data.columnName] = data.value;
+        }
+      }
+
+      tabledata2.add(table_data);
+      table_data = {};
+    }
+
+    FirebaseFirestore.instance
+        .collection('ClosureReportTable')
+        .doc(widget.depoName!)
+        .collection('Closure Report')
+        .doc(userId)
+        // .collection(userId)
+        // .doc(DateFormat.yMMMMd().format(DateTime.now()))
+        .set(
+      {'data': tabledata2},
+      SetOptions(merge: true),
+    ).whenComplete(() {
+      tabledata2.clear();
+      // Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Data are synced'),
+        backgroundColor: blue,
+      ));
+    });
   }
 }

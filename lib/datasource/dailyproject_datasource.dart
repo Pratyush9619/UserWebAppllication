@@ -1,6 +1,3 @@
-import 'package:assingment/model/employee.dart';
-import 'package:assingment/KeysEvents/upload.dart';
-import 'package:assingment/model/monthly_projectModel.dart';
 import 'package:assingment/widget/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -19,20 +16,20 @@ class DailyDataSource extends DataGridSource {
 
   List data = [];
   DailyDataSource(
-    this._montlyproject,
+    this._dailyproject,
     this.mainContext,
     this.depoName,
   ) {
     buildDataGridRows();
   }
   void buildDataGridRows() {
-    dataGridRows = _montlyproject
+    dataGridRows = _dailyproject
         .map<DataGridRow>((dataGridRow) => dataGridRow.dataGridRow())
         .toList();
   }
 
   @override
-  List<DailyProjectModel> _montlyproject = [];
+  List<DailyProjectModel> _dailyproject = [];
 
   List<DataGridRow> dataGridRows = [];
   final _dateFormatter = DateFormat.yMd();
@@ -129,7 +126,7 @@ class DailyDataSource extends DataGridSource {
                                                         value: DateFormat(
                                                                 'dd-MM-yyyy')
                                                             .format(date!));
-                                                _montlyproject[dataRowIndex]
+                                                _dailyproject[dataRowIndex]
                                                         .date =
                                                     DateFormat('dd-MM-yyyy')
                                                         .format(date!);
@@ -179,25 +176,25 @@ class DailyDataSource extends DataGridSource {
     if (column.columnName == 'SiNo') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<int>(columnName: 'SiNo', value: newCellValue);
-      _montlyproject[dataRowIndex].siNo = newCellValue as int;
+      _dailyproject[dataRowIndex].siNo = newCellValue as int;
     } else if (column.columnName == 'TypeOfActivity') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(
               columnName: 'TypeOfActivity', value: newCellValue);
-      _montlyproject[dataRowIndex].typeOfActivity = newCellValue;
+      _dailyproject[dataRowIndex].typeOfActivity = newCellValue;
     } else if (column.columnName == 'ActivityDetails') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(
               columnName: 'ActivityDetails', value: newCellValue);
-      _montlyproject[dataRowIndex].activityDetails = newCellValue;
+      _dailyproject[dataRowIndex].activityDetails = newCellValue;
     } else if (column.columnName == 'Progress') {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'Progress', value: newCellValue);
-      _montlyproject[dataRowIndex].progress = newCellValue;
+      _dailyproject[dataRowIndex].progress = newCellValue;
     } else {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(columnName: 'Status', value: newCellValue);
-      _montlyproject[dataRowIndex].status = newCellValue;
+      _dailyproject[dataRowIndex].status = newCellValue;
     }
   }
 

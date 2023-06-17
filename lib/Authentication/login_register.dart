@@ -24,7 +24,7 @@ class _LoginRegisterState extends State<LoginRegister> {
               initialIndex: 0,
               child: Scaffold(
                 appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(300),
+                  preferredSize: const Size.fromHeight(300),
                   child: Column(children: [
                     _space(10),
                     Text("Project Management Information System",

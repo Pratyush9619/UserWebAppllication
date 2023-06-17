@@ -1,3 +1,4 @@
+import 'package:assingment/FirebaseApi/firebase_api.dart';
 import 'package:assingment/datasource/monthlyproject_datasource.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,7 +40,9 @@ class _MonthlyProjectState extends State<MonthlyProject> {
       _stream = FirebaseFirestore.instance
           .collection('MonthlyProjectReport')
           .doc('${widget.depoName}')
-          .collection('Monthly Data')
+          .collection('AllMonthData')
+          .doc(userId)
+          .collection('MonthData')
           .doc(DateFormat.yMMM().format(DateTime.now()))
           .snapshots();
       _isloading = false;
@@ -71,6 +74,10 @@ class _MonthlyProjectState extends State<MonthlyProject> {
             haveSynced: true,
             store: () {
               _showDialog(context);
+              FirebaseApi().defaultKeyEventsField(
+                  'MonthlyProjectReport', widget.depoName!);
+              FirebaseApi().nestedKeyEventsField('MonthlyProjectReport',
+                  widget.depoName!, 'AllMonthData', userId);
               storeData();
             },
           ),
@@ -518,6 +525,7 @@ class _MonthlyProjectState extends State<MonthlyProject> {
         if (data.columnName != 'button') {
           table_data[data.columnName] = data.value;
         }
+        table_data['User ID'] = userId;
       }
 
       tabledata2.add(table_data);
@@ -527,7 +535,9 @@ class _MonthlyProjectState extends State<MonthlyProject> {
     FirebaseFirestore.instance
         .collection('MonthlyProjectReport')
         .doc('${widget.depoName}')
-        .collection(userId)
+        .collection('AllMonthData')
+        .doc(userId)
+        .collection('MonthData')
         .doc(DateFormat.yMMM().format(DateTime.now()))
         .set({
       'data': tabledata2,

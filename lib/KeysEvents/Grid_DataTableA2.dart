@@ -65,15 +65,15 @@ class _StatutoryAprovalA2State extends State<StatutoryAprovalA2> {
         .snapshots();
 
     _employeeDataSource = EmployeeDataSource(
-        _employees, context, widget.cityName, widget.depoName);
+        _employees, context, widget.userid!, widget.cityName, widget.depoName);
     _dataGridController = DataGridController();
     getFirestoreData().whenComplete(() {
       if (_employees.length == 0 || _employees.isEmpty) {
         _employees = getEmployeeData();
       }
       _isLoading = false;
-      _employeeDataSource = EmployeeDataSource(
-          _employees, context, widget.cityName, widget.depoName);
+      _employeeDataSource = EmployeeDataSource(_employees, context,
+          widget.userid!, widget.cityName, widget.depoName);
       _dataGridController = DataGridController();
     });
 
@@ -159,8 +159,8 @@ class _StatutoryAprovalA2State extends State<StatutoryAprovalA2> {
                 }
                 if (!snapshot.hasData || snapshot.data.exists == false) {
                   _employees = getEmployeeData();
-                  _employeeDataSource = EmployeeDataSource(
-                      _employees, context, widget.cityName, widget.depoName);
+                  _employeeDataSource = EmployeeDataSource(_employees, context,
+                      widget.userid!, widget.cityName, widget.depoName);
                   _dataGridController = DataGridController();
 
                   return SingleChildScrollView(
